@@ -1,4 +1,4 @@
-using MallArchitecture.Models;
+using MallArchitecture.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,12 +6,8 @@ namespace MallArchitecture.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
         {
             return View();
         }
