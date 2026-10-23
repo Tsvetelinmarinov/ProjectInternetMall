@@ -1,4 +1,4 @@
-namespace MallArchitecture.Models
+namespace MallArchitecture.ViewModels
 {
     public class ErrorViewModel
     {
