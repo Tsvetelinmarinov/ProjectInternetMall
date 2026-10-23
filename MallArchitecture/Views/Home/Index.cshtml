@@ -2,7 +2,63 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content text-center">
+        <h1 class="display-3 fw-bold text-white mb-3">INTERNET MALL</h1>
+        <p class="lead text-light mb-4">Твоят дом за всичко – от технологии до мода и дом</p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="/Products" class="btn btn-light btn-lg px-4 py-2 fw-semibold shadow-sm">Разгледай каталога</a>
+            <a href="/About" class="btn btn-outline-light btn-lg px-4 py-2 fw-semibold">Научи повече</a>
+        </div>
+    </div>
 </div>
+
+<style>
+    .hero-section {
+        position: relative;
+        width: 100vw;
+        height: calc(100vh - 100px);
+        margin-left: calc(-50vw + 50%);
+        margin-right: calc(-50vw + 50%);
+        background-image: url('/Gemini_Generated_Image_winxppwinxppwinx.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 700px;
+        padding: 3rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 1rem;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-content h1 {
+        letter-spacing: 2px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-content p {
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+</style>
