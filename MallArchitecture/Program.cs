@@ -1,4 +1,4 @@
-using MallArchitecture.Data;
+using MallArchitecture.Data.DatabaseContext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
