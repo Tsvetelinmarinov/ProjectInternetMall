@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="EMall.Core/EMall.Core.csproj" />
+  <Project Path="EMall.Data/EMall.Data.csproj" />
+  <Project Path="EMall/EMall.csproj" />
+</Solution>
