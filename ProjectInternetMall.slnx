@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="MallArchitecture.Core/MallArchitecture.Core.csproj" Id="8a7ef4ac-8017-4088-8963-367bd908497f" />
+  <Project Path="MallArchitecture.Data/MallArchitecture.Data.csproj" Id="3dc39f08-d8df-4c96-b8e3-f200826db9df" />
   <Project Path="MallArchitecture/MallArchitecture.csproj" />
 </Solution>
