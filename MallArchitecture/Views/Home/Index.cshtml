@@ -1,8 +1,97 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Начало";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section shadow-lg">
+    <div class="hero-overlay"></div>
+    <div class="hero-content text-center">
+        <span class="badge bg-primary bg-opacity-25 text-white border border-light border-opacity-25 px-3 py-2 rounded-pill mb-3 fw-medium">
+            <i class="bi bi-stars me-1"></i> Ново поколение онлайн пазаруване
+        </span>
+        <h1 class="display-3 fw-extrabold text-white mb-3">INTERNET MALL</h1>
+        <p class="lead text-light mb-4">Твоят перфектен дом за всичко – от върхови технологии до мода и уют.</p>
+        <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+            <a href="#" class="btn btn-light btn-lg px-4 py-3 fw-semibold shadow-sm d-inline-flex align-items-center justify-content-center gap-2">
+                <span>Разгледай каталога</span>
+                <i class="bi bi-arrow-right"></i>
+            </a>
+            <a href="#" class="btn btn-outline-light btn-lg px-4 py-3 fw-semibold">Научи повече</a>
+        </div>
+    </div>
 </div>
+
+<style>
+    .hero-section {
+        position: relative;
+        width: 100vw;
+        height: calc(100vh - 110px);
+        margin-left: calc(-50vw + 50%);
+        margin-right: calc(-50vw + 50%);
+        margin-top: -2.5rem; /* Запълва горното пространство към хедъра */
+        background-image: url('/Gemini_Generated_Image_1j28fl1j28fl1j28.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.75) 100%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 750px;
+        padding: 3.5rem 2.5rem;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        margin: 0 1rem;
+    }
+
+    .hero-content h1 {
+        letter-spacing: 1px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        font-weight: 800;
+    }
+
+    .hero-content p {
+        text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+        font-weight: 300;
+    }
+
+    .hero-content .btn-light {
+        background-color: #ffffff;
+        color: #0f172a;
+        border: none;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .hero-content .btn-light:hover {
+        background-color: #f1f5f9;
+        transform: translateY(-2px);
+    }
+
+    .hero-content .btn-outline-light {
+        border-color: rgba(255, 255, 255, 0.6);
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .hero-content .btn-outline-light:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        border-color: #ffffff;
+        transform: translateY(-2px);
+    }
+</style>
