@@ -1,24 +1,61 @@
 @page
 @model PersonalDataModel
 @{
-    ViewData["Title"] = "Personal Data";
+    ViewData["Title"] = "Лични данни";
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h3>@ViewData["Title"]</h3>
+<style>
+    .auth-stack {
+        max-width: 28rem;
+    }
 
-<div class="row">
-    <div class="col-md-6">
-        <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
-        <p>
-            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
-        </p>
-        <form id="download-data" asp-page="DownloadPersonalData" method="post">
-            <button class="btn btn-primary" type="submit">Download</button>
-        </form>
-        <p>
-            <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
-        </p>
+    .auth-danger {
+        margin-top: 2rem;
+        padding: 1.25rem;
+        background: #fdf0ed;
+        border: 1px solid #efc4bd;
+        border-radius: .75rem;
+    }
+
+    .auth-danger p {
+        margin: 0 0 1rem;
+    }
+
+    .auth-main .auth-btn-danger {
+        padding: .9rem 1rem;
+        font-weight: 700;
+        color: var(--auth-danger);
+        background-color: #fff;
+        border: 1px solid var(--auth-danger);
+        border-radius: .75rem;
+    }
+
+    .auth-main .auth-btn-danger:hover,
+    .auth-main .auth-btn-danger:active {
+        color: #fff;
+        background-color: var(--auth-danger);
+        border-color: var(--auth-danger);
+    }
+
+    .auth-main .auth-btn-danger:focus-visible {
+        outline: 3px solid var(--auth-danger);
+        outline-offset: 2px;
+    }
+</style>
+
+<h1 class="auth-title">@ViewData["Title"]</h1>
+
+<div class="auth-stack">
+    <p class="auth-lead">Профилът ви съдържа лични данни, които сте ни предоставили. Оттук можете да ги изтеглите или да изтриете профила си.</p>
+
+    <form id="download-data" asp-page="DownloadPersonalData" method="post">
+        <button class="btn btn-lg w-100 auth-btn" type="submit">Изтегли данните</button>
+    </form>
+
+    <div class="auth-danger">
+        <p><strong>Изтриването на данните премахва профила ви завинаги и не може да бъде възстановено.</strong></p>
+        <a id="delete" asp-page="DeletePersonalData" class="btn btn-lg w-100 auth-btn-danger">Изтрий профила</a>
     </div>
 </div>
 
