@@ -2,82 +2,337 @@
 @model LoginModel
 
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Вход";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
+<style>
+    .auth-shell {
+        --auth-deep: #0e3b43;
+        --auth-deep-2: #17606c;
+        --auth-accent: #f5b544;
+        --auth-accent-hover: #e9a52d;
+        --auth-text: #17262b;
+        --auth-muted: #5e6f74;
+        --auth-line: #d3dde0;
+        --auth-danger: #b3321f;
+        display: grid;
+        grid-template-columns: 1fr;
+        max-width: 56rem;
+        margin: 0 auto;
+        background: #fff;
+        color: var(--auth-text);
+        border: 1px solid var(--auth-line);
+        border-radius: 1.25rem;
+        overflow: hidden;
+        box-shadow: 0 1.5rem 3rem -1.5rem rgba(14, 59, 67, .35);
+    }
+
+    @@media (min-width: 768px) {
+        .auth-shell {
+            grid-template-columns: 5fr 6fr;
+        }
+    }
+
+    /* Лява колона с марката */
+    .auth-aside {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 1.25rem;
+        padding: 1.75rem 2rem;
+        color: #fff;
+        background: radial-gradient(circle at 100% 100%, var(--auth-deep-2) 0 9rem, transparent 9.05rem), radial-gradient(circle at 100% 100%, rgba(255, 255, 255, .07) 0 15rem, transparent 15.05rem), var(--auth-deep);
+    }
+
+    @@media (min-width: 768px) {
+        .auth-aside {
+            gap: 2.5rem;
+            padding: 3rem;
+            min-height: 32rem;
+        }
+
+        .auth-sub {
+            display: block;
+        }
+    }
+
+    .auth-brand {
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -.01em;
+    }
+
+    .auth-tagline {
+        margin: 0;
+        max-width: 9em;
+        font-size: clamp(1.75rem, 4vw, 2.6rem);
+        font-weight: 800;
+        line-height: 1.1;
+        text-wrap: balance;
+    }
+
+    .auth-sub {
+        display: none;
+        margin: 1rem 0 0;
+        color: rgba(255, 255, 255, .75);
+    }
+
+    /* Форма */
+    .auth-main {
+        padding: 2rem 1.5rem;
+    }
+
+    @@media (min-width: 768px) {
+        .auth-main {
+            padding: 3rem;
+        }
+    }
+
+    .auth-title {
+        margin: 0 0 .25rem;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+    .auth-lead {
+        margin: 0 0 1.75rem;
+        color: var(--auth-muted);
+    }
+
+    .auth-shell .form-floating > label {
+        color: var(--auth-muted);
+    }
+
+    .auth-shell .form-control {
+        border: 1px solid var(--auth-line);
+        border-radius: .75rem;
+        box-shadow: none;
+    }
+
+    .auth-shell .form-control:focus {
+        border-color: var(--auth-deep-2);
+        box-shadow: 0 0 0 .25rem rgba(23, 96, 108, .18);
+    }
+
+    .auth-shell .input-validation-error {
+        border-color: var(--auth-danger);
+    }
+
+    .auth-error {
+        display: block;
+        margin-top: .35rem;
+        font-size: .875rem;
+        color: var(--auth-danger);
+    }
+
+    .auth-summary {
+        margin-bottom: 1rem;
+        padding: .75rem 1rem;
+        font-size: .9rem;
+        color: var(--auth-danger);
+        background: #fdf0ed;
+        border-radius: .75rem;
+    }
+
+    .auth-summary.validation-summary-valid {
+        display: none;
+    }
+
+    .auth-summary ul {
+        margin: 0;
+        padding-left: 1.1rem;
+    }
+
+    /* Показване на паролата */
+    .auth-pass .form-control {
+        padding-right: 3rem;
+    }
+
+    .auth-eye {
+        position: absolute;
+        top: 0;
+        right: .25rem;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: calc(3.5rem + 2px);
+        padding: 0;
+        color: var(--auth-muted);
+        background: none;
+        border: 0;
+        border-radius: .75rem;
+    }
+
+    .auth-eye:hover {
+        color: var(--auth-deep);
+    }
+
+    .auth-eye:focus-visible {
+        outline: 2px solid var(--auth-deep-2);
+        outline-offset: -4px;
+    }
+
+    .auth-eye .slash {
+        display: none;
+    }
+
+    .auth-eye[aria-pressed="true"] .slash {
+        display: inline;
+    }
+
+    /* Запомни ме */
+    .auth-remember {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        margin-bottom: 1.5rem;
+        color: var(--auth-text);
+        cursor: pointer;
+    }
+
+    .auth-remember .form-check-input {
+        margin: 0;
+        width: 1.15rem;
+        height: 1.15rem;
+        border-color: var(--auth-line);
+        cursor: pointer;
+    }
+
+    .auth-remember .form-check-input:checked {
+        background-color: var(--auth-deep-2);
+        border-color: var(--auth-deep-2);
+    }
+
+    .auth-remember .form-check-input:focus {
+        border-color: var(--auth-deep-2);
+        box-shadow: 0 0 0 .25rem rgba(23, 96, 108, .18);
+    }
+
+    /* Основен бутон */
+    .auth-shell .auth-btn {
+        padding: .9rem 1rem;
+        font-weight: 700;
+        color: #3a2a00;
+        background-color: var(--auth-accent);
+        border: 0;
+        border-radius: .75rem;
+    }
+
+    .auth-shell .auth-btn:hover,
+    .auth-shell .auth-btn:active {
+        color: #3a2a00;
+        background-color: var(--auth-accent-hover);
+    }
+
+    .auth-shell .auth-btn:focus-visible {
+        outline: 3px solid var(--auth-deep-2);
+        outline-offset: 2px;
+    }
+
+    /* Връзки */
+    .auth-links {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        margin-top: 1.5rem;
+        text-align: center;
+        color: var(--auth-muted);
+    }
+
+    .auth-links p {
+        margin: 0;
+    }
+
+    .auth-links a {
+        font-weight: 600;
+        color: var(--auth-deep-2);
+    }
+
+    .auth-links a:hover {
+        color: var(--auth-deep);
+    }
+
+    .auth-links .auth-minor a {
+        font-weight: 400;
+        font-size: .9rem;
+    }
+</style>
+
+<div class="py-4 py-md-5">
+    <div class="auth-shell">
+
+        <aside class="auth-aside">
+            <span class="auth-brand">EMall</span>
+            <div>
+                <p class="auth-tagline">Всичко на едно място.</p>
+                <p class="auth-sub">Един профил за целия магазин.</p>
+            </div>
+        </aside>
+
+        <div class="auth-main">
             <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <h1 class="auth-title">Вход в профила</h1>
+                <p class="auth-lead">Въведете имейла и паролата си.</p>
+
+                <div asp-validation-summary="ModelOnly" class="auth-summary" role="alert"></div>
+
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    <label asp-for="Input.Email">Имейл</label>
+                    <span asp-validation-for="Input.Email" class="auth-error"></span>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                <div class="form-floating mb-3 auth-pass">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="парола" />
+                    <label asp-for="Input.Password">Парола</label>
+                    <button type="button" class="auth-eye" aria-label="Покажи паролата" aria-pressed="false">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+                            <circle cx="12" cy="12" r="3" />
+                            <path class="slash" d="M3 3l18 18" />
+                        </svg>
+                    </button>
+                    <span asp-validation-for="Input.Password" class="auth-error"></span>
                 </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
+
+                <label asp-for="Input.RememberMe" class="auth-remember">
+                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                    Запомни ме
+                </label>
+
+                <button id="login-submit" type="submit" class="btn btn-lg w-100 auth-btn">Вход</button>
+
+                <div class="auth-links">
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        Нямате профил?
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Регистрирайте се</a>
                     </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                    <p class="auth-minor">
+                        <a id="forgot-password" asp-page="./ForgotPassword">Забравена парола?</a>
                     </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                    <p class="auth-minor">
+                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Изпрати отново имейла за потвърждение</a>
                     </p>
                 </div>
             </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
+        </div>
+
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelectorAll(".auth-eye").forEach(function (btn) {
+            var input = btn.parentElement.querySelector("input");
+            btn.addEventListener("click", function () {
+                var show = input.type === "password";
+                input.type = show ? "text" : "password";
+                btn.setAttribute("aria-pressed", show);
+                btn.setAttribute("aria-label", show ? "Скрий паролата" : "Покажи паролата");
+            });
+        });
+    </script>
 }

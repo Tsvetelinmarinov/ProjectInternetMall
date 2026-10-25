@@ -1,5 +1,5 @@
 @{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
     {
         Layout = parentLayout.ToString();
     }
@@ -9,18 +9,221 @@
     }
 }
 
-<h1>Manage your account</h1>
+<style>
+    .auth-shell {
+        --auth-deep: #0e3b43;
+        --auth-deep-2: #17606c;
+        --auth-accent: #f5b544;
+        --auth-accent-hover: #e9a52d;
+        --auth-text: #17262b;
+        --auth-muted: #5e6f74;
+        --auth-line: #d3dde0;
+        --auth-danger: #b3321f;
+        display: grid;
+        grid-template-columns: 1fr;
+        max-width: 62rem;
+        margin: 0 auto;
+        background: #fff;
+        color: var(--auth-text);
+        border: 1px solid var(--auth-line);
+        border-radius: 1.25rem;
+        overflow: hidden;
+        box-shadow: 0 1.5rem 3rem -1.5rem rgba(14, 59, 67, .35);
+    }
 
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
+    @@media (min-width: 768px) {
+        .auth-shell {
+            grid-template-columns: 15rem 1fr;
+        }
+    }
+
+    /* Лява колона: марка и меню */
+    .auth-aside {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.25rem 1rem;
+        color: #fff;
+        background: radial-gradient(circle at 100% 100%, var(--auth-deep-2) 0 9rem, transparent 9.05rem), radial-gradient(circle at 100% 100%, rgba(255, 255, 255, .07) 0 15rem, transparent 15.05rem), var(--auth-deep);
+    }
+
+    @@media (min-width: 768px) {
+        .auth-aside {
+            gap: 2.5rem;
+            padding: 2rem 1.25rem;
+            min-height: 30rem;
+        }
+    }
+
+    .auth-brand {
+        padding: 0 .5rem;
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -.01em;
+    }
+
+    .auth-nav {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: .25rem;
+        overflow-x: auto;
+    }
+
+    @@media (min-width: 768px) {
+        .auth-nav {
+            flex-direction: column;
+            overflow: visible;
+        }
+    }
+
+    .auth-aside .auth-nav .nav-link {
+        padding: .65rem 1rem;
+        font-weight: 500;
+        white-space: nowrap;
+        color: rgba(255, 255, 255, .8);
+        border-radius: .75rem;
+    }
+
+    .auth-aside .auth-nav .nav-link:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, .08);
+    }
+
+    .auth-aside .auth-nav .nav-link:focus-visible {
+        outline: 2px solid var(--auth-accent);
+        outline-offset: 2px;
+    }
+
+    .auth-aside .auth-nav .nav-link.active {
+        color: #fff;
+        background: rgba(255, 255, 255, .14);
+        box-shadow: inset 0 -3px 0 var(--auth-accent);
+    }
+
+    @@media (min-width: 768px) {
+        .auth-aside .auth-nav .nav-link.active {
+            box-shadow: inset 3px 0 0 var(--auth-accent);
+        }
+    }
+
+    /* Съдържание */
+    .auth-main {
+        padding: 2rem 1.5rem;
+    }
+
+    @@media (min-width: 768px) {
+        .auth-main {
+            padding: 3rem;
+        }
+    }
+
+    .auth-title, .auth-main h3 {
+        margin: 0 0 .25rem;
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+    .auth-lead {
+        margin: 0 0 1.75rem;
+        color: var(--auth-muted);
+    }
+
+    .auth-main form {
+        max-width: 28rem;
+    }
+
+    .auth-main .alert {
+        border: 0;
+        border-radius: .75rem;
+    }
+
+    .auth-shell .form-floating > label {
+        color: var(--auth-muted);
+    }
+
+    .auth-shell .form-control {
+        border: 1px solid var(--auth-line);
+        border-radius: .75rem;
+        box-shadow: none;
+    }
+
+    .auth-shell .form-control:focus {
+        border-color: var(--auth-deep-2);
+        box-shadow: 0 0 0 .25rem rgba(23, 96, 108, .18);
+    }
+
+    .auth-shell .form-control:disabled {
+        background: #f4f7f8;
+    }
+
+    .auth-shell .input-validation-error {
+        border-color: var(--auth-danger);
+    }
+
+    .auth-error {
+        display: block;
+        margin-top: .35rem;
+        font-size: .875rem;
+        color: var(--auth-danger);
+    }
+
+    .auth-summary {
+        margin-bottom: 1rem;
+        padding: .75rem 1rem;
+        font-size: .9rem;
+        color: var(--auth-danger);
+        background: #fdf0ed;
+        border-radius: .75rem;
+    }
+
+    .auth-summary.validation-summary-valid {
+        display: none;
+    }
+
+    .auth-summary ul {
+        margin: 0;
+        padding-left: 1.1rem;
+    }
+
+    /* Основни бутони (важи и за другите Manage страници) */
+    .auth-main .auth-btn,
+    .auth-main .btn-primary {
+        padding: .9rem 1rem;
+        font-weight: 700;
+        color: #3a2a00;
+        background-color: var(--auth-accent);
+        border: 0;
+        border-radius: .75rem;
+    }
+
+    .auth-main .auth-btn:hover,
+    .auth-main .auth-btn:active,
+    .auth-main .btn-primary:hover,
+    .auth-main .btn-primary:active {
+        color: #3a2a00;
+        background-color: var(--auth-accent-hover);
+    }
+
+    .auth-main .auth-btn:focus-visible,
+    .auth-main .btn-primary:focus-visible {
+        outline: 3px solid var(--auth-deep-2);
+        outline-offset: 2px;
+    }
+</style>
+
+<div class="py-4 py-md-5">
+    <div class="auth-shell">
+
+        <aside class="auth-aside">
+            <span class="auth-brand">EMall</span>
             <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
+        </aside>
+
+        <div class="auth-main">
             @RenderBody()
         </div>
+
     </div>
 </div>
 

@@ -1,25 +1,29 @@
-using EMall.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace EMall.Controllers
 {
+    /// <summary>
+    ///  Provides endpoints for the Home page and Error page.
+    /// </summary>
     public class HomeController : Controller
     {
+        /// <summary>
+        ///  Loads Home Page.
+        /// </summary>
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
+        /// <summary>
+        ///   Loads the Error Page.
+        /// </summary>
+        /// <returns></returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
     }
 }

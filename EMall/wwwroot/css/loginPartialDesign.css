@@ -1,0 +1,13 @@
+﻿body {
+}
+
+/* Малък акцент за бутона за вход, за да изпъква елегантно */
+.btn-login-accent {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+    transition: all 0.2s ease;
+}
+
+.btn-login-accent:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
+    transform: translateY(-1px);
+}

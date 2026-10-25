@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using EMall.Data;
-using EMall.Data.DatabaseContext;
 
 namespace EMall.Areas.Identity.Pages.Account.Manage;
 

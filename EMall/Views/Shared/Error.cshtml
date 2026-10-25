@@ -1,25 +1,41 @@
-﻿@model ErrorViewModel
-@{
-    ViewData["Title"] = "Error";
+﻿@{
+    ViewData["Title"] = "Страницата не е намерена";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="error-wrapper d-flex align-items-center justify-content-center min-vh-100 py-5">
+    <div class="error-card text-center p-4 p-sm-5 rounded-4 shadow-lg border-0 position-relative">
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
+        <!-- Анимирано светещо чипче / статус -->
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill status-badge mb-4">
+            <span class="status-dot"></span>
+            <span class="fw-semibold fs-7 text-uppercase tracking-wider">Упс! Нещо се обърка!</span>
+        </div>
+
+        <!-- Анимиран 3D голям номер -->
+        <div class="error-code-container mb-3 position-relative">
+            <h1 class="error-code display-1 fw-black m-0 user-select-none">404</h1>
+        </div>
+
+        <!-- Заглавие и текст -->
+        <h2 class="h3 fw-bold mb-3 text-headline">Търсената страница не съществува!</h2>
+        <p class="text-description mb-4 mx-auto" style="max-width: 400px;">
+            Възможно е адресът да е сгрешен или страницата да е преместена на нов адрес.
+        </p>
+
+        <!-- Модерен бутон за връщане -->
+        <div class="pt-2">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-home btn-lg px-4 py-3 rounded-3 fw-bold text-white d-inline-flex align-items-center gap-2 shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Към началната страница</span>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+@section Design {
+    <link rel="stylesheet" href="~/css/errorPageDesign.css"/>
 }
-
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>

@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
-using EMall.Data.DatabaseContext;
 
 namespace EMall.Areas.Identity.Pages.Account;
 

@@ -17,7 +17,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using EMall.Data;
-using EMall.Data.DatabaseContext;
 
 namespace EMall.Areas.Identity.Pages.Account;
 

@@ -1,0 +1,124 @@
+﻿/* ======================================================
+EMall - Global Layout Styling (Matches Light & Dark Landing Page)
+====================================================== */
+
+:root {
+    --emall-primary: #2563eb;
+    --emall-indigo: #4f46e5;
+    --emall-purple: #9333ea;
+    --emall-bg: #f8fafc;
+    --emall-nav-bg: rgba(255, 255, 255, 0.85);
+    --emall-text: #0f172a;
+    --emall-muted: #64748b;
+    --emall-card-border: rgba(226, 232, 240, 0.8);
+    --emall-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --emall-bg: #0f172a;
+        --emall-nav-bg: rgba(15, 23, 42, 0.85);
+        --emall-text: #f8fafc;
+        --emall-muted: #94a3b8;
+        --emall-card-border: rgba(51, 65, 85, 0.6);
+        --emall-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--emall-bg);
+    color: var(--emall-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Glassmorphism Sticky Navbar */
+.navbar-custom {
+    background: var(--emall-nav-bg) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--emall-card-border) !important;
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+
+/* Лого / Бранд с градиент */
+.navbar-brand-emall {
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--emall-text);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+}
+
+.navbar-brand-emall span {
+    background: linear-gradient(135deg, var(--emall-primary) 0%, var(--emall-indigo) 50%, var(--emall-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.navbar-brand-emall svg {
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand-emall:hover {
+    opacity: 0.95;
+}
+
+.navbar-brand-emall:hover svg {
+    transform: scale(1.1) rotate(-3deg);
+}
+
+/* Навигационни линкове */
+.nav-link-custom {
+    font-weight: 600;
+    color: var(--emall-text) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.nav-link-custom:hover {
+    background-color: rgba(37, 99, 235, 0.08);
+    color: var(--emall-primary) !important;
+    transform: translateY(-1px);
+}
+
+.nav-link-custom.active {
+    color: var(--emall-primary) !important;
+    background-color: rgba(37, 99, 235, 0.12);
+}
+
+/* Главен контейнер */
+.main-wrapper {
+    flex: 1;
+}
+
+/* Стилен Футър */
+.footer-custom {
+    background-color: var(--emall-nav-bg);
+    border-top: 1px solid var(--emall-card-border) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--emall-muted);
+    padding: 1.5rem 0;
+    margin-top: auto;
+    font-size: 0.9rem;
+}
+
+.footer-custom a {
+    color: var(--emall-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-custom a:hover {
+    color: var(--emall-primary);
+}
