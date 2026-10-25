@@ -1,0 +1,93 @@
+﻿body {
+}
+
+/* Модерни CSS променливи за Layout-а */
+:root {
+    --emall-primary: #6366f1;
+    --emall-primary-hover: #4f46e5;
+    --emall-bg: #f8fafc;
+    --emall-nav-bg: rgba(255, 255, 255, 0.82);
+    --emall-text: #0f172a;
+    --emall-muted: #64748b;
+    --emall-card-border: rgba(226, 232, 240, 0.8);
+    --emall-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --emall-bg: #0f172a;
+        --emall-nav-bg: rgba(15, 23, 42, 0.82);
+        --emall-text: #f8fafc;
+        --emall-muted: #94a3b8;
+        --emall-card-border: rgba(51, 65, 85, 0.6);
+        --emall-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+        background-color: var(--emall-bg);
+        color: var(--emall-text);
+    }
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--emall-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Glassmorphism Sticky Navbar */
+.navbar-custom {
+    background: var(--emall-nav-bg) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--emall-card-border) !important;
+    transition: all 0.3s ease;
+}
+
+/* Лого / Бранд с градиент */
+.navbar-brand-emall {
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.navbar-brand-emall:hover {
+    opacity: 0.9;
+}
+
+/* Навигационни линкове */
+.nav-link-custom {
+    font-weight: 500;
+    color: var(--emall-text) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.nav-link-custom:hover {
+    background-color: rgba(99, 102, 241, 0.08);
+    color: var(--emall-primary) !important;
+}
+
+/* Главен контейнер */
+.main-wrapper {
+    flex: 1;
+}
+
+/* Стилен Футър */
+.footer-custom {
+    background-color: var(--emall-nav-bg);
+    border-top: 1px solid var(--emall-card-border) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 1.25rem 0;
+    margin-top: auto;
+}
