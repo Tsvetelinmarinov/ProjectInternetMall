@@ -1,3 +1,4 @@
+using EMall.Data;
 using EMall.Data.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 
