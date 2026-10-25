@@ -1,8 +1,413 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "EMall – всичко на едно място";
+    // Сменете с вашия контролер/екшън за каталога
+    var catalogUrl = Url.Action("Index", "Catalog") ?? "/Catalog";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@* Шрифтът се зарежда само за този изглед; има резервен вариант, ако няма връзка *@
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&display=swap&subset=cyrillic" rel="stylesheet" />
+
+<style>
+    /* Всичко е ограничено до .em-home, за да не пипа Layout-а */
+    .em-home {
+        --em-ink: #14123b;
+        --em-sky: #eef1ff;
+        --em-cobalt: #3d3bf3;
+        --em-coral: #ff5c7a;
+        --em-lemon: #ffd84d;
+        --em-mint: #3ddba8;
+        position: relative;
+        isolation: isolate;
+        box-sizing: border-box;
+        font-family: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+        color: var(--em-ink);
+        line-height: 1.5;
+    }
+
+    .em-home *, .em-home *::before, .em-home *::after {
+        box-sizing: border-box;
+    }
+
+    /* ---------- Hero ---------- */
+    .em-hero {
+        position: relative;
+        overflow: hidden;
+        min-height: min(82vh, 760px);
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: clamp(3rem, 8vw, 6rem) 1.25rem;
+        border-radius: 2rem;
+        background: radial-gradient(60% 60% at 20% 15%, rgba(61, 59, 243, .18), transparent 70%), radial-gradient(50% 50% at 85% 85%, rgba(255, 92, 122, .20), transparent 70%), var(--em-sky);
+    }
+
+    .em-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: .55;
+        z-index: 0;
+        animation: em-morph 14s ease-in-out infinite alternate;
+    }
+
+    .em-blob--a {
+        width: 340px;
+        height: 340px;
+        background: var(--em-lemon);
+        top: -90px;
+        right: 8%;
+    }
+
+    .em-blob--b {
+        width: 300px;
+        height: 300px;
+        background: var(--em-mint);
+        bottom: -100px;
+        left: 6%;
+        animation-delay: -6s;
+    }
+
+    .em-core {
+        position: relative;
+        z-index: 2;
+        max-width: 46rem;
+    }
+
+    .em-brand {
+        display: inline-block;
+        font-weight: 800;
+        font-size: 1.15rem;
+        padding: .35rem .9rem;
+        border-radius: 999px;
+        background: var(--em-ink);
+        color: #fff;
+        margin-bottom: 1.5rem;
+        animation: em-pop .7s cubic-bezier(.2, 1.4, .4, 1) both;
+    }
+
+    .em-brand b {
+        color: var(--em-lemon);
+    }
+
+    .em-title {
+        margin: 0 0 1.25rem;
+        font-weight: 800;
+        font-size: clamp(2.6rem, 8vw, 5.6rem);
+        line-height: .98;
+        letter-spacing: -.035em;
+    }
+
+    .em-title .em-line {
+        display: block;
+        overflow: hidden;
+        padding-bottom: .08em;
+    }
+
+    .em-title .em-line > span {
+        display: inline-block;
+        transform: translateY(105%);
+        animation: em-rise .9s cubic-bezier(.2, .8, .2, 1) forwards;
+    }
+
+    .em-title .em-line:nth-child(2) > span {
+        animation-delay: .15s;
+        color: var(--em-cobalt);
+    }
+
+    .em-lead {
+        margin: 0 auto 2.25rem;
+        max-width: 34rem;
+        font-size: clamp(1.02rem, 2.2vw, 1.25rem);
+        font-weight: 500;
+        opacity: 0;
+        animation: em-fade .8s .55s ease forwards;
+    }
+
+    /* ---------- Бутон ---------- */
+    .em-cta {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.1rem 2.8rem;
+        border-radius: 999px;
+        background: var(--em-cobalt);
+        color: #fff !important;
+        font: inherit;
+        font-weight: 800;
+        font-size: 1.15rem;
+        text-decoration: none !important;
+        overflow: hidden;
+        box-shadow: 0 12px 30px -8px rgba(61, 59, 243, .65), 0 0 0 0 rgba(61, 59, 243, .5);
+        transition: transform .25s cubic-bezier(.2, 1.3, .4, 1), box-shadow .25s ease, background .25s ease;
+        opacity: 0;
+        animation: em-fade .8s .75s ease forwards, em-pulse 2.8s 1.8s ease-out infinite;
+    }
+
+    .em-cta::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 -60%;
+        width: 40%;
+        background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .55), transparent);
+        transform: skewX(-20deg);
+        transition: left .7s ease;
+    }
+
+    .em-cta:hover, .em-cta:focus-visible {
+        transform: translateY(-3px) scale(1.04);
+        background: var(--em-coral);
+        box-shadow: 0 18px 36px -10px rgba(255, 92, 122, .7);
+    }
+
+    .em-cta:hover::before, .em-cta:focus-visible::before {
+        left: 130%;
+    }
+
+    .em-cta:active {
+        transform: scale(.97);
+    }
+
+    .em-cta:focus-visible {
+        outline: 3px solid var(--em-ink);
+        outline-offset: 4px;
+    }
+
+    /* ---------- Плаващи категории ---------- */
+    .em-chip {
+        position: absolute;
+        z-index: 1;
+        left: var(--x);
+        top: var(--y);
+        padding: .6rem 1.1rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .85);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 2px solid var(--c);
+        font-weight: 700;
+        font-size: .98rem;
+        white-space: nowrap;
+        box-shadow: 0 10px 24px -12px rgba(20, 18, 59, .45);
+        translate: calc(var(--mx, 0) * var(--k) * 1px) calc(var(--my, 0) * var(--k) * 1px);
+        transition: translate .25s ease-out;
+        rotate: var(--r);
+        animation: em-float 6s ease-in-out var(--d) infinite alternate, em-pop .7s var(--d) cubic-bezier(.2, 1.4, .4, 1) both;
+    }
+
+    .em-chip::before {
+        content: "";
+        display: inline-block;
+        width: .6rem;
+        height: .6rem;
+        margin-right: .55rem;
+        border-radius: 50%;
+        background: var(--c);
+    }
+
+    /* ---------- Лента ---------- */
+    .em-ribbon {
+        overflow: hidden;
+        margin-top: 1.25rem;
+        border-radius: 1rem;
+        background: var(--em-ink);
+        color: #fff;
+        padding: .9rem 0;
+    }
+
+    .em-track {
+        display: flex;
+        width: max-content;
+        animation: em-scroll 32s linear infinite;
+    }
+
+    .em-ribbon:hover .em-track {
+        animation-play-state: paused;
+    }
+
+    .em-track span {
+        padding: 0 1.4rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .em-track span::after {
+        content: "✦";
+        margin-left: 2.8rem;
+        color: var(--em-lemon);
+    }
+
+    /* ---------- Предимства ---------- */
+    .em-perks {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem 2.5rem;
+        margin: 2.5rem .5rem 1rem;
+    }
+
+    .em-perk {
+        border-left: 4px solid var(--c);
+        padding-left: 1rem;
+    }
+
+    .em-perk strong {
+        display: block;
+        font-size: 1.15rem;
+    }
+
+    .em-perk span {
+        opacity: .75;
+    }
+
+    /* ---------- Анимации ---------- */
+    @@keyframes em-rise {
+        to {
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes em-fade {
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@keyframes em-pop {
+        from {
+            opacity: 0;
+            scale: .6;
+        }
+
+        to {
+            opacity: 1;
+            scale: 1;
+        }
+    }
+
+    @@keyframes em-float {
+        from {
+            transform: translateY(-9px);
+        }
+
+        to {
+            transform: translateY(9px);
+        }
+    }
+
+    @@keyframes em-scroll {
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    @@keyframes em-pulse {
+        0% {
+            box-shadow: 0 12px 30px -8px rgba(61, 59, 243, .65), 0 0 0 0 rgba(61, 59, 243, .45);
+        }
+
+        70%, 100% {
+            box-shadow: 0 12px 30px -8px rgba(61, 59, 243, .65), 0 0 0 22px rgba(61, 59, 243, 0);
+        }
+    }
+
+    @@keyframes em-morph {
+        from {
+            border-radius: 50% 50% 45% 55% / 55% 45% 55% 45%;
+            transform: translate(0, 0) rotate(0);
+        }
+
+        to {
+            border-radius: 40% 60% 55% 45% / 45% 60% 40% 55%;
+            transform: translate(-30px, 24px) rotate(25deg);
+        }
+    }
+
+    /* ---------- Адаптивност ---------- */
+    @@media (max-width: 720px) {
+        .em-hero {
+            border-radius: 1.4rem;
+        }
+
+        .em-chip--hide-sm {
+            display: none;
+        }
+
+        .em-chip {
+            font-size: .85rem;
+            padding: .45rem .8rem;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .em-home *, .em-home *::before, .em-home *::after {
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            transition: none !important;
+        }
+
+        .em-title .em-line > span, .em-lead, .em-cta {
+            transform: none;
+            opacity: 1;
+        }
+    }
+</style>
+
+<div class="em-home" id="emHome">
+    <section class="em-hero" aria-labelledby="emTitle">
+        <span class="em-blob em-blob--a" aria-hidden="true"></span>
+        <span class="em-blob em-blob--b" aria-hidden="true"></span>
+
+        <span class="em-chip" style="--x:7%;  --y:18%; --c:#3d3bf3; --r:-6deg; --d:.2s; --k:14">Електроника</span>
+        <span class="em-chip" style="--x:70%; --y:12%; --c:#ff5c7a; --r:5deg;  --d:.35s; --k:-18">Мода</span>
+        <span class="em-chip em-chip--hide-sm" style="--x:3%;  --y:58%; --c:#3ddba8; --r:4deg;  --d:.5s; --k:22">Дом и градина</span>
+        <span class="em-chip" style="--x:74%; --y:66%; --c:#ffb800; --r:-5deg; --d:.65s; --k:-12">Спорт</span>
+        <span class="em-chip em-chip--hide-sm" style="--x:22%; --y:82%; --c:#ff5c7a; --r:-3deg; --d:.8s; --k:16">Красота</span>
+        <span class="em-chip em-chip--hide-sm" style="--x:80%; --y:38%; --c:#3d3bf3; --r:6deg;  --d:.95s; --k:-24">Играчки</span>
+        <span class="em-chip em-chip--hide-sm" style="--x:14%; --y:36%; --c:#ffb800; --r:3deg;  --d:1.1s; --k:10">Книги</span>
+
+        <div class="em-core">
+            <span class="em-brand">E<b>Mall</b></span>
+            <h1 class="em-title" id="emTitle">
+                <span class="em-line"><span>Всичко, което ти трябва.</span></span>
+                <span class="em-line"><span>На едно място.</span></span>
+            </h1>
+            <p class="em-lead">Електроника, мода, дом, спорт и всичко помежду им – на едно място.</p>
+            <a class="em-cta" href="@catalogUrl">Към Каталога</a>
+        </div>
+    </section>
+
+    <div class="em-ribbon" aria-hidden="true">
+        <div class="em-track">
+            @for (var i = 0; i < 2; i++)
+            {
+                <span>Електроника</span><span>Мода</span><span>Дом и градина</span><span>Спорт</span>
+                <span>Красота</span><span>Играчки</span><span>Книги</span><span>Авто</span>
+            }
+        </div>
+    </div>
+
+    <div class="em-perks">
+        <div class="em-perk" style="--c:#3d3bf3"><strong>Всичко на едно място</strong><span>Не е нужно да ровиш в няколко сайта.</span></div>
+        <div class="em-perk" style="--c:#ff5c7a"><strong>Лесно търсене</strong><span>Категории и филтри, които водят право към нужното.</span></div>
+        <div class="em-perk" style="--c:#3ddba8"><strong>Една поръчка</strong><span>Събираш всичко и плащаш веднъж.</span></div>
+    </div>
 </div>
+
+<script>
+    (function () {
+        var root = document.getElementById("emHome");
+        if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var hero = root.querySelector(".em-hero");
+        hero.addEventListener("pointermove", function (e) {
+            var r = hero.getBoundingClientRect();
+            root.style.setProperty("--mx", ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+            root.style.setProperty("--my", ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+        });
+        hero.addEventListener("pointerleave", function () {
+            root.style.setProperty("--mx", 0);
+            root.style.setProperty("--my", 0);
+        });
+    })();
+</script>
