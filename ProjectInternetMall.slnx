@@ -6,6 +6,7 @@
     <Project Path="EMall.Core/EMall.Core.csproj" />
   </Folder>
   <Folder Name="/WebMVC/">
+    <Project Path="EMall.ViewModels/EMall.ViewModels.csproj" Id="24820149-9710-42ad-a17f-e45d6d60000e" />
     <Project Path="EMall/EMall.csproj" />
   </Folder>
 </Solution>

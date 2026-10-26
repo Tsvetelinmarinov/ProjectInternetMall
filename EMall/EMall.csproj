@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EMall.Core\EMall.Core.csproj" />
     <ProjectReference Include="..\EMall.Data\EMall.Data.csproj" />
+    <ProjectReference Include="..\EMall.ViewModels\EMall.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
