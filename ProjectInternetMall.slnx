@@ -1,5 +1,11 @@
 <Solution>
-  <Project Path="EMall.Core/EMall.Core.csproj" />
-  <Project Path="EMall.Data/EMall.Data.csproj" />
-  <Project Path="EMall/EMall.csproj" />
+  <Folder Name="/Database/">
+    <Project Path="EMall.Data/EMall.Data.csproj" />
+  </Folder>
+  <Folder Name="/Services/">
+    <Project Path="EMall.Core/EMall.Core.csproj" />
+  </Folder>
+  <Folder Name="/WebMVC/">
+    <Project Path="EMall/EMall.csproj" />
+  </Folder>
 </Solution>
