@@ -1,90 +1,146 @@
 using EMall.Data;
 using EMall.Data.DatabaseContext;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-#region Application Construction and IoC Container Configuration
-
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-var connectionString = builder
-    .Configuration
-    .GetConnectionString("DefaultConnection") 
-     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+namespace EMall
 {
-    options.UseSqlServer(
-        connectionString,
-        (sqlServerDbContextOptionsBuilder) =>
+    public class Program
+    {
+        public static void Main()
         {
-            // For Vector search
-            sqlServerDbContextOptionsBuilder.UseCompatibilityLevel(170);
+            #region Application Construction and IoC Container Configuration
 
-            // For preventing sql injection.
-            sqlServerDbContextOptionsBuilder
-                .UseParameterizedCollectionMode(ParameterTranslationMode.MultipleParameters);
+            var builder = WebApplication.CreateBuilder();
+
+            // Add services to the container.
+            var connectionString = builder
+                .Configuration
+                .GetConnectionString("DefaultConnection")
+                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(
+                    connectionString,
+                    (sqlServerDbContextOptionsBuilder) =>
+                    {
+                        // For Vector search
+                        sqlServerDbContextOptionsBuilder.UseCompatibilityLevel(170);
+
+                        // For preventing sql injection.
+                        sqlServerDbContextOptionsBuilder
+                            .UseParameterizedCollectionMode(ParameterTranslationMode.MultipleParameters);
+                    }
+                );
+            });
+
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+            {
+                ConfigureIdentity(options, builder.Configuration);
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
+
+            builder.Services.AddControllersWithViews();
+
+            var app = builder.Build();
+
+            #endregion
+            #region Configure HTTP Request Pipeline
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseMigrationsEndPoint();
+                app.UseStatusCodePagesWithReExecute("/Home/Error");
+            }
+            else
+            {
+                app.UseStatusCodePagesWithReExecute("/Home/Error");
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseRouting();
+            app.UseAuthorization();
+
+            app.MapStaticAssets();
+
+            app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}")
+               .WithStaticAssets();
+
+            app.MapRazorPages()
+               .WithStaticAssets();
+
+            #endregion
+            #region Startup
+
+            using (IServiceScope scope = app.Services.CreateScope())
+            {
+                ApplicationDbContext dtb = scope
+                    .ServiceProvider
+                    .GetRequiredService<ApplicationDbContext>();
+
+                try
+                {
+                    dtb.Database.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    // If something happen while migrating, atleast write it to the console,
+                    // because the application will still attempt to migrate, so we should know from the beginning.
+                    Console.WriteLine($"Unsuccessful startup migration! Error message: {ex.Message}\n At: {ex.StackTrace}\n");
+                }
+            }
+
+            app.Run();
+
+            #endregion
         }
-    );
-});
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+        #region Private Functionality
 
-builder.Services
-    .AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+        // Configures the default Identity.
+        private static void ConfigureIdentity(IdentityOptions options, ConfigurationManager configuration)
+        {
+            // User settings
+            options.User.RequireUniqueEmail =
+                configuration.GetValue<bool>("Identity:User:RequireUniqueEmail");
 
-builder.Services.AddControllersWithViews();
+            // Sign in settings.
+            options.SignIn.RequireConfirmedAccount =
+                configuration.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
 
-var app = builder.Build();
+            // Lockout settings.
+            options.Lockout.AllowedForNewUsers =
+                configuration.GetValue<bool>("Identity:Lockout:AllowedForNewUsers");
 
-#endregion
-#region Configure HTTP Request Pipeline
+            options.Lockout.MaxFailedAccessAttempts =
+                configuration.GetValue<int>("Identity:Lockout:MaxFailedAccessAttempts");
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseMigrationsEndPoint();
-    app.UseStatusCodePagesWithReExecute("/Home/Error");
-}
-else
-{
-    app.UseStatusCodePagesWithReExecute("/Home/Error");
-    app.UseHsts();
-}
+            options.Lockout.DefaultLockoutTimeSpan =
+                TimeSpan.FromMinutes(configuration.GetValue<int>("Identity:Lockout:DefaultLockoutTimeSpan"));
 
-app.UseHttpsRedirection();
-app.UseRouting();
-app.UseAuthorization();
+            // Password settings.
+            options.Password.RequiredLength =
+                configuration.GetValue<int>("Identity:Password:RequiredLength");
 
-app.MapStaticAssets();
+            options.Password.RequiredUniqueChars =
+                configuration.GetValue<int>("Identity:Password:RequiredUniqueChars");
 
-app.MapControllerRoute("default","{controller=Home}/{action=Index}/{id?}")
-   .WithStaticAssets();
+            options.Password.RequireDigit =
+                configuration.GetValue<bool>("Identity:Password:RequireDigit");
 
-app.MapRazorPages()
-   .WithStaticAssets();
+            options.Password.RequireLowercase =
+                configuration.GetValue<bool>("Identity:Password:RequireLowercase");
 
-#endregion
-#region Startup
+            options.Password.RequireUppercase =
+                configuration.GetValue<bool>("Identity:Password:RequireUppercase");
 
-using (IServiceScope scope = app.Services.CreateScope())
-{
-    ApplicationDbContext dtb = scope
-        .ServiceProvider
-        .GetRequiredService<ApplicationDbContext>();
+            options.Password.RequireNonAlphanumeric =
+                configuration.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
+        }
 
-    try
-    {
-        dtb.Database.Migrate();
-    }
-    catch (Exception ex)
-    {
-        // If something happen while migrating, atleast write it to the console,
-        // because the application will still attempt to migrate, so we should know from the beginning.
-        Console.WriteLine($"Unsuccessful startup migration! Error message: {ex.Message}\n At: {ex.StackTrace}\n");
+        #endregion
     }
 }
-
-app.Run();
-
-#endregion
