@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Database/">
+    <Project Path="EMall.Data.EntityModels/EMall.Data.EntityModels.csproj" Id="81db8307-0cf3-429c-92f6-04ab3c2a9ac8" />
     <Project Path="EMall.Data/EMall.Data.csproj" />
   </Folder>
   <Folder Name="/Services/">
