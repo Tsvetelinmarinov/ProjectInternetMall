@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMall.Controllers
@@ -5,12 +6,13 @@ namespace EMall.Controllers
     /// <summary>
     ///  Provides endpoints for the Home page and Error page.
     /// </summary>
-    public class HomeController : Controller
+    public class HomeController : CoreController
     {
         /// <summary>
         ///  Loads Home Page.
         /// </summary>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
@@ -19,8 +21,8 @@ namespace EMall.Controllers
         /// <summary>
         ///   Loads the Error Page.
         /// </summary>
-        /// <returns></returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [AllowAnonymous]
         public IActionResult Error()
         {
             return View();
