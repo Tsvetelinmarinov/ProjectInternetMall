@@ -4,141 +4,11 @@
     ViewData["Title"] = "Регистрация";
 }
 
-<style>
-    .auth-shell {
-        --auth-deep: #0e3b43;
-        --auth-deep-2: #17606c;
-        --auth-accent: #f5b544;
-        --auth-accent-hover: #e9a52d;
-        --auth-text: #17262b;
-        --auth-muted: #5e6f74;
-        --auth-line: #d3dde0;
-        --auth-danger: #b3321f;
-        display: grid;
-        grid-template-columns: 1fr;
-        max-width: 56rem;
-        margin: 0 auto;
-        background: #fff;
-        color: var(--auth-text);
-        border: 1px solid var(--auth-line);
-        border-radius: 1.25rem;
-        overflow: hidden;
-        box-shadow: 0 1.5rem 3rem -1.5rem rgba(14, 59, 67, .35);
-    }
-
-    @@media (min-width: 768px) {
-        .auth-shell { grid-template-columns: 5fr 6fr; }
-    }
-
-    /* Лява колона с марката */
-    .auth-aside {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 1.25rem;
-        padding: 1.75rem 2rem;
-        color: #fff;
-        background:
-            radial-gradient(circle at 100% 100%, var(--auth-deep-2) 0 9rem, transparent 9.05rem),
-            radial-gradient(circle at 100% 100%, rgba(255, 255, 255, .07) 0 15rem, transparent 15.05rem),
-            var(--auth-deep);
-    }
-
-    @@media (min-width: 768px) {
-        .auth-aside { gap: 2.5rem; padding: 3rem; min-height: 32rem; }
-        .auth-sub { display: block; }
-    }
-
-    .auth-brand { font-size: 1.25rem; font-weight: 800; letter-spacing: -.01em; }
-
-    .auth-tagline {
-        margin: 0;
-        max-width: 9em;
-        font-size: clamp(1.75rem, 4vw, 2.6rem);
-        font-weight: 800;
-        line-height: 1.1;
-        text-wrap: balance;
-    }
-
-    .auth-sub { display: none; margin: 1rem 0 0; color: rgba(255, 255, 255, .75); }
-
-    /* Форма */
-    .auth-main { padding: 2rem 1.5rem; }
-    @@media (min-width: 768px) { .auth-main { padding: 3rem; } }
-
-    .auth-title { margin: 0 0 .25rem; font-size: 1.75rem; font-weight: 700; }
-    .auth-lead { margin: 0 0 1.75rem; color: var(--auth-muted); }
-
-    .auth-shell .form-floating > label { color: var(--auth-muted); }
-
-    .auth-shell .form-control {
-        border: 1px solid var(--auth-line);
-        border-radius: .75rem;
-        box-shadow: none;
-    }
-
-    .auth-shell .form-control:focus {
-        border-color: var(--auth-deep-2);
-        box-shadow: 0 0 0 .25rem rgba(23, 96, 108, .18);
-    }
-
-    .auth-shell .input-validation-error { border-color: var(--auth-danger); }
-
-    .auth-error { display: block; margin-top: .35rem; font-size: .875rem; color: var(--auth-danger); }
-
-    .auth-summary { margin-bottom: 1rem; padding: .75rem 1rem; font-size: .9rem; color: var(--auth-danger); background: #fdf0ed; border-radius: .75rem; }
-    .auth-summary.validation-summary-valid { display: none; }
-    .auth-summary ul { margin: 0; padding-left: 1.1rem; }
-
-    /* Бутон за показване на паролата */
-    .auth-pass .form-control { padding-right: 3rem; }
-
-    .auth-eye {
-        position: absolute;
-        top: 0;
-        right: .25rem;
-        z-index: 5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.75rem;
-        height: calc(3.5rem + 2px);
-        padding: 0;
-        color: var(--auth-muted);
-        background: none;
-        border: 0;
-        border-radius: .75rem;
-    }
-
-    .auth-eye:hover { color: var(--auth-deep); }
-    .auth-eye:focus-visible { outline: 2px solid var(--auth-deep-2); outline-offset: -4px; }
-    .auth-eye .slash { display: none; }
-    .auth-eye[aria-pressed="true"] .slash { display: inline; }
-
-    /* Основен бутон */
-    .auth-shell .auth-btn {
-        padding: .9rem 1rem;
-        font-weight: 700;
-        color: #3a2a00;
-        background-color: var(--auth-accent);
-        border: 0;
-        border-radius: .75rem;
-    }
-
-    .auth-shell .auth-btn:hover,
-    .auth-shell .auth-btn:active { color: #3a2a00; background-color: var(--auth-accent-hover); }
-    .auth-shell .auth-btn:focus-visible { outline: 3px solid var(--auth-deep-2); outline-offset: 2px; }
-
-    .auth-foot { margin: 1.5rem 0 0; text-align: center; color: var(--auth-muted); }
-    .auth-foot a { font-weight: 600; color: var(--auth-deep-2); }
-    .auth-foot a:hover { color: var(--auth-deep); }
-</style>
-
 <div class="py-4 py-md-5">
     <div class="auth-shell">
 
         <aside class="auth-aside">
-            <span class="auth-brand">EMall</span>
+            <span class="auth-brand">TechMall</span>
             <div>
                 <p class="auth-tagline">Всичко на едно място.</p>
                 <p class="auth-sub">Един профил за целия магазин.</p>
@@ -209,4 +79,218 @@
             });
         });
     </script>
+
+    <style>
+        .auth-shell {
+            --auth-deep: #0e3b43;
+            --auth-deep-2: #17606c;
+            --auth-accent: #f5b544;
+            --auth-accent-hover: #e9a52d;
+            --auth-text: #17262b;
+            --auth-muted: #5e6f74;
+            --auth-line: #d3dde0;
+            --auth-danger: #b3321f;
+            display: grid;
+            grid-template-columns: 1fr;
+            max-width: 56rem;
+            margin: 0 auto;
+            background: #fff;
+            color: var(--auth-text);
+            border: 1px solid var(--auth-line);
+            border-radius: 1.25rem;
+            overflow: hidden;
+            box-shadow: 0 1.5rem 3rem -1.5rem rgba(14, 59, 67, .35);
+        }
+
+        @@media (min-width: 768px) {
+            .auth-shell {
+                grid-template-columns: 5fr 6fr;
+            }
+        }
+
+        /* Лява колона с марката */
+        .auth-aside {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1.25rem;
+            padding: 1.75rem 2rem;
+            color: #fff;
+            background: radial-gradient(circle at 100% 100%, var(--auth-deep-2) 0 9rem, transparent 9.05rem), radial-gradient(circle at 100% 100%, rgba(255, 255, 255, .07) 0 15rem, transparent 15.05rem), var(--auth-deep);
+        }
+
+        @@media (min-width: 768px) {
+            .auth-aside {
+                gap: 2.5rem;
+                padding: 3rem;
+                min-height: 32rem;
+            }
+
+            .auth-sub {
+                display: block;
+            }
+        }
+
+        .auth-brand {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -.01em;
+        }
+
+        .auth-tagline {
+            margin: 0;
+            max-width: 9em;
+            font-size: clamp(1.75rem, 4vw, 2.6rem);
+            font-weight: 800;
+            line-height: 1.1;
+            text-wrap: balance;
+        }
+
+        .auth-sub {
+            display: none;
+            margin: 1rem 0 0;
+            color: rgba(255, 255, 255, .75);
+        }
+
+        /* Форма */
+        .auth-main {
+            padding: 2rem 1.5rem;
+        }
+
+        @@media (min-width: 768px) {
+            .auth-main {
+                padding: 3rem;
+            }
+        }
+
+        .auth-title {
+            margin: 0 0 .25rem;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .auth-lead {
+            margin: 0 0 1.75rem;
+            color: var(--auth-muted);
+        }
+
+        .auth-shell .form-floating > label {
+            color: var(--auth-muted);
+        }
+
+        .auth-shell .form-control {
+            border: 1px solid var(--auth-line);
+            border-radius: .75rem;
+            box-shadow: none;
+        }
+
+            .auth-shell .form-control:focus {
+                border-color: var(--auth-deep-2);
+                box-shadow: 0 0 0 .25rem rgba(23, 96, 108, .18);
+            }
+
+        .auth-shell .input-validation-error {
+            border-color: var(--auth-danger);
+        }
+
+        .auth-error {
+            display: block;
+            margin-top: .35rem;
+            font-size: .875rem;
+            color: var(--auth-danger);
+        }
+
+        .auth-summary {
+            margin-bottom: 1rem;
+            padding: .75rem 1rem;
+            font-size: .9rem;
+            color: var(--auth-danger);
+            background: #fdf0ed;
+            border-radius: .75rem;
+        }
+
+            .auth-summary.validation-summary-valid {
+                display: none;
+            }
+
+            .auth-summary ul {
+                margin: 0;
+                padding-left: 1.1rem;
+            }
+
+        /* Бутон за показване на паролата */
+        .auth-pass .form-control {
+            padding-right: 3rem;
+        }
+
+        .auth-eye {
+            position: absolute;
+            top: 0;
+            right: .25rem;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.75rem;
+            height: calc(3.5rem + 2px);
+            padding: 0;
+            color: var(--auth-muted);
+            background: none;
+            border: 0;
+            border-radius: .75rem;
+        }
+
+            .auth-eye:hover {
+                color: var(--auth-deep);
+            }
+
+            .auth-eye:focus-visible {
+                outline: 2px solid var(--auth-deep-2);
+                outline-offset: -4px;
+            }
+
+            .auth-eye .slash {
+                display: none;
+            }
+
+            .auth-eye[aria-pressed="true"] .slash {
+                display: inline;
+            }
+
+        /* Основен бутон */
+        .auth-shell .auth-btn {
+            padding: .9rem 1rem;
+            font-weight: 700;
+            color: #3a2a00;
+            background-color: var(--auth-accent);
+            border: 0;
+            border-radius: .75rem;
+        }
+
+            .auth-shell .auth-btn:hover,
+            .auth-shell .auth-btn:active {
+                color: #3a2a00;
+                background-color: var(--auth-accent-hover);
+            }
+
+            .auth-shell .auth-btn:focus-visible {
+                outline: 3px solid var(--auth-deep-2);
+                outline-offset: 2px;
+            }
+
+        .auth-foot {
+            margin: 1.5rem 0 0;
+            text-align: center;
+            color: var(--auth-muted);
+        }
+
+            .auth-foot a {
+                font-weight: 600;
+                color: var(--auth-deep-2);
+            }
+
+                .auth-foot a:hover {
+                    color: var(--auth-deep);
+                }
+    </style>
 }

@@ -4,6 +4,48 @@
     ViewData["Title"] = "Потвърждение на регистрацията";
 }
 
+<div class="py-4 py-md-5">
+    <div class="auth-shell">
+
+        <aside class="auth-aside">
+            <span class="auth-brand">TechMall</span>
+            <div>
+                <p class="auth-tagline">Всичко на едно място.</p>
+                <p class="auth-sub">Един профил за целия магазин.</p>
+            </div>
+        </aside>
+
+        <div class="auth-main">
+            <div class="auth-icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="3" />
+                    <path d="M2 7l10 7 10-7" />
+                </svg>
+            </div>
+
+            @if (Model.DisplayConfirmAccountLink)
+            {
+                <h1 class="auth-title">Потвърдете профила си</h1>
+                <p class="auth-lead">Профилът ви е създаден. Остава само да го потвърдите.</p>
+
+                <p class="auth-note">
+                    В приложението още не е настроен изпращач на имейли. Вижте
+                    <a href="https://aka.ms/aspaccountconf">документацията</a>
+                    как да го конфигурирате. Обикновено този линк се изпраща по имейл.
+                </p>
+
+                <a id="confirm-link" class="btn btn-lg w-100 auth-btn" href="@Model.EmailConfirmationUrl">Потвърди профила</a>
+            }
+            else
+            {
+                <h1 class="auth-title">Проверете имейла си</h1>
+                <p class="auth-lead">Изпратихме ви линк за потвърждение. Отворете го, за да активирате профила си.</p>
+            }
+        </div>
+
+    </div>
+</div>
+
 <style>
     .auth-shell {
         --auth-deep: #0e3b43;
@@ -119,10 +161,10 @@
         border-radius: .75rem;
     }
 
-    .auth-note a {
-        color: var(--auth-deep-2);
-        font-weight: 600;
-    }
+        .auth-note a {
+            color: var(--auth-deep-2);
+            font-weight: 600;
+        }
 
     .auth-shell .auth-btn {
         padding: .9rem 1rem;
@@ -133,56 +175,14 @@
         border-radius: .75rem;
     }
 
-    .auth-shell .auth-btn:hover,
-    .auth-shell .auth-btn:active {
-        color: #3a2a00;
-        background-color: var(--auth-accent-hover);
-    }
+        .auth-shell .auth-btn:hover,
+        .auth-shell .auth-btn:active {
+            color: #3a2a00;
+            background-color: var(--auth-accent-hover);
+        }
 
-    .auth-shell .auth-btn:focus-visible {
-        outline: 3px solid var(--auth-deep-2);
-        outline-offset: 2px;
-    }
+        .auth-shell .auth-btn:focus-visible {
+            outline: 3px solid var(--auth-deep-2);
+            outline-offset: 2px;
+        }
 </style>
-
-<div class="py-4 py-md-5">
-    <div class="auth-shell">
-
-        <aside class="auth-aside">
-            <span class="auth-brand">EMall</span>
-            <div>
-                <p class="auth-tagline">Всичко на едно място.</p>
-                <p class="auth-sub">Един профил за целия магазин.</p>
-            </div>
-        </aside>
-
-        <div class="auth-main">
-            <div class="auth-icon" aria-hidden="true">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="3" />
-                    <path d="M2 7l10 7 10-7" />
-                </svg>
-            </div>
-
-            @if (Model.DisplayConfirmAccountLink)
-            {
-                <h1 class="auth-title">Потвърдете профила си</h1>
-                <p class="auth-lead">Профилът ви е създаден. Остава само да го потвърдите.</p>
-
-                <p class="auth-note">
-                    В приложението още не е настроен изпращач на имейли. Вижте
-                    <a href="https://aka.ms/aspaccountconf">документацията</a>
-                    как да го конфигурирате. Обикновено този линк се изпраща по имейл.
-                </p>
-
-                <a id="confirm-link" class="btn btn-lg w-100 auth-btn" href="@Model.EmailConfirmationUrl">Потвърди профила</a>
-            }
-            else
-            {
-                <h1 class="auth-title">Проверете имейла си</h1>
-                <p class="auth-lead">Изпратихме ви линк за потвърждение. Отворете го, за да активирате профила си.</p>
-            }
-        </div>
-
-    </div>
-</div>
