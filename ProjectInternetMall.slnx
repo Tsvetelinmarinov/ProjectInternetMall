@@ -4,6 +4,7 @@
     <Project Path="EMall.Data/EMall.Data.csproj" />
   </Folder>
   <Folder Name="/Services/">
+    <Project Path="EMall.Core.ServiceModels/EMall.Core.ServiceModels.csproj" Id="6b14b45a-dee9-4796-a526-396a33ebfb0d" />
     <Project Path="EMall.Core/EMall.Core.csproj" />
   </Folder>
   <Folder Name="/WebMVC/">
