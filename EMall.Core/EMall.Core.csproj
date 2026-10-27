@@ -11,4 +11,8 @@
     <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EMall.Core.ServiceModels\EMall.Core.ServiceModels.csproj" />
+  </ItemGroup>
+
 </Project>
