@@ -4,6 +4,34 @@
     ViewData["Title"] = "Потвърждение на имейла";
 }
 
+<div class="py-4 py-md-5">
+    <div class="auth-shell">
+
+        <aside class="auth-aside">
+            <span class="auth-brand">TechMall</span>
+            <div>
+                <p class="auth-tagline">Всичко на едно място.</p>
+                <p class="auth-sub">Един профил за целия магазин.</p>
+            </div>
+        </aside>
+
+        <div class="auth-main">
+            <div class="auth-icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6L9 17l-5-5" />
+                </svg>
+            </div>
+
+            <h1 class="auth-title">@ViewData["Title"]</h1>
+
+            <partial name="_StatusMessage" model="Model.StatusMessage" />
+
+            <a class="btn btn-lg w-100 auth-btn" asp-area="Identity" asp-page="./Login">Към входа</a>
+        </div>
+
+    </div>
+</div>
+
 <style>
     .auth-shell {
         --auth-deep: #0e3b43;
@@ -120,42 +148,14 @@
         border-radius: .75rem;
     }
 
-    .auth-shell .auth-btn:hover,
-    .auth-shell .auth-btn:active {
-        color: #3a2a00;
-        background-color: var(--auth-accent-hover);
-    }
+        .auth-shell .auth-btn:hover,
+        .auth-shell .auth-btn:active {
+            color: #3a2a00;
+            background-color: var(--auth-accent-hover);
+        }
 
-    .auth-shell .auth-btn:focus-visible {
-        outline: 3px solid var(--auth-deep-2);
-        outline-offset: 2px;
-    }
+        .auth-shell .auth-btn:focus-visible {
+            outline: 3px solid var(--auth-deep-2);
+            outline-offset: 2px;
+        }
 </style>
-
-<div class="py-4 py-md-5">
-    <div class="auth-shell">
-
-        <aside class="auth-aside">
-            <span class="auth-brand">EMall</span>
-            <div>
-                <p class="auth-tagline">Всичко на едно място.</p>
-                <p class="auth-sub">Един профил за целия магазин.</p>
-            </div>
-        </aside>
-
-        <div class="auth-main">
-            <div class="auth-icon" aria-hidden="true">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 6L9 17l-5-5" />
-                </svg>
-            </div>
-
-            <h1 class="auth-title">@ViewData["Title"]</h1>
-
-            <partial name="_StatusMessage" model="Model.StatusMessage" />
-
-            <a class="btn btn-lg w-100 auth-btn" asp-area="Identity" asp-page="./Login">Към входа</a>
-        </div>
-
-    </div>
-</div>

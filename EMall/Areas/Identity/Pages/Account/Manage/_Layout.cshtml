@@ -9,6 +9,21 @@
     }
 }
 
+<div class="py-4 py-md-5">
+    <div class="auth-shell">
+
+        <aside class="auth-aside">
+            <span class="auth-brand">TechMall</span>
+            <partial name="_ManageNav" />
+        </aside>
+
+        <div class="auth-main">
+            @RenderBody()
+        </div>
+
+    </div>
+</div>
+
 <style>
     .auth-shell {
         --auth-deep: #0e3b43;
@@ -85,21 +100,21 @@
         border-radius: .75rem;
     }
 
-    .auth-aside .auth-nav .nav-link:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, .08);
-    }
+        .auth-aside .auth-nav .nav-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, .08);
+        }
 
-    .auth-aside .auth-nav .nav-link:focus-visible {
-        outline: 2px solid var(--auth-accent);
-        outline-offset: 2px;
-    }
+        .auth-aside .auth-nav .nav-link:focus-visible {
+            outline: 2px solid var(--auth-accent);
+            outline-offset: 2px;
+        }
 
-    .auth-aside .auth-nav .nav-link.active {
-        color: #fff;
-        background: rgba(255, 255, 255, .14);
-        box-shadow: inset 0 -3px 0 var(--auth-accent);
-    }
+        .auth-aside .auth-nav .nav-link.active {
+            color: #fff;
+            background: rgba(255, 255, 255, .14);
+            box-shadow: inset 0 -3px 0 var(--auth-accent);
+        }
 
     @@media (min-width: 768px) {
         .auth-aside .auth-nav .nav-link.active {
@@ -148,14 +163,14 @@
         box-shadow: none;
     }
 
-    .auth-shell .form-control:focus {
-        border-color: var(--auth-deep-2);
-        box-shadow: 0 0 0 .25rem rgba(23, 96, 108, .18);
-    }
+        .auth-shell .form-control:focus {
+            border-color: var(--auth-deep-2);
+            box-shadow: 0 0 0 .25rem rgba(23, 96, 108, .18);
+        }
 
-    .auth-shell .form-control:disabled {
-        background: #f4f7f8;
-    }
+        .auth-shell .form-control:disabled {
+            background: #f4f7f8;
+        }
 
     .auth-shell .input-validation-error {
         border-color: var(--auth-danger);
@@ -177,14 +192,14 @@
         border-radius: .75rem;
     }
 
-    .auth-summary.validation-summary-valid {
-        display: none;
-    }
+        .auth-summary.validation-summary-valid {
+            display: none;
+        }
 
-    .auth-summary ul {
-        margin: 0;
-        padding-left: 1.1rem;
-    }
+        .auth-summary ul {
+            margin: 0;
+            padding-left: 1.1rem;
+        }
 
     /* Основни бутони (важи и за другите Manage страници) */
     .auth-main .auth-btn,
@@ -197,35 +212,20 @@
         border-radius: .75rem;
     }
 
-    .auth-main .auth-btn:hover,
-    .auth-main .auth-btn:active,
-    .auth-main .btn-primary:hover,
-    .auth-main .btn-primary:active {
-        color: #3a2a00;
-        background-color: var(--auth-accent-hover);
-    }
+        .auth-main .auth-btn:hover,
+        .auth-main .auth-btn:active,
+        .auth-main .btn-primary:hover,
+        .auth-main .btn-primary:active {
+            color: #3a2a00;
+            background-color: var(--auth-accent-hover);
+        }
 
-    .auth-main .auth-btn:focus-visible,
-    .auth-main .btn-primary:focus-visible {
-        outline: 3px solid var(--auth-deep-2);
-        outline-offset: 2px;
-    }
+        .auth-main .auth-btn:focus-visible,
+        .auth-main .btn-primary:focus-visible {
+            outline: 3px solid var(--auth-deep-2);
+            outline-offset: 2px;
+        }
 </style>
-
-<div class="py-4 py-md-5">
-    <div class="auth-shell">
-
-        <aside class="auth-aside">
-            <span class="auth-brand">EMall</span>
-            <partial name="_ManageNav" />
-        </aside>
-
-        <div class="auth-main">
-            @RenderBody()
-        </div>
-
-    </div>
-</div>
 
 @section Scripts {
     @RenderSection("Scripts", required: false)
