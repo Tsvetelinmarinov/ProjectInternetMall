@@ -9,5 +9,17 @@ namespace EMall.Data.DatabaseContext
     {
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Product>()
+                   .ComplexCollection(
+                        product => product.Claims,
+                        complexCollectionBuilder => complexCollectionBuilder.ToJson()
+                   ); 
+
+            base.OnModelCreating(builder);
+        }
     }
 }
