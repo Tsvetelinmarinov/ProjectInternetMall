@@ -39,7 +39,11 @@ namespace EMall.Data.EntityModels
         /// <summary>
         ///  The characteristics of the product.
         /// </summary>
-        public required ICollection<KeyValuePair<string, string>> Claims { get; set; }
+        public IList<ProductClaim> Claims
+        {
+            get;
+            set;
+        } = [];
 
         /// <summary>
         ///  The price of the product.
@@ -56,6 +60,7 @@ namespace EMall.Data.EntityModels
         /// <summary>
         ///  Navigation property to Category.
         /// </summary>
+        [InverseProperty("Products")]
         public Category? Category { get; set; } 
     }
 }

@@ -34,6 +34,19 @@
             public const string CategoryNameIsRequired = "Category name is required!";
 
             #endregion
+            #region Entity ProductClaim
+
+            public const int ProductClaimNameMinLen = 2;
+            public const int ProductClaimNameMaxLen = 100;
+            public const int ProductClaimValueMinLen = 2;
+            public const int ProductClaimValueMaxLen = 100;
+
+            public const string ProductClaimNameIsRequired = "The name of the product claim is required!";
+            public const string ProductClaimValueIsRequired = "The value of the product claim is required!";
+            public const string InvalidProductClaimName = "The name of the product claim should be between {2} and {1} characters.";
+            public const string InvalidProductClaimValue = "The value of the product claim should be between {2} and {1} characters.";
+
+            #endregion
         }
     }
 }
