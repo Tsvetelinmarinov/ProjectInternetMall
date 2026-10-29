@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using EMall.Data.DatabaseContext;
+using Microsoft.Data.SqlTypes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -18,7 +19,7 @@ namespace EMall.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.13")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -121,6 +122,9 @@ namespace EMall.Data.Migrations
                         .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -128,6 +132,9 @@ namespace EMall.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<SqlVector<float>?>("Vector")
+                        .HasColumnType("VECTOR(768)");
 
                     b.ComplexCollection(typeof(List<Dictionary<string, object>>), "Claims", "EMall.Data.EntityModels.Product.Claims#ProductClaim", b1 =>
                         {

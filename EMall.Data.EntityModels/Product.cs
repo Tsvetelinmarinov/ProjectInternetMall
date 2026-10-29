@@ -73,6 +73,6 @@ namespace EMall.Data.EntityModels
         ///  Vector for semantic search.
         /// </summary>
         [Column(TypeName = "VECTOR(768)")] 
-        public SqlVector<float> Vector { get; set; }
+        public SqlVector<float>? Vector { get; set; }
     }
 }
