@@ -17,7 +17,10 @@ namespace EMall.Data.DatabaseContext
                    .ComplexCollection(
                         product => product.Claims,
                         complexCollectionBuilder => complexCollectionBuilder.ToJson()
-                   ); 
+                   );
+
+            builder.Entity<Product>()
+                   .HasQueryFilter("SoftDelete", (product) => product.IsDeleted == false);
 
             base.OnModelCreating(builder);
         }
