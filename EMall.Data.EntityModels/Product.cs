@@ -1,6 +1,6 @@
-﻿using static EMall.Data.EntityModels.Common.DbConstants.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static EMall.Data.EntityModels.Common.DbConstants.Validation;
 
 namespace EMall.Data.EntityModels
 {
@@ -61,6 +61,11 @@ namespace EMall.Data.EntityModels
         ///  Navigation property to Category.
         /// </summary>
         [InverseProperty("Products")]
-        public Category? Category { get; set; } 
+        public Category? Category { get; set; }
+
+        /// <summary>
+        ///  Property/column for soft delete.
+        /// </summary>
+        public bool IsDeleted { get; set; }
     }
 }
