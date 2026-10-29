@@ -2,12 +2,13 @@ using EMall.Data;
 using EMall.Data.DatabaseContext;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace EMall
 {
     public class Program
     {
-        public static void Main()
+        public static async Task Main()
         {
             #region Application Construction and IoC Container Configuration
 
@@ -37,10 +38,12 @@ namespace EMall
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
-            {
-                ConfigureIdentity(options, builder.Configuration);
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services
+                .AddDefaultIdentity<ApplicationUser>(
+                    options => ConfigureIdentity(options, builder.Configuration)
+                )
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddControllersWithViews();
 
@@ -90,6 +93,36 @@ namespace EMall
                     // If something happen while migrating, atleast write it to the console,
                     // because the application will still attempt to migrate, so we should know from the beginning.
                     Console.WriteLine($"Unsuccessful startup migration! Error message: {ex.Message}\n At: {ex.StackTrace}\n");
+                    
+                    return; //=> Because, if we do not migrate, table AspNetRoles will not exist,
+                           //=> so the code bellow will throw some type of Exception.
+                }
+            }
+
+            // If database exists, add role Admin in AspNetRoles.
+            using (IServiceScope scope = app.Services.CreateScope())
+            {
+                var rolesManager = scope
+                    .ServiceProvider
+                    .GetRequiredService<RoleManager<IdentityRole>>();
+
+                string adminRole = "Administrator"; //=> System admin.
+
+                try
+                {
+                    if (await rolesManager.RoleExistsAsync(adminRole) is false)
+                    {
+                        var roleCreatingResult = await rolesManager.CreateAsync(new IdentityRole(adminRole));
+
+                        if (roleCreatingResult.Succeeded)
+                        {
+                            Console.WriteLine("Successfully created role {0}!", adminRole);
+                        }
+                    }
+                }
+                catch
+                {
+                    Debug.WriteLine($"Unable to create role {adminRole} in table AspNetRoles, because of system error.");
                 }
             }
 
