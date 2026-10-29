@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static EMall.Data.EntityModels.Common.DbConstants.Validation;
+using Microsoft.Data.SqlTypes;
 
 namespace EMall.Data.EntityModels
 {
@@ -67,5 +68,11 @@ namespace EMall.Data.EntityModels
         ///  Property/column for soft delete.
         /// </summary>
         public bool IsDeleted { get; set; }
+
+        /// <summary>
+        ///  Vector for semantic search.
+        /// </summary>
+        [Column(TypeName = "VECTOR(768)")] 
+        public SqlVector<float> Vector { get; set; }
     }
 }
