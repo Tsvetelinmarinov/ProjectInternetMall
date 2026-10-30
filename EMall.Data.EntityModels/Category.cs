@@ -38,6 +38,11 @@ namespace EMall.Data.EntityModels
         public required string CategoryDescription { get; set; }
 
         /// <summary>
+        ///  Represents the icon of the category.
+        /// </summary>
+        public required string Icon { get; set; }
+
+        /// <summary>
         ///  Navigation property to Product entity.
         /// </summary>
         [InverseProperty("Category")]
