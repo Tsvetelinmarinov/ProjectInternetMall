@@ -1,0 +1,48 @@
+@{
+    ViewData["Title"] = "Каталог";
+
+    // Брой продукти
+    var categories = new[]
+    {
+        new { Slug = "laptops",     Title = "Лаптопи",    Text = "Ултрабуци, офис и гейминг модели за работа, учене и игри.",       Icon = "bi-laptop",     Count = 128, Color = "#3b5bdb" },
+        new { Slug = "smartphones", Title = "Смартфони",  Text = "Флагмани и достъпни модели с добра камера и батерия за целия ден.", Icon = "bi-phone",      Count = 214, Color = "#0c8599" },
+        new { Slug = "gaming",      Title = "Гейминг",    Text = "Конзоли, мишки, клавиатури и монитори за по-бързи игри.",         Icon = "bi-controller", Count = 96,  Color = "#e03131" },
+        new { Slug = "audio",       Title = "Аудио",      Text = "Безжични слушалки, тонколони и саундбарове.",                     Icon = "bi-headphones", Count = 87,  Color = "#2f9e44" },
+        new { Slug = "smart-home",  Title = "Умен дом",   Text = "Камери, крушки и сензори, които се управляват от телефона.",      Icon = "bi-lightbulb",  Count = 63,  Color = "#e8590c" },
+        new { Slug = "accessories", Title = "Аксесоари",  Text = "Зарядни, кабели, калъфи и чанти за твоята техника.",              Icon = "bi-plug",       Count = 340, Color = "#7048e8" }
+    };
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+<link rel="stylesheet" href="~/css/catalog.css" asp-append-version="true" />
+
+<section class="catalog">
+    <header class="catalog-head">
+        <h1>Каталог</h1>
+        <p>Избери категория по предназначение.</p>
+    </header>
+
+    <div class="row g-4">
+        @for (var i = 0; i < categories.Length; i++)
+        {
+            var c = categories[i];
+            <div class="col-12 col-md-6 col-lg-4">
+                <a class="cat-card" style="--c:@c.Color; --i:@i"
+                   asp-controller="" 
+                   asp-action="" 
+                   asp-route-category="">
+                    <span class="cat-icon" aria-hidden="true"><i class="bi @c.Icon"></i></span>
+                    <h2 class="cat-name">@c.Title</h2>
+                    <p class="cat-text">@c.Text</p>
+                    <span class="cat-foot">
+                        <span class="cat-count">@c.Count продукта</span>
+                        <span class="cat-arrow" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+                    </span>
+                </a>
+            </div>
+        }
+    </div>
+</section>
+
+<script src="~/js/catalog.js" asp-append-version="true"></script>

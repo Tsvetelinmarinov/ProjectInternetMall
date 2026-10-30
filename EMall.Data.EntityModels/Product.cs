@@ -71,6 +71,8 @@ namespace EMall.Data.EntityModels
 
         /// <summary>
         ///  Vector for semantic search.
+        ///  Vector search will not be implemented, because requires
+        ///  local Ollama AI model installed and working at port 11434.
         /// </summary>
         [Column(TypeName = "VECTOR(768)")] 
         public SqlVector<float>? Vector { get; set; }
