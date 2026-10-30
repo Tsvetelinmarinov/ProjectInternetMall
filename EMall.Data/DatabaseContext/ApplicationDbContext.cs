@@ -25,7 +25,7 @@ namespace EMall.Data.DatabaseContext
                    .HasQueryFilter("SoftDelete", (product) => product.IsDeleted == false);
 
             // Apply all the Category entity configuration.
-            builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfigurationsFromAssembly(typeof(CategoryConfiguration).Assembly);
 
             base.OnModelCreating(builder);
         }
