@@ -113,7 +113,51 @@ namespace EMall.Data.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryDescription = "Ултрабуци, офис и гейминг модели за работа, учене и игри.",
+                            CategoryName = "Лаптопи",
+                            Icon = "bi-laptop"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryDescription = "Флагмани и достъпни модели с добра камера и батерия за целия ден.",
+                            CategoryName = "Смартфони",
+                            Icon = "bi-phone"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryDescription = "Конзоли, мишки, клавиатури и монитори за по-бързи игри.",
+                            CategoryName = "Гейминг",
+                            Icon = "bi-controller"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            CategoryDescription = "Безжични слушалки, тонколони и саундбарове.",
+                            CategoryName = "Аудио",
+                            Icon = "bi-headphones"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            CategoryDescription = "Камери, крушки и сензори, които се управляват от телефона.",
+                            CategoryName = "Умен Дом",
+                            Icon = "bi-lightbulb"
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            CategoryDescription = "Зарядни, кабели, калъфи и чанти за твоята техника.",
+                            CategoryName = "Аксесоари",
+                            Icon = "bi-plug"
+                        });
                 });
 
             modelBuilder.Entity("EMall.Data.EntityModels.Product", b =>
@@ -164,7 +208,7 @@ namespace EMall.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
