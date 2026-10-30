@@ -97,14 +97,67 @@ namespace EMall.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
+                    b.Property<string>("CategoryDescription")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryDescription = "Ултрабуци, офис и гейминг модели за работа, учене и игри.",
+                            CategoryName = "Лаптопи",
+                            Icon = "bi-laptop"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryDescription = "Флагмани и достъпни модели с добра камера и батерия за целия ден.",
+                            CategoryName = "Смартфони",
+                            Icon = "bi-phone"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryDescription = "Конзоли, мишки, клавиатури и монитори за по-бързи игри.",
+                            CategoryName = "Гейминг",
+                            Icon = "bi-controller"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            CategoryDescription = "Безжични слушалки, тонколони и саундбарове.",
+                            CategoryName = "Аудио",
+                            Icon = "bi-headphones"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            CategoryDescription = "Камери, крушки и сензори, които се управляват от телефона.",
+                            CategoryName = "Умен Дом",
+                            Icon = "bi-lightbulb"
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            CategoryDescription = "Зарядни, кабели, калъфи и чанти за твоята техника.",
+                            CategoryName = "Аксесоари",
+                            Icon = "bi-plug"
+                        });
                 });
 
             modelBuilder.Entity("EMall.Data.EntityModels.Product", b =>

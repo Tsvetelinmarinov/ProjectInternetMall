@@ -1,6 +1,8 @@
-﻿using EMall.Data.EntityModels;
+﻿using EMall.Data.Configurations;
+using EMall.Data.EntityModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace EMall.Data.DatabaseContext
 {
@@ -21,6 +23,9 @@ namespace EMall.Data.DatabaseContext
 
             builder.Entity<Product>()
                    .HasQueryFilter("SoftDelete", (product) => product.IsDeleted == false);
+
+            // Apply all the Category entity configuration.
+            builder.ApplyConfiguration(new CategoryConfiguration());
 
             base.OnModelCreating(builder);
         }

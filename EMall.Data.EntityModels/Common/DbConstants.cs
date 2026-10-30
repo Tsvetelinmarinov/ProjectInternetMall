@@ -29,9 +29,13 @@
 
             public const int CategoryNameMinLen = 2;
             public const int CategoryNameMaxLen = 40;
+            public const int CategoryDescriptionMinLen = 10;
+            public const int CategoryDescriptionMaxLen = 1000;
 
             public const string InvalidCategoryNameLength = "Category name should be between {2} and {1} characters.";
             public const string CategoryNameIsRequired = "Category name is required!";
+            public const string InvalidCategoryDescription = "Category description should be between {2} and {1} characters.";
+            public const string CategoryDescriptionIsRequired = "Category description is required.";
 
             #endregion
             #region Entity ProductClaim

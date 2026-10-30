@@ -27,6 +27,22 @@ namespace EMall.Data.EntityModels
         public required string CategoryName { get; set; }
 
         /// <summary>
+        ///  The description of the category.
+        /// </summary>
+        [Required(ErrorMessage = CategoryDescriptionIsRequired)]
+        [StringLength(
+            CategoryDescriptionMaxLen,
+            MinimumLength = CategoryDescriptionMinLen,
+            ErrorMessage = InvalidCategoryDescription
+        )]
+        public required string CategoryDescription { get; set; }
+
+        /// <summary>
+        ///  Represents the icon of the category.
+        /// </summary>
+        public required string Icon { get; set; }
+
+        /// <summary>
         ///  Navigation property to Product entity.
         /// </summary>
         [InverseProperty("Category")]
