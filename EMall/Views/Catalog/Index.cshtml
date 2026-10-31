@@ -1,4 +1,4 @@
-@model IAsyncEnumerable<CategoryOutputViewModel>
+@model IEnumerable<CategoryOutputViewModel>
 @{
     ViewData["Title"] = "Каталог";
 }
@@ -14,9 +14,9 @@
     </header>
 
     <div class="row g-4">
-        @for (var i = 0; i < await Model.CountAsync(); i++)
+        @for (var i = 0; i < Model.Count(); i++)
         {
-            var categories = await Model.ToArrayAsync();
+            var categories = Model.ToArray();
             var c = categories[i];
             <div class="col-12 col-md-6 col-lg-4">
                 <a class="cat-card"
@@ -27,7 +27,7 @@
                     <h2 class="cat-name">@c.CategoryName</h2>
                     <p class="cat-text">@c.CategoryDescription</p>
                     <span class="cat-foot">
-                        <span class="cat-count">@((c.Products ?? []).Count()) продукта</span>
+                        <span class="cat-count">@((categories[i].Products ?? []).Count()) продукта</span>
                         <span class="cat-arrow" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
                     </span>
                 </a>
