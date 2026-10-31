@@ -25,9 +25,4 @@
     <ProjectReference Include="..\EMall.Data.EntityModels\EMall.Data.EntityModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\Interfaces\" />
-    <Folder Include="Repositories\Interfaces\" />
-  </ItemGroup>
-
 </Project>

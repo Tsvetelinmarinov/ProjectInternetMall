@@ -1,5 +1,7 @@
 using EMall.Data;
 using EMall.Data.DatabaseContext;
+using EMall.Data.Repositories;
+using EMall.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -20,6 +22,7 @@ namespace EMall
                 .GetConnectionString("DefaultConnection")
                  ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+            // Add DbContext.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(
@@ -36,8 +39,7 @@ namespace EMall
                 );
             });
 
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+            // Add Identity system.
             builder.Services
                 .AddDefaultIdentity<ApplicationUser>(
                     options => ConfigureIdentity(options, builder.Configuration)
@@ -45,6 +47,10 @@ namespace EMall
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            // Add Repositories.
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
