@@ -15,6 +15,6 @@ namespace EMall.Core.Services.Interfaces
         ///  <see cref="IAsyncEnumerable{CategoryServiceOutputModel}"/> with the categories
         ///  mapped to service output models.
         /// </returns>
-        Task<IAsyncEnumerable<ProductOutputServiceModel>> GetAllCategoriesAsync();
+        Task<IAsyncEnumerable<CategoryOutputServiceModel>> GetAllCategoriesAsync();
     }
 }

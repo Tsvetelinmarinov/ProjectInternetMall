@@ -21,12 +21,12 @@ namespace EMall.Core.Services
         ///  <see cref="IAsyncEnumerable{CategoryServiceOutputModel}"/> with the categories
         ///  mapped to service output models.
         /// </returns>
-        public async Task<IAsyncEnumerable<ProductOutputServiceModel>> GetAllCategoriesAsync()
+        public async Task<IAsyncEnumerable<CategoryOutputServiceModel>> GetAllCategoriesAsync()
         {
             IAsyncEnumerable<Category> categoryEntities = await repository.GetAllCategoriesAsync();
 
-            IAsyncEnumerable<ProductOutputServiceModel> categoryServiceModels
-                = autoMapper.Map<IAsyncEnumerable<ProductOutputServiceModel>>(categoryEntities)
+            IAsyncEnumerable<CategoryOutputServiceModel> categoryServiceModels
+                = autoMapper.Map<IAsyncEnumerable<CategoryOutputServiceModel>>(categoryEntities)
                   ?? throw new ServiceException(UnableToMapCategoryToCategoryServiceOutputModel);
 
             return categoryServiceModels;
