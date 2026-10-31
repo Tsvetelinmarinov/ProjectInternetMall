@@ -9,7 +9,7 @@ namespace EMall.Core.ServiceModels.AutoMapper
         public CategoryMappingProfile()
         {
             // Create mapping for Category -> CategoryServiceOutputModel
-            this.CreateMap<Category, ProductOutputServiceModel>()
+            this.CreateMap<Category, CategoryOutputServiceModel>()
                 .ReverseMap();
         }
     }
