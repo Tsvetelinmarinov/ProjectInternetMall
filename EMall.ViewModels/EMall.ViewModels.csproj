@@ -15,13 +15,14 @@
   <ItemGroup>
     <Folder Include="Input\" />
     <Folder Include="Input\" />
-    <Folder Include="AutoMapper\" />
-    <Folder Include="Output\" />
-    <Folder Include="Output\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EMall.Core.ServiceModels\EMall.Core.ServiceModels.csproj" />
   </ItemGroup>
 
 </Project>
