@@ -7,13 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Mappers\**" />
+    <EmbeddedResource Remove="Mappers\**" />
+    <None Remove="Mappers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Input\" />
-    <Folder Include="Mappers\" />
-    <Folder Include="Output\" />
+    <Folder Include="Input\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EMall.Data.EntityModels\EMall.Data.EntityModels.csproj" />
   </ItemGroup>
 
 </Project>

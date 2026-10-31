@@ -42,6 +42,9 @@ namespace EMall.Data.EntityModels
         /// </summary>
         public required string Icon { get; set; }
 
+        // The color of the category.
+        public string? Color { get; set; }
+
         /// <summary>
         ///  Navigation property to Product entity.
         /// </summary>

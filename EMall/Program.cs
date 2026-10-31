@@ -1,5 +1,12 @@
+using EMall.Core.Common;
+using EMall.Core.ServiceModels.AutoMapper;
+using EMall.Core.Services;
+using EMall.Core.Services.Interfaces;
 using EMall.Data;
 using EMall.Data.DatabaseContext;
+using EMall.Data.Repositories;
+using EMall.Data.Repositories.Interfaces;
+using EMall.ViewModels.AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -14,12 +21,17 @@ namespace EMall
 
             var builder = WebApplication.CreateBuilder();
 
-            // Add services to the container.
             var connectionString = builder
                 .Configuration
                 .GetConnectionString("DefaultConnection")
                  ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+            // Add services of controllers and views to the container +
+            // services for exception page for database errors.
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddControllersWithViews();
+
+            // Add DbContext.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(
@@ -36,8 +48,7 @@ namespace EMall
                 );
             });
 
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+            // Add Identity system.
             builder.Services
                 .AddDefaultIdentity<ApplicationUser>(
                     options => ConfigureIdentity(options, builder.Configuration)
@@ -45,16 +56,33 @@ namespace EMall
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            builder.Services.AddControllersWithViews();
+            // Add Repositories.
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
+            // Add Services.
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+            // Add AutoMapper.
+            builder.Services.AddAutoMapper((mappingConfig) =>
+            {
+                mappingConfig.AddProfiles([
+                    new CategoryMappingProfile(),
+                    new ProductMappingProfile(),
+                    new ProductClaimMappingProfile(),
+                    new CategoryServiceMappingProfile(),
+                    new ProductServiceMappingProfile(),
+                    new ProductClaimServiceMappingProfile(),
+                ]);
+            });
+
+            // Build the application host.
             var app = builder.Build();
 
             #endregion
             #region Configure HTTP Request Pipeline
 
             if (app.Environment.IsDevelopment())
-            {
-                app.UseMigrationsEndPoint();
+            { 
                 app.UseStatusCodePagesWithReExecute("/Home/Error");
             }
             else

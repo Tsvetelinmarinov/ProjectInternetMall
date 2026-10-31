@@ -107,6 +107,9 @@ namespace EMall.Data.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Icon")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -121,6 +124,7 @@ namespace EMall.Data.Migrations
                             CategoryId = 1,
                             CategoryDescription = "Ултрабуци, офис и гейминг модели за работа, учене и игри.",
                             CategoryName = "Лаптопи",
+                            Color = "#3b5bdb",
                             Icon = "bi-laptop"
                         },
                         new
@@ -128,6 +132,7 @@ namespace EMall.Data.Migrations
                             CategoryId = 2,
                             CategoryDescription = "Флагмани и достъпни модели с добра камера и батерия за целия ден.",
                             CategoryName = "Смартфони",
+                            Color = "#7048e8",
                             Icon = "bi-phone"
                         },
                         new
@@ -135,6 +140,7 @@ namespace EMall.Data.Migrations
                             CategoryId = 3,
                             CategoryDescription = "Конзоли, мишки, клавиатури и монитори за по-бързи игри.",
                             CategoryName = "Гейминг",
+                            Color = "#d6336c",
                             Icon = "bi-controller"
                         },
                         new
@@ -142,6 +148,7 @@ namespace EMall.Data.Migrations
                             CategoryId = 4,
                             CategoryDescription = "Безжични слушалки, тонколони и саундбарове.",
                             CategoryName = "Аудио",
+                            Color = "#e8590c",
                             Icon = "bi-headphones"
                         },
                         new
@@ -149,6 +156,7 @@ namespace EMall.Data.Migrations
                             CategoryId = 5,
                             CategoryDescription = "Камери, крушки и сензори, които се управляват от телефона.",
                             CategoryName = "Умен Дом",
+                            Color = "#5c940d",
                             Icon = "bi-lightbulb"
                         },
                         new
@@ -156,6 +164,7 @@ namespace EMall.Data.Migrations
                             CategoryId = 6,
                             CategoryDescription = "Зарядни, кабели, калъфи и чанти за твоята техника.",
                             CategoryName = "Аксесоари",
+                            Color = "#0c8599",
                             Icon = "bi-plug"
                         });
                 });

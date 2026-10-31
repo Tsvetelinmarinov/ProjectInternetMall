@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="16.2.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.14" />
@@ -28,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EMall.Core.ServiceModels\EMall.Core.ServiceModels.csproj" />
     <ProjectReference Include="..\EMall.Core\EMall.Core.csproj" />
     <ProjectReference Include="..\EMall.Data\EMall.Data.csproj" />
     <ProjectReference Include="..\EMall.ViewModels\EMall.ViewModels.csproj" />

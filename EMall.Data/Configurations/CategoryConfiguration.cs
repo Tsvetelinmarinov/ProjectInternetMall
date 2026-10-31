@@ -17,6 +17,7 @@ namespace EMall.Data.Configurations
                     CategoryId = 1, 
                     CategoryName = "Лаптопи",
                     CategoryDescription = "Ултрабуци, офис и гейминг модели за работа, учене и игри.",
+                    Color = "#3b5bdb",
                     Icon = "bi-laptop"
                 },
                 new Category 
@@ -24,6 +25,7 @@ namespace EMall.Data.Configurations
                     CategoryId = 2,
                     CategoryName = "Смартфони",
                     CategoryDescription = "Флагмани и достъпни модели с добра камера и батерия за целия ден.",
+                    Color = "#7048e8",
                     Icon = "bi-phone"
                 },
                 new Category 
@@ -31,6 +33,7 @@ namespace EMall.Data.Configurations
                     CategoryId = 3,
                     CategoryName = "Гейминг",
                     CategoryDescription = "Конзоли, мишки, клавиатури и монитори за по-бързи игри.",
+                    Color = "#d6336c",
                     Icon = "bi-controller"
 
                 },
@@ -39,6 +42,7 @@ namespace EMall.Data.Configurations
                     CategoryId = 4,
                     CategoryName = "Аудио",
                     CategoryDescription = "Безжични слушалки, тонколони и саундбарове.",
+                    Color = "#e8590c",
                     Icon = "bi-headphones"
                 },
                 new Category 
@@ -46,6 +50,7 @@ namespace EMall.Data.Configurations
                     CategoryId = 5,
                     CategoryName = "Умен Дом",
                     CategoryDescription = "Камери, крушки и сензори, които се управляват от телефона.",
+                    Color = "#5c940d",
                     Icon = "bi-lightbulb"
                 },
                 new Category 
@@ -53,6 +58,7 @@ namespace EMall.Data.Configurations
                     CategoryId = 6,
                     CategoryName = "Аксесоари",
                     CategoryDescription = "Зарядни, кабели, калъфи и чанти за твоята техника.",
+                    Color = "#0c8599",
                     Icon = "bi-plug"
                 }
             ]);
