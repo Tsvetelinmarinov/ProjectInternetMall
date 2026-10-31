@@ -12,9 +12,9 @@ namespace EMall.Core.Services.Interfaces
         ///  Retrieves all the categories from the database.
         /// </summary>
         /// <returns>
-        ///  <see cref="IAsyncEnumerable{CategoryServiceOutputModel}"/> with the categories
+        ///  <see cref="IEnumerable{CategoryServiceOutputModel}"/> with the categories
         ///  mapped to service output models.
         /// </returns>
-        Task<IAsyncEnumerable<CategoryOutputServiceModel>> GetAllCategoriesAsync();
+        Task<IEnumerable<CategoryOutputServiceModel>> GetAllCategoriesAsync();
     }
 }

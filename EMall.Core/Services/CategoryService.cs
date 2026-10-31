@@ -18,15 +18,15 @@ namespace EMall.Core.Services
         ///  Retrieves all the categories from the database.
         /// </summary>
         /// <returns>
-        ///  <see cref="IAsyncEnumerable{CategoryServiceOutputModel}"/> with the categories
+        ///  <see cref="IEnumerable{CategoryServiceOutputModel}"/> with the categories
         ///  mapped to service output models.
         /// </returns>
-        public async Task<IAsyncEnumerable<CategoryOutputServiceModel>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<CategoryOutputServiceModel>> GetAllCategoriesAsync()
         {
-            IAsyncEnumerable<Category> categoryEntities = await repository.GetAllCategoriesAsync();
+            IEnumerable<Category> categoryEntities = (IEnumerable<Category>)await repository.GetAllCategoriesAsync();
 
-            IAsyncEnumerable<CategoryOutputServiceModel> categoryServiceModels
-                = autoMapper.Map<IAsyncEnumerable<CategoryOutputServiceModel>>(categoryEntities)
+            IEnumerable<CategoryOutputServiceModel> categoryServiceModels
+                = autoMapper.Map<IEnumerable<CategoryOutputServiceModel>>(categoryEntities)
                   ?? throw new ServiceException(UnableToMapCategoryToCategoryServiceOutputModel);
 
             return categoryServiceModels;
