@@ -52,5 +52,13 @@
 
             #endregion
         }
+
+        /// <summary>
+        ///  Provides constants for entity Category related logic.
+        /// </summary>
+        public static class CategoryRelated
+        {
+            public const string NoCategoriesFromDb = "Something went wrong while retrieving the categories from the database!";
+        }
     }
 }
