@@ -7,10 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Mappers\**" />
+    <EmbeddedResource Remove="Mappers\**" />
+    <None Remove="Mappers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Input\" />
-    <Folder Include="Mappers\" />
+    <Folder Include="AutoMapper\" />
     <Folder Include="Input\" />
-    <Folder Include="Mappers\" />
   </ItemGroup>
 
   <ItemGroup>
