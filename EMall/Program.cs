@@ -71,6 +71,7 @@ namespace EMall
                     new ProductClaimMappingProfile(),
                     new CategoryServiceMappingProfile(),
                     new ProductServiceMappingProfile(),
+                    new ProductClaimServiceMappingProfile(),
                 ]);
             });
 
