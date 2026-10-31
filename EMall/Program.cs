@@ -1,10 +1,12 @@
 using EMall.Core.Common;
+using EMall.Core.ServiceModels.AutoMapper;
 using EMall.Core.Services;
 using EMall.Core.Services.Interfaces;
 using EMall.Data;
 using EMall.Data.DatabaseContext;
 using EMall.Data.Repositories;
 using EMall.Data.Repositories.Interfaces;
+using EMall.ViewModels.AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -63,7 +65,13 @@ namespace EMall
             // Add AutoMapper.
             builder.Services.AddAutoMapper((mappingConfig) =>
             {
-                mappingConfig.AddMaps(typeof(CategoryService).Assembly, typeof(Program).Assembly);
+                mappingConfig.AddProfiles([
+                    new CategoryMappingProfile(),
+                    new ProductMappingProfile(),
+                    new ProductClaimMappingProfile(),
+                    new CategoryServiceMappingProfile(),
+                    new ProductServiceMappingProfile(),
+                ]);
             });
 
             // Build the application host.

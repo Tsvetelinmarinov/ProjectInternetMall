@@ -4,9 +4,9 @@ using EMall.ViewModels.Output;
 
 namespace EMall.ViewModels.AutoMapper
 {
-    public class CategoryMappingProfile : Profile
+    public class ProductServiceMappingProfile : Profile
     {
-        public CategoryMappingProfile()
+        public ProductServiceMappingProfile()
         {
             // Create mapping for ProductClaimOutputServiceModel -> ProductCalimOutputViewModel.
             this.CreateMap<ProductClaimOutputServiceModel, ProductOutputViewModel>()
