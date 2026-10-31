@@ -1,0 +1,17 @@
+﻿using AutoMapper;
+using EMall.Core.ServiceModels.Output;
+using EMall.Data.EntityModels;
+
+namespace EMall.Core.ServiceModels.AutoMapper
+{
+    // Maps Product entity to Product service output model.
+    public class ProductClaimMappingProfile : Profile
+    {
+        public ProductClaimMappingProfile()
+        {
+            // Map ProductClaim -> ProductClaimOutputServiceModel.
+            this.CreateMap<ProductClaim, ProductClaimOutputServiceModel>()
+                .ReverseMap();
+        }
+    }
+}
