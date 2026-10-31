@@ -20,7 +20,7 @@ namespace EMall.Controllers
             var categoryServiceModels = await categoryService.GetAllCategoriesAsync();
 
             var categoryViewModels
-                = mapper.Map<IAsyncEnumerable<CategoryOutputViewModel>>(categoryServiceModels)
+                = mapper.Map<IEnumerable<CategoryOutputViewModel>>(categoryServiceModels)
                 ?? throw new WebException(UnableToMapCategoryOutputServiceModelsToCategoryOutputViewModels);
 
             return View(categoryViewModels);
