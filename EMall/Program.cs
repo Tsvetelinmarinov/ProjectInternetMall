@@ -16,11 +16,15 @@ namespace EMall
 
             var builder = WebApplication.CreateBuilder();
 
-            // Add services to the container.
             var connectionString = builder
                 .Configuration
                 .GetConnectionString("DefaultConnection")
                  ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            // Add services of controllers and views to the container +
+            // services for exception page for database errors.
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddControllersWithViews();
 
             // Add DbContext.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -50,9 +54,7 @@ namespace EMall
             // Add Repositories.
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            builder.Services.AddControllersWithViews();
-
+            // Build the application host.
             var app = builder.Build();
 
             #endregion
