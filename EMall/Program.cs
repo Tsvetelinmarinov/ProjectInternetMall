@@ -61,7 +61,10 @@ namespace EMall
             builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             // Add AutoMapper.
-            builder.Services.AddAutoMapper(typeof(Program), typeof(ServiceConstants));
+            builder.Services.AddAutoMapper((mappingConfig) =>
+            {
+                mappingConfig.AddMaps(typeof(CategoryService).Assembly, typeof(Program).Assembly);
+            });
 
             // Build the application host.
             var app = builder.Build();
