@@ -2,9 +2,13 @@ using EMall.Data;
 using EMall.Data.DatabaseContext;
 using EMall.Data.Repositories;
 using EMall.Data.Repositories.Interfaces;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 using System.Diagnostics;
+using EMall.Controllers;
+using EMall.Core.Common;
 
 namespace EMall
 {
@@ -53,6 +57,11 @@ namespace EMall
 
             // Add Repositories.
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+            // Add Services.
+
+            // Add AutoMapper.
+            builder.Services.AddAutoMapper(typeof(Program), typeof(ServiceConstants));
 
             // Build the application host.
             var app = builder.Build();
