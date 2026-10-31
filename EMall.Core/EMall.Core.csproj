@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EMall.Core.ServiceModels\EMall.Core.ServiceModels.csproj" />
+    <ProjectReference Include="..\EMall.Data\EMall.Data.csproj" />
   </ItemGroup>
 
 </Project>
