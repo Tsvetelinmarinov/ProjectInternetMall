@@ -4,7 +4,7 @@ using EMall.Data.EntityModels;
 
 namespace EMall.Core.ServiceModels.AutoMapper
 {
-    internal class CategoryMappingProfile : Profile
+    public class CategoryMappingProfile : Profile
     {
         public CategoryMappingProfile()
         {

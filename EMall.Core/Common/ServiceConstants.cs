@@ -3,7 +3,7 @@
     /// <summary>
     ///  Provides constants for exceptions, validation etc. for Service layer types.
     /// </summary>
-    internal static class ServiceConstants
+    public static class ServiceConstants
     {
     }
 }
