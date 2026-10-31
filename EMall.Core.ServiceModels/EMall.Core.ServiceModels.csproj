@@ -9,6 +9,9 @@
   <ItemGroup>
     <Folder Include="Input\" />
     <Folder Include="Mappers\" />
+    <Folder Include="Input\" />
+    <Folder Include="Mappers\" />
+    <Folder Include="Output\" />
     <Folder Include="Output\" />
   </ItemGroup>
 
