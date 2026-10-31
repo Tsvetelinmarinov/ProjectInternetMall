@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using EMall.Core.Services.Interfaces;
+using EMall.Exceptions;
+using EMall.ViewModels.Output;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static EMall.Constants.WebConstants.CatalogController;
 
 namespace EMall.Controllers
 {
@@ -7,12 +12,18 @@ namespace EMall.Controllers
     ///  Provides endpoints for Catalog page.
     /// </summary>
     [AllowAnonymous]
-    public class CatalogController : CoreController
+    public class CatalogController(ICategoryService categoryService, IMapper mapper) : CoreController
     {
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var categoryServiceModels = await categoryService.GetAllCategoriesAsync();
+
+            var categoryViewModels
+                = mapper.Map<IAsyncEnumerable<CategoryOutputViewModel>>(categoryServiceModels)
+                ?? throw new WebException(UnableToMapCategoryOutputServiceModelsToCategoryOutputViewModels);
+
+            return View(categoryViewModels);
         }
-    }
+    } 
 }
