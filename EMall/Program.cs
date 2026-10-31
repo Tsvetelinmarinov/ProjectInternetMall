@@ -59,8 +59,7 @@ namespace EMall
             #region Configure HTTP Request Pipeline
 
             if (app.Environment.IsDevelopment())
-            {
-                app.UseMigrationsEndPoint();
+            { 
                 app.UseStatusCodePagesWithReExecute("/Home/Error");
             }
             else
