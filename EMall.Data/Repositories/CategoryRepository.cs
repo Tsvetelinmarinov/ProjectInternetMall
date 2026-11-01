@@ -24,6 +24,7 @@ namespace EMall.Data.Repositories
         {
             return database
                 .Categories
+                .Include((category) => category.Products)
                 .AsNoTracking()
                 .AsAsyncEnumerable()
                  ?? throw new DbException(NoCategoriesFromDb);
