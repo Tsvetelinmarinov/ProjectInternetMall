@@ -3,17 +3,17 @@ namespace EMall.Areas.Administration.ViewModels;
 public class AdminDashboardViewModel
 {
     public int ProductsCount { get; set; }
-    public int OrdersCount { get; set; }
+    public int OrdersCount { get; set; } 
     public int PendingOrders { get; set; }
     public int UsersCount { get; set; }
     public int NewUsersThisWeek { get; set; }
     public decimal RevenueThisMonth { get; set; }
 
-    public List<CategoryStatViewModel> Categories { get; set; } = new();
-    public List<RecentOrderViewModel> RecentOrders { get; set; } = new();
-    public List<LowStockViewModel> LowStock { get; set; } = new();
+    public List<CategoryStatViewModel> Categories { get; set; } = [];
+    public List<RecentOrderViewModel> RecentOrders { get; set; } = [];
+    public List<LowStockViewModel> LowStock { get; set; } = [];
 
-    // Демо данни, за да видиш панела веднага. Замени с реални заявки към DbContext.
+    // Mock data for example visualization.
     public static AdminDashboardViewModel Demo() => new()
     {
         ProductsCount = 248,
@@ -45,28 +45,4 @@ public class AdminDashboardViewModel
             new() { ProductId = 57, ProductName = "Геймърска мишка Pro",  Quantity = 2 }
         }
     };
-}
-
-public class CategoryStatViewModel
-{
-    public int CategoryId { get; set; }
-    public string CategoryName { get; set; } = string.Empty;
-    public string Color { get; set; } = "#2250F5";
-    public int ProductsCount { get; set; }
-}
-
-public class RecentOrderViewModel
-{
-    public int Id { get; set; }
-    public string CustomerEmail { get; set; } = string.Empty;
-    public DateTime CreatedOn { get; set; }
-    public decimal Total { get; set; }
-    public string Status { get; set; } = "Нова";
-}
-
-public class LowStockViewModel
-{
-    public int ProductId { get; set; }
-    public string ProductName { get; set; } = string.Empty;
-    public int Quantity { get; set; }
 }
