@@ -1,3 +1,4 @@
+using EMall.AutoMapper;
 using EMall.Core.ServiceModels.AutoMapper;
 using EMall.Core.Services;
 using EMall.Core.Services.Interfaces;
@@ -5,10 +6,8 @@ using EMall.Data;
 using EMall.Data.DatabaseContext;
 using EMall.Data.Repositories;
 using EMall.Data.Repositories.Interfaces;
-using EMall.ViewModels.AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 using static EMall.Constants.WebConstants.Common;
 
 namespace EMall
