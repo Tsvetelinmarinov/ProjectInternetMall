@@ -9,6 +9,7 @@ using EMall.ViewModels.AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using static EMall.Constants.WebConstants.Common;
 
 namespace EMall
 {
@@ -23,7 +24,7 @@ namespace EMall
             var connectionString = builder
                 .Configuration
                 .GetConnectionString("DefaultConnection")
-                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                 ?? throw new InvalidOperationException(NoDbConnectionKey);
 
             // Add services of controllers and views to the container +
             // services for exception page for database errors.
@@ -119,37 +120,83 @@ namespace EMall
                 {
                     // If something happen while migrating, atleast write it to the console,
                     // because the application will still attempt to migrate, so we should know from the beginning.
-                    Console.WriteLine($"Unsuccessful startup migration! Error message: {ex.Message}\n At: {ex.StackTrace}\n");
+                    Console.WriteLine(UnableToMigrateOnStartUp, ex.Message, ex.StackTrace);
                     
                     return; //=> Because, if we do not migrate, table AspNetRoles will not exist,
                            //=> so the code bellow will throw some type of Exception.
                 }
             }
 
-            // If database exists, add role Admin in AspNetRoles.
+            // If database exists, add role Administrator and default admin user - me.
             using (IServiceScope scope = app.Services.CreateScope())
             {
+                // Manager of roles.
                 var rolesManager = scope
                     .ServiceProvider
                     .GetRequiredService<RoleManager<IdentityRole>>();
+
+                // Manager of users.
+                var usersManager = scope
+                    .ServiceProvider
+                    .GetRequiredService<UserManager<ApplicationUser>>();
 
                 string adminRole = "Administrator"; //=> System admin.
 
                 try
                 {
+                    // Check if the admin role exist, and if not - create it.
                     if (await rolesManager.RoleExistsAsync(adminRole) is false)
                     {
-                        var roleCreatingResult = await rolesManager.CreateAsync(new IdentityRole(adminRole));
+                        var roleCreatingResult 
+                            = await rolesManager.CreateAsync(new IdentityRole(adminRole));
 
                         if (roleCreatingResult.Succeeded)
                         {
-                            Console.WriteLine("Successfully created role {0}!", adminRole);
+                            Console.WriteLine(SuccessfullyCreateRole, adminRole);
                         }
+                    }
+
+                    // Specify the email of the administrator.
+                    var adminEmail 
+                        = app.Configuration.GetValue<string>("AdminProfile:Email")
+                            ?? throw new InvalidOperationException(NoAdminEmail);
+
+                    // Find the user with that email.
+                    var admin = await usersManager.FindByEmailAsync(adminEmail);
+
+                    // If does not exists - create it.
+                    if (admin is null)
+                    {
+                        admin = new ApplicationUser 
+                        { 
+                            UserName = adminEmail,
+                            Email = adminEmail,
+                            EmailConfirmed = true
+                        };
+
+                        var adminPassword 
+                            = app.Configuration.GetValue<string>("AdminProfile:Password")
+                                ?? throw new InvalidOperationException(NoAdminPassword);
+
+                        var adminCreatingResult 
+                            = await usersManager.CreateAsync(admin, adminPassword);
+
+                        // Check for succeeded creating, and if true - print message for success in the Console.
+                        if (adminCreatingResult.Succeeded is true)
+                        {
+                            Console.WriteLine(SuccessAdminCreate, adminEmail);
+                        }
+                    }
+
+                    // If the new user is not admin yet, make it admin.
+                    if (await usersManager.IsInRoleAsync(admin, adminRole) is false) 
+                    {
+                        await usersManager.AddToRoleAsync(admin, adminRole);
                     }
                 }
                 catch
                 {
-                    Debug.WriteLine($"Unable to create role {adminRole} in table AspNetRoles, because of system error.");
+                    Console.WriteLine(UnableToCreateAdminRole, adminRole);
                 }
             }
 
@@ -160,7 +207,7 @@ namespace EMall
 
         #region Private Functionality
 
-        // Configures the default Identity.
+        // Configures the Identity system.
         private static void ConfigureIdentity(IdentityOptions options, ConfigurationManager configuration)
         {
             // User settings
