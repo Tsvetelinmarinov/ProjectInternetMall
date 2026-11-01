@@ -35,8 +35,19 @@ public class AdminDashboardViewModel
     /// </summary>
     public decimal RevenueThisMonth { get; set; }
 
+    /// <summary>
+    ///  Categories.
+    /// </summary>
     public List<CategoryStatViewModel> Categories { get; set; } = [];
+
+    /// <summary>
+    ///  Recent orders.
+    /// </summary>
     public List<RecentOrderViewModel> RecentOrders { get; set; } = [];
+
+    /// <summary>
+    ///  Low stock products.
+    /// </summary>
     public List<LowStockViewModel> LowStock { get; set; } = [];
 
     // Mock data for example visualization.
