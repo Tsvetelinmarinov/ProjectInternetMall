@@ -1,19 +1,28 @@
+@using System.Globalization @* This will left here, because its used only here. *@
+
 @model AdminDashboardViewModel
-@using System.Globalization
+
 @{
     Layout = null;
-    ViewData["Title"] = "Админ панел";
+    ViewData["Title"] = "Администраторски панел";
 
-    var bg = CultureInfo.GetCultureInfo("bg-BG");
-    var inv = CultureInfo.InvariantCulture;
-    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home";
-    var totalProducts = Model.Categories.Sum(c => c.ProductsCount);
+    var bg = CultureInfo.GetCultureInfo("bg-BG"); //=> Needed for local bg format of float with dot
+    var inv = CultureInfo.InvariantCulture; //=> Needed for global float format with comma.
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "Home"; 
+    var totalProducts = Model.Categories.Sum(category => category.ProductsCount);
     var hasTodo = Model.PendingOrders > 0 || Model.LowStock.Any();
 
-    // Смени валутата тук, ако не ползваш евро
+    // Convers money(decimal value) to well formed string with bg culture and euro(€) symbol.
     string Money(decimal value) => value.ToString("N2", bg) + " €";
-    double Pct(int n) => totalProducts > 0 ? n * 100.0 / totalProducts : 0;
-    string Active(string name) => string.Equals(controller, name, StringComparison.OrdinalIgnoreCase) ? "is-active" : "";
+
+    // Calculates the percent of the specified products count by all products.
+    double Percent(int productsCount) => totalProducts > 0 ? productsCount * 100.0 / totalProducts : 0;
+
+    // Check if given controller is the current controller.
+    string ActiveController(string controllerName) 
+        => string.Equals(controller, controllerName, StringComparison.OrdinalIgnoreCase) ? "is-active" : "";
+
+    // Check the status of the order and create a css class for it.
     string StatusClass(string status) => status switch
     {
         "Нова" => "is-new",
@@ -30,39 +39,34 @@
 <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
 
 <div class="adm">
-
     <aside class="adm-side" aria-label="Админ навигация">
         <a class="adm-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">
             <span class="adm-mark">E</span>
-            <span class="adm-brand-text"><strong>EMall</strong><small>Админ панел</small></span>
+            <span class="adm-brand-text"><strong>EMall</strong><small>Администраторски панел</small></span>
         </a>
 
         <nav class="adm-nav">
             <p class="adm-nav-title">Магазин</p>
-            <a class="adm-link @(Active("Home"))" asp-area="Admin" asp-controller="Home" asp-action="Index">Табло</a>
-            <a class="adm-link @(Active("Products"))" asp-area="Admin" asp-controller="Products" asp-action="Index">Продукти</a>
-            <a class="adm-link @(Active("Categories"))" asp-area="Admin" asp-controller="Categories" asp-action="Index">Категории</a>
-            <a class="adm-link @(Active("Orders"))" asp-area="Admin" asp-controller="Orders" asp-action="Index">
+            <a class="adm-link @(ActiveController("Home"))" asp-area="Admin" asp-controller="Home" asp-action="Index">Табло</a>
+            <a class="adm-link @(ActiveController("Products"))" asp-area="Admin" asp-controller="Products" asp-action="Index">Продукти</a>
+            <a class="adm-link @(ActiveController("Categories"))" asp-area="Admin" asp-controller="Categories" asp-action="Index">Категории</a>
+            <a class="adm-link @(ActiveController("Orders"))" asp-area="Admin" asp-controller="Orders" asp-action="Index">
                 Поръчки
                 @if (Model.PendingOrders > 0)
                 {
                     <span class="adm-chip is-new">@Model.PendingOrders</span>
                 }
             </a>
-
-            <p class="adm-nav-title">Потребители</p>
-            <a class="adm-link @(Active("Users"))" asp-area="Admin" asp-controller="Users" asp-action="Index">Акаунти и роли</a>
         </nav>
 
         <div class="adm-side-foot">
             <p class="adm-user">@User.Identity?.Name</p>
-            <a class="adm-link" asp-area="" asp-controller="Home" asp-action="Index">Към магазина</a>
+            <a class="adm-link" asp-controller="Home" asp-action="Index">Към магазина</a>
             <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Content("~/")" method="post">
                 <button type="submit" class="adm-link">Изход</button>
             </form>
         </div>
     </aside>
-
     <main class="adm-main">
 
         <header class="adm-head">
@@ -72,7 +76,7 @@
             </div>
             <div class="adm-actions">
                 <a class="adm-btn" asp-area="" asp-controller="Home" asp-action="Index">Виж магазина</a>
-                <a class="adm-btn adm-btn--primary" asp-area="Admin" asp-controller="Products" asp-action="Create">Добави продукт</a>
+                <a class="adm-btn adm-btn--primary" asp-area="" asp-controller="" asp-action="">Добави продукт</a>
             </div>
         </header>
 
@@ -104,7 +108,7 @@
             <section class="adm-panel" aria-labelledby="cats-title">
                 <div class="adm-panel-head">
                     <h2 class="adm-panel-title" id="cats-title">Продукти по категории</h2>
-                    <a class="adm-more" asp-area="Admin" asp-controller="Categories" asp-action="Index">Управление</a>
+                    <a class="adm-more" asp-area="" asp-controller="" asp-action="">Управление</a>
                 </div>
 
                 @if (totalProducts > 0)
@@ -113,7 +117,7 @@
                         @{ var i = 0; }
                         @foreach (var c in Model.Categories.Where(c => c.ProductsCount > 0))
                         {
-                            <span class="adm-seg" style="--c:@c.Color; --w:@Pct(c.ProductsCount).ToString("0.##", inv)%; --i:@i" title="@c.CategoryName"></span>
+                            <span class="adm-seg" style="--c:@c.Color; --w:@Percent(c.ProductsCount).ToString("0.##", inv)%; --i:@i" title="@c.CategoryName"></span>
                             i++;
                         }
                     </div>
@@ -125,7 +129,7 @@
                                 <span class="adm-dot"></span>
                                 <span>@c.CategoryName</span>
                                 <span class="adm-cat-count">@c.ProductsCount</span>
-                                <span class="adm-cat-pct">@Pct(c.ProductsCount).ToString("0", bg)%</span>
+                                <span class="adm-cat-pct">@Percent(c.ProductsCount).ToString("0", bg)%</span>
                             </li>
                         }
                     </ul>
@@ -147,7 +151,7 @@
                         @if (Model.PendingOrders > 0)
                         {
                             <li>
-                                <a class="adm-todo-item" asp-area="Admin" asp-controller="Orders" asp-action="Index" asp-route-status="Нова">
+                                <a class="adm-todo-item" asp-area="" asp-controller="" asp-action="" asp-route-status="Нова">
                                     <span>Поръчки за обработка</span>
                                     <span class="adm-chip is-new">@Model.PendingOrders</span>
                                 </a>
@@ -156,7 +160,7 @@
                         @foreach (var p in Model.LowStock)
                         {
                             <li>
-                                <a class="adm-todo-item" asp-area="Admin" asp-controller="Products" asp-action="Edit" asp-route-id="@p.ProductId">
+                                <a class="adm-todo-item" asp-area="" asp-controller="" asp-action="">
                                     <span>@p.ProductName</span>
                                     <span class="adm-chip is-warn">остават @p.Quantity</span>
                                 </a>
@@ -174,7 +178,7 @@
         <section class="adm-panel" aria-labelledby="orders-title">
             <div class="adm-panel-head">
                 <h2 class="adm-panel-title" id="orders-title">Последни поръчки</h2>
-                <a class="adm-more" asp-area="Admin" asp-controller="Orders" asp-action="Index">Всички поръчки</a>
+                <a class="adm-more" asp-area="" asp-controller="" asp-action="">Всички поръчки</a>
             </div>
 
             @if (Model.RecentOrders.Any())
@@ -202,7 +206,7 @@
                                     <td class="adm-num">@Money(o.Total)</td>
                                     <td><span class="adm-chip @(StatusClass(o.Status))">@o.Status</span></td>
                                     <td class="adm-num">
-                                        <a class="adm-more" asp-area="Admin" asp-controller="Orders" asp-action="Details" asp-route-id="@o.Id">Отвори</a>
+                                        <a class="adm-more" asp-area="" asp-controller="" asp-action="" asp-route-id="@o.Id">Отвори</a>
                                     </td>
                                 </tr>
                             }
