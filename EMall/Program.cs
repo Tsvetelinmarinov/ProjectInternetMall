@@ -1,4 +1,3 @@
-using EMall.Core.Common;
 using EMall.Core.ServiceModels.AutoMapper;
 using EMall.Core.Services;
 using EMall.Core.Services.Interfaces;
