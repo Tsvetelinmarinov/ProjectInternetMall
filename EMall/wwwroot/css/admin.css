@@ -1,0 +1,280 @@
+/* EMall – админ панел. Всички класове са с префикс adm-, за да не се бият с Bootstrap и останалия сайт. */
+
+.adm {
+  --bg: #F2F5F9;
+  --surface: #FFFFFF;
+  --ink: #121A2B;
+  --muted: #5B667A;
+  --line: #DCE2EB;
+  --brand: #2250F5;
+  --brand-dark: #1A41D1;
+  --brand-soft: #E7ECFF;
+  --ok: #0B7F52;
+  --ok-soft: #DDF4E9;
+  --warn: #8F5200;
+  --warn-soft: #FCEBCB;
+  --bad: #B42E25;
+  --bad-soft: #FBE2DF;
+  --info: #34506F;
+  --info-soft: #E6EDF5;
+
+  display: grid;
+  grid-template-columns: 252px minmax(0, 1fr);
+  min-height: 80vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Golos Text", system-ui, "Segoe UI", Roboto, sans-serif;
+  font-size: .94rem;
+  line-height: 1.5;
+}
+
+.adm *, .adm *::before, .adm *::after { box-sizing: border-box; }
+
+/* Общо за всички линкове: надви Bootstrap-ските a и a:hover */
+.adm-brand, .adm-link, .adm-btn, .adm-more, .adm-todo-item {
+  color: inherit;
+  text-decoration: none;
+}
+.adm-brand:hover, .adm-link:hover, .adm-btn:hover, .adm-more:hover, .adm-todo-item:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- Странична лента ---------- */
+.adm-side {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  max-height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.25rem .9rem;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+}
+
+.adm-brand { display: flex; align-items: center; gap: .7rem; padding: .25rem .5rem; }
+.adm-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.adm-brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+.adm-brand-text strong { font-size: 1.1rem; letter-spacing: -.01em; }
+.adm-brand-text small { color: var(--muted); font-size: .78rem; }
+
+.adm-nav { display: flex; flex-direction: column; gap: .15rem; }
+.adm-nav-title { margin: .9rem .7rem .3rem; font-size: .8rem; color: var(--muted); }
+.adm-nav-title:first-child { margin-top: 0; }
+
+.adm-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  width: 100%;
+  padding: .55rem .7rem;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  color: var(--muted);
+}
+.adm-link:hover { background: var(--bg); color: var(--ink); }
+.adm-link.is-active { background: var(--brand-soft); color: var(--brand); font-weight: 600; }
+
+.adm-side-foot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.adm-user { margin: 0 0 .4rem; padding: 0 .7rem; font-size: .85rem; color: var(--muted); overflow-wrap: anywhere; }
+
+/* ---------- Основно съдържание ---------- */
+.adm-main {
+  display: grid;
+  align-content: start;
+  gap: 1.5rem;
+  min-width: 0;
+  padding: 1.75rem clamp(1rem, 3vw, 2.5rem) 3rem;
+}
+
+.adm-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem; }
+.adm-title { margin: 0; font-size: 1.8rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; }
+.adm-date { margin: .15rem 0 0; color: var(--muted); }
+.adm-date::first-letter { text-transform: uppercase; }
+.adm-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: .6rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  font-weight: 600;
+  color: var(--ink);
+}
+.adm-btn:hover { border-color: var(--ink); color: var(--ink); }
+.adm-btn--primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.adm-btn--primary:hover { background: var(--brand-dark); border-color: var(--brand-dark); color: #fff; }
+
+/* ---------- Числа ---------- */
+.adm-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.adm-stat { display: flex; flex-direction: column; gap: .15rem; padding: 1.15rem 1.4rem; border-left: 1px solid var(--line); }
+.adm-stat:first-child { border-left: 0; }
+.adm-stat-label { color: var(--muted); font-size: .88rem; }
+.adm-stat-value { font-size: 1.85rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.adm-stat-hint { color: var(--muted); font-size: .82rem; }
+
+/* ---------- Панели ---------- */
+.adm-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 1.5rem; }
+.adm-panel { min-width: 0; padding: 1.25rem 1.4rem; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+.adm-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.adm-panel-title { margin: 0; font-size: 1.05rem; font-weight: 600; }
+
+.adm-more { font-size: .88rem; font-weight: 600; color: var(--brand); }
+.adm-more:hover { color: var(--brand); text-decoration: underline; }
+
+/* Лентата по категории – единственото „дълго“ движение на страницата */
+.adm-bar {
+  display: flex;
+  gap: 3px;
+  height: 16px;
+  margin-bottom: 1.1rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--line);
+}
+.adm-seg {
+  width: 0;
+  height: 100%;
+  background: var(--c);
+  animation: adm-grow .9s cubic-bezier(.2, .7, .2, 1) forwards;
+  animation-delay: calc(var(--i) * 70ms);
+}
+@keyframes adm-grow { to { width: var(--w); } }
+
+.adm-cats { display: grid; margin: 0; padding: 0; list-style: none; }
+.adm-cat {
+  display: grid;
+  grid-template-columns: auto 1fr auto 3.2rem;
+  align-items: center;
+  gap: .75rem;
+  padding: .6rem 0;
+  border-top: 1px solid var(--line);
+}
+.adm-cat:first-child { border-top: 0; }
+.adm-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.adm-cat-count { font-weight: 600; font-variant-numeric: tabular-nums; }
+.adm-cat-pct { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.adm-todo { display: grid; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+.adm-todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .7rem .8rem;
+  border-radius: 10px;
+  background: var(--bg);
+}
+.adm-todo-item:hover { background: var(--info-soft); }
+
+/* ---------- Статуси ---------- */
+.adm-chip {
+  display: inline-block;
+  padding: .12rem .6rem;
+  border-radius: 999px;
+  background: var(--info-soft);
+  color: var(--info);
+  font-size: .8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.adm-chip.is-new  { background: var(--brand-soft); color: var(--brand); }
+.adm-chip.is-warn { background: var(--warn-soft);  color: var(--warn); }
+.adm-chip.is-ok   { background: var(--ok-soft);    color: var(--ok); }
+.adm-chip.is-bad  { background: var(--bad-soft);   color: var(--bad); }
+
+/* ---------- Таблица ---------- */
+.adm-scroll { overflow-x: auto; }
+.adm-table { width: 100%; min-width: 620px; border-collapse: collapse; }
+.adm-table th {
+  padding: .55rem .75rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: .85rem;
+  font-weight: 500;
+  text-align: left;
+  white-space: nowrap;
+}
+.adm-table td { padding: .8rem .75rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.adm-table tbody tr:last-child td { border-bottom: 0; }
+.adm-table tbody tr:hover { background: #F8FAFD; }
+.adm-table .adm-num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.adm-empty { margin: 0; padding: 1.2rem; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); text-align: center; }
+
+.adm-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Достъпност ---------- */
+.adm-brand:focus-visible, .adm-link:focus-visible, .adm-btn:focus-visible,
+.adm-more:focus-visible, .adm-todo-item:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-seg { animation: none; width: var(--w); }
+}
+
+/* ---------- Адаптивност ---------- */
+@media (max-width: 991px) {
+  .adm { grid-template-columns: 1fr; }
+  .adm-side {
+    position: static;
+    max-height: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .75rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .adm-nav { flex-direction: row; flex-wrap: wrap; }
+  .adm-nav-title { display: none; }
+  .adm-link { width: auto; }
+  .adm-side-foot { margin-top: 0; padding-top: 0; border-top: 0; flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .adm-user { margin: 0; }
+  .adm-row { grid-template-columns: 1fr; }
+  .adm-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .adm-stat:nth-child(3) { border-left: 0; }
+  .adm-stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+
+@media (max-width: 480px) {
+  .adm-stats { grid-template-columns: 1fr; }
+  .adm-stat { border-left: 0; border-top: 1px solid var(--line); }
+  .adm-stat:first-child { border-top: 0; }
+}
