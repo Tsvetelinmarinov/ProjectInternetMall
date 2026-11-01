@@ -9,9 +9,7 @@ namespace EMall.Areas.Administration.Controllers
     /// <summary>
     ///  Provides endpoint for the administrator page.
     /// </summary>
-    [Area("Administration")]
-    [Authorize(Roles = "Administrator")]
-    public class HomeController(ICategoryService categoryService, IMapper mapper) : Controller
+    public class AdminHomeController(ICategoryService categoryService, IMapper mapper) : AdminCoreController
     {
         /// <summary>
         ///  Endpoint of the Administrator dashboard page.
