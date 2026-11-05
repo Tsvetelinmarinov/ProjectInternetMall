@@ -11,4 +11,5 @@
     <Project Path="EMall.ViewModels/EMall.ViewModels.csproj" Id="24820149-9710-42ad-a17f-e45d6d60000e" />
     <Project Path="EMall/EMall.csproj" />
   </Folder>
+  <Project Path="ModelBinderTest/ModelBinderTest.csproj" Id="a98d929a-7ea9-4be3-8afa-d6261b9c0c99" />
 </Solution>
