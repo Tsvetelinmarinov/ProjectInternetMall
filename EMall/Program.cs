@@ -96,11 +96,15 @@ namespace EMall
 
             app.MapStaticAssets();
 
-            app.MapControllerRoute("areas", "{area:exists}/{controller=Home}/{action=Index}/{id?}")
-               .WithStaticAssets();
+            app.MapControllerRoute(
+                "areas", 
+                "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            ).WithStaticAssets();
 
-            app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}")
-               .WithStaticAssets();
+            app.MapControllerRoute(
+                "default", 
+                "{controller=Home}/{action=Index}/{id?}"
+            ).WithStaticAssets();
 
             app.MapRazorPages()
                .WithStaticAssets();
