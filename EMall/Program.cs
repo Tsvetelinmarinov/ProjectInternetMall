@@ -151,6 +151,7 @@ namespace EMall
                     .GetRequiredService<UserManager<ApplicationUser>>();
 
                 string adminRole = "Administrator"; //=> System admin.
+                string userRole = "User"; //=> System user.
 
                 try
                 {
@@ -163,6 +164,18 @@ namespace EMall
                         if (roleCreatingResult.Succeeded)
                         {
                             Console.WriteLine(SuccessfullyCreateRole, adminRole);
+                        }
+                    }
+
+                    // Check if the role User exists, and if not - create it.
+                    if (await rolesManager.RoleExistsAsync(userRole) is false)
+                    {
+                        var userRoleCreatingResult
+                            = await rolesManager.CreateAsync(new IdentityRole(userRole));
+
+                        if (userRoleCreatingResult.Succeeded)
+                        {
+                            Console.WriteLine(SuccessfullyCreateRole, userRole);
                         }
                     }
 
