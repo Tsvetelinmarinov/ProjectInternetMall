@@ -48,8 +48,6 @@
         <nav class="adm-nav">
             <p class="adm-nav-title">Магазин</p>
             <a class="adm-link @(ActiveController("Home"))" asp-area="Admin" asp-controller="Home" asp-action="Index">Табло</a>
-            <a class="adm-link @(ActiveController("Products"))" asp-area="Admin" asp-controller="Products" asp-action="Index">Продукти</a>
-            <a class="adm-link @(ActiveController("Categories"))" asp-area="Admin" asp-controller="Categories" asp-action="Index">Категории</a>
             <a class="adm-link @(ActiveController("Orders"))" asp-area="Admin" asp-controller="Orders" asp-action="Index">
                 Поръчки
                 @if (Model.PendingOrders > 0)
@@ -75,8 +73,8 @@
                 <p class="adm-date">@DateTime.Now.ToString("dddd, d MMMM yyyy", bg)</p>
             </div>
             <div class="adm-actions">
-                <a class="adm-btn" asp-area="" asp-controller="Home" asp-action="Index">Виж магазина</a>
-                <a class="adm-btn adm-btn--primary" asp-area="" asp-controller="" asp-action="">Добави продукт</a>
+                <a class="adm-btn" asp-controller="Home" asp-action="Index">Виж магазина</a>
+                <a class="adm-btn adm-btn--primary" asp-controller="" asp-action="">Добави продукт</a>
             </div>
         </header>
 
@@ -157,20 +155,11 @@
                                 </a>
                             </li>
                         }
-                        @foreach (var p in Model.LowStock)
-                        {
-                            <li>
-                                <a class="adm-todo-item" asp-area="" asp-controller="" asp-action="">
-                                    <span>@p.ProductName</span>
-                                    <span class="adm-chip is-warn">остават @p.Quantity</span>
-                                </a>
-                            </li>
-                        }
                     </ul>
                 }
                 else
                 {
-                    <p class="adm-empty">Всичко е наред. Няма чакащи поръчки и продукти с ниска наличност.</p>
+                    <p class="adm-empty">Всичко е наред. Няма чакащи поръчки.</p>
                 }
             </section>
         </div>
@@ -206,7 +195,7 @@
                                     <td class="adm-num">@Money(o.Total)</td>
                                     <td><span class="adm-chip @(StatusClass(o.Status))">@o.Status</span></td>
                                     <td class="adm-num">
-                                        <a class="adm-more" asp-area="" asp-controller="" asp-action="" asp-route-id="@o.Id">Отвори</a>
+                                        <a class="adm-more" asp-area="" asp-controller="" asp-action="">Отвори</a>
                                     </td>
                                 </tr>
                             }
