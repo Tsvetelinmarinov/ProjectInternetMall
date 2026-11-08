@@ -3,6 +3,7 @@ using EMall.Core.ServiceModels.AutoMapper;
 using EMall.Core.Services;
 using EMall.Core.Services.Interfaces;
 using EMall.Data;
+using EMall.Data.SeedData;
 using EMall.Data.DatabaseContext;
 using EMall.Data.Repositories;
 using EMall.Data.Repositories.Interfaces;
@@ -125,6 +126,7 @@ namespace EMall
                 try
                 {
                     dtb.Database.Migrate();
+                    await AdminDashboardDataSeeder.SeedAsync(dtb); //=> If no products -> seed any.
                 }
                 catch (Exception ex)
                 {
@@ -137,7 +139,7 @@ namespace EMall
                 }
             }
 
-            // If database exists, add role Administrator and default admin user - me.
+            // If database exists, add role Administrator and default admin user - me + role User.
             using (IServiceScope scope = app.Services.CreateScope())
             {
                 // Manager of roles.
