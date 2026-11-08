@@ -98,12 +98,16 @@ namespace EMall
 
             app.MapControllerRoute(
                 "areas", 
-                "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                "{area:exists}/{controller}/{action}/{id?}",
+                new { controller = "Home", action = "Index" },
+                new { id = @"\d*" }
             ).WithStaticAssets();
 
             app.MapControllerRoute(
                 "default", 
-                "{controller=Home}/{action=Index}/{id?}"
+                "{controller}/{action}/{id?}",
+                new { controller = "Home", action = "Index" },
+                new { id = @"\d*" }
             ).WithStaticAssets();
 
             app.MapRazorPages()
