@@ -59,7 +59,7 @@
 
         <div class="adm-side-foot">
             <p class="adm-user">@User.Identity?.Name</p>
-            <a class="adm-link" asp-controller="Home" asp-action="Index">Към магазина</a>
+            <a class="adm-link" asp-area="" asp-controller="Home" asp-action="Index">Към магазина</a>
             <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Content("~/")" method="post">
                 <button type="submit" class="adm-link">Изход</button>
             </form>
