@@ -8,8 +8,8 @@ namespace EMall.AutoMapper
     {
         public ProductServiceMappingProfile()
         {
-            // Create mapping for ProductClaimOutputServiceModel -> ProductCalimOutputViewModel.
-            this.CreateMap<ProductClaimOutputServiceModel, ProductOutputViewModel>()
+            // Create mapping for ProductOutputServiceModel -> ProductOutputViewModel.
+            this.CreateMap<ProductOutputServiceModel, ProductOutputViewModel>()
                 .ReverseMap();
         }
     }

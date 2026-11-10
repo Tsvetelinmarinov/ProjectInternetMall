@@ -9,7 +9,7 @@ namespace EMall.Areas.Administration.Controllers
     /// <summary>
     ///  Provides endpoint for the administrator page.
     /// </summary>
-    public class AdminHomeController(ICategoryService categoryService, IMapper mapper) : AdminCoreController
+    public class AdminHomeController(ICategoryService categoryService) : AdminCoreController
     {
         /// <summary>
         ///  Endpoint of the Administrator dashboard page.
@@ -20,8 +20,14 @@ namespace EMall.Areas.Administration.Controllers
             var categoryServiceModels 
                 = await categoryService.GetAllCategoriesAsync();
 
-            var categoryStatViewModels 
-                = mapper.Map<IEnumerable<CategoryStatViewModel>>(categoryServiceModels);
+            var categoryStatViewModels = categoryServiceModels
+                .OrderBy((category) => category.CategoryName)
+                .Select((category) => new CategoryStatViewModel
+                {
+                    CategoryName = category.CategoryName,
+                    Color = category.Color,
+                    ProductsCount = (category.Products ??[]).Count()
+                });
 
             if (categoryStatViewModels is null)
             {

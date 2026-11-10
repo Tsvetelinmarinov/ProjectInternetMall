@@ -1,7 +1,6 @@
-using EMall.AutoMapper;
-using EMall.Core.ServiceModels.AutoMapper;
 using EMall.Core.Services;
 using EMall.Core.Services.Interfaces;
+using EMall.Core.AutoMapper;
 using EMall.Data;
 using EMall.Data.SeedData;
 using EMall.Data.DatabaseContext;
@@ -9,6 +8,7 @@ using EMall.Data.Repositories;
 using EMall.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using EMall.AutoMapper;
 using static EMall.Constants.WebConstants.Common;
 
 namespace EMall
@@ -52,9 +52,8 @@ namespace EMall
             builder.Services
                 .AddDefaultIdentity<ApplicationUser>(
                     options => ConfigureIdentity(options, builder.Configuration)
-                )
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                ).AddRoles<IdentityRole>()
+                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Add Repositories.
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -93,6 +92,8 @@ namespace EMall
 
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();

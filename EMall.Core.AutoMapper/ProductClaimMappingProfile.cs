@@ -2,7 +2,7 @@
 using EMall.Core.ServiceModels.Output;
 using EMall.Data.EntityModels;
 
-namespace EMall.Core.ServiceModels.AutoMapper
+namespace EMall.Core.AutoMapper
 {
     // Maps Product entity to Product service output model.
     public class ProductClaimMappingProfile : Profile
