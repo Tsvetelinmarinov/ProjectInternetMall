@@ -38,7 +38,7 @@ namespace EMall.Areas.Administration.Controllers
                         OrderId = 3,
                         CreatedOn = DateTime.Now,
                         Status = OrderStatus.Shipped,
-                        TotalPrice = 666M
+                        TotalPrice = 1555.65M
                     }
                 }
             );
