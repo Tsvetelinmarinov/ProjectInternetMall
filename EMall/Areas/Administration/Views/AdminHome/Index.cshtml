@@ -47,8 +47,8 @@
 
         <nav class="adm-nav">
             <p class="adm-nav-title">Магазин</p>
-            <a class="adm-link @(ActiveController("Home"))" asp-area="Admin" asp-controller="Home" asp-action="Index">Табло</a>
-            <a class="adm-link @(ActiveController("Orders"))" asp-area="Admin" asp-controller="Orders" asp-action="Index">
+            <a class="adm-link @(ActiveController("Home"))" asp-area="Administration">Табло</a>
+            <a class="adm-link @(ActiveController("Orders"))" asp-area="Administration" asp-controller="Orders">
                 Поръчки
                 @if (Model.PendingOrders > 0)
                 {
