@@ -42,5 +42,23 @@
 
             public const string SuccessfullyCreateRole = "Successfully created role {0}!";
         }
+
+        /// <summary>
+        ///  Provides classes with entities names that provides validation constants for it.
+        /// </summary>
+        public static class Validation
+        {
+            /// <summary>
+            ///  Provides validation constants for OrderOutputViewModel.
+            /// </summary>
+            public static class OrderOutputViewModel
+            {
+                public const int CustomerNameMinLen = 2;
+                public const int CustomerNameMaxLen = 100;
+
+                public const string CustomerNameIsRequired = "Customer`s name is required!";
+                public const string InvalidCustomerNameLength = "Customer`s name should be between {2} and {1} characters!";
+            }
+        }
     }
 }
