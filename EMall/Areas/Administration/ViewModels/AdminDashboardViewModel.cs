@@ -1,3 +1,5 @@
+using EMall.Areas.Administration.ViewModels.Order;
+
 namespace EMall.Areas.Administration.ViewModels;
 
 /// <summary>
@@ -43,7 +45,7 @@ public class AdminDashboardViewModel
     /// <summary>
     ///  Recent orders.
     /// </summary>
-    public List<RecentOrderViewModel> RecentOrders { get; set; } = [];
+    public List<OrderOutputViewModel> RecentOrders { get; set; } = [];
 
     /// <summary>
     ///  Low stock products.

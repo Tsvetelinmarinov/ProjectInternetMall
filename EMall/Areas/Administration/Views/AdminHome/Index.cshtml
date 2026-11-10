@@ -165,7 +165,7 @@
         <section class="adm-panel" aria-labelledby="orders-title">
             <div class="adm-panel-head">
                 <h2 class="adm-panel-title" id="orders-title">Последни поръчки</h2>
-                <a class="adm-more" asp-area="" asp-controller="" asp-action="">Всички поръчки</a>
+                <a class="adm-more" asp-area="Administration" asp-controller="Orders">Всички поръчки</a>
             </div>
 
             @if (Model.RecentOrders.Any())
@@ -187,11 +187,11 @@
                             @foreach (var o in Model.RecentOrders)
                             {
                                 <tr>
-                                    <td>#@o.Id</td>
-                                    <td>@o.CustomerEmail</td>
+                                    <td>#@o.OrderId</td>
+                                    <td>@o.CustomerName</td>
                                     <td>@o.CreatedOn.ToString("d MMM yyyy, HH:mm", bg)</td>
-                                    <td class="adm-num">@Money(o.Total)</td>
-                                    <td><span class="adm-chip @(StatusClass(o.Status))">@o.Status</span></td>
+                                    <td class="adm-num">@Money(o.TotalPrice)</td>
+                                    <td><span class="adm-chip @(StatusClass(o.Status.ToString()))">@o.Status.ToString()</span></td>
                                     <td class="adm-num">
                                         <a class="adm-more" asp-area="" asp-controller="" asp-action="">Отвори</a>
                                     </td>

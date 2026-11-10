@@ -18,13 +18,14 @@
     };
 
     // Първо кликване върху колона сортира възходящо, второ – низходящо.
-    string NextDir(string key) => sortBy == key && sortDir == "asc" ? "desc" : "asc";
+    string ChangeSortingDirectory(string key) 
+        => sortBy == key && sortDir == "asc" ? "desc" : "asc";
 
-    string AriaSort(string key) =>
-        sortBy != key ? "none" : (sortDir == "asc" ? "ascending" : "descending");
+    string AriaSort(string key) 
+        => sortBy != key ? "none" : (sortDir == "asc" ? "ascending" : "descending");
 
-    string Arrow(string key) =>
-        sortBy != key ? "" : (sortDir == "asc" ? "▲" : "▼");
+    string Arrow(string key) 
+        => sortBy != key ? "" : (sortDir == "asc" ? "▲" : "▼");
 
     (string Label, string Css) StatusInfo(OrderStatus status) => status switch 
     {
@@ -45,23 +46,28 @@
             <p class="text-muted mb-0">Общо поръчки: @Model.Count()</p>
         </div>
 
-        <form method="get" asp-area="Administration" asp-controller="Orders" asp-action="Index"
-              class="d-flex flex-wrap align-items-center gap-2">
-            <label for="sortBy" class="col-form-label">Сортирай по</label>
-            <select id="sortBy" name="sortBy" class="form-select w-auto" onchange="this.form.submit()">
-                @foreach (var column in columns)
-                {
-                    <option value="@column.Key" selected="@(sortBy == column.Key)">@column.Title</option>
-                }
-            </select>
-            <select id="sortDir" name="sortDir" class="form-select w-auto"
-                    aria-label="Посока на сортиране" onchange="this.form.submit()">
-                <option value="asc" selected="@(sortDir == "asc")">Възходящо</option>
-                <option value="desc" selected="@(sortDir == "desc")">Низходящо</option>
-            </select>
-            <noscript>
-                <button type="submit" class="btn btn-primary">Приложи</button>
-            </noscript>
+        <form method="get" 
+            asp-area="Administration" 
+            asp-controller="Orders"
+            class="d-flex flex-wrap align-items-center gap-2">
+                <label for="sortBy" class="col-form-label">Сортирай по</label>
+                <select id="sortBy" name="sortBy" class="form-select w-auto" onchange="this.form.submit()">
+                    @foreach (var column in columns)
+                    {
+                        <option value="@column.Key" selected="@(sortBy == column.Key)">@column.Title</option>
+                    }
+                </select>
+                <select id="sortDir" 
+                    name="sortDir" 
+                    class="form-select w-auto"
+                    aria-label="Посока на сортиране"
+                    onchange="this.form.submit()">
+                        <option value="asc" selected="@(sortDir == "asc")">Възходящо</option>
+                        <option value="desc" selected="@(sortDir == "desc")">Низходящо</option>
+                </select>
+                <noscript>
+                    <button type="submit" class="btn btn-primary">Приложи</button>
+                </noscript>
         </form>
     </div>
 
@@ -72,19 +78,20 @@
                     <tr>
                         @foreach (var column in columns)
                         {
-                            <th scope="col" aria-sort="@AriaSort(column.Key)"
+                            <th scope="col" 
+                                aria-sort="@AriaSort(column.Key)"
                                 class="@(column.Key == "total" ? "text-end" : "")">
-                                <a href="@Url.Action("Index", "Orders", new { area = "Administration", sortBy = column.Key, sortDir = NextDir(column.Key) })"
-                                   class="link-dark text-decoration-none @(sortBy == column.Key ? "fw-semibold" : "")">
-                                    @column.Title <span class="text-primary">@Arrow(column.Key)</span>
-                                </a>
+                                    <a href="@Url.Action("Index", "Orders", new { area = "Administration", sortBy = column.Key, sortDir = ChangeSortingDirectory(column.Key) })"
+                                       class="link-dark text-decoration-none @(sortBy == column.Key ? "fw-semibold" : "")">
+                                           @column.Title <span class="text-primary">@Arrow(column.Key)</span>
+                                    </a>
                             </th>
                         }
                         <th scope="col"><span class="visually-hidden">Действия</span></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (!Model.Any())
+                    @if (Model.Any() is false)
                     {
                         <tr>
                             <td colspan="6" class="text-center text-muted py-5">
@@ -92,7 +99,6 @@
                             </td>
                         </tr>
                     }
-
                     @foreach (var order in Model)
                     {
                         var status = StatusInfo(order.Status);
@@ -104,8 +110,13 @@
                             <td class="text-end">@order.TotalPrice.ToString("N2") €</td>
                             <td><span class="badge @status.Css">@status.Label</span></td>
                             <td class="text-end">
-                                <a asp-area="Administration" asp-controller="Orders" asp-action="Details"
-                                   asp-route-id="@order.OrderId" class="btn btn-sm btn-outline-primary">Преглед</a>
+                                <a asp-area="Administration" 
+                                   asp-controller="Orders" 
+                                   asp-action="Details"
+                                   asp-route-id="@order.OrderId" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    Преглед
+                                </a>
                             </td>
                         </tr>
                     }
@@ -113,5 +124,4 @@
             </table>
         </div>
     </div>
-
 </div>

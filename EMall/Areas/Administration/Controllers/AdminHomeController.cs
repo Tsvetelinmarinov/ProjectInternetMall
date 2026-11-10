@@ -43,7 +43,7 @@ namespace EMall.Areas.Administration.Controllers
                 NewUsersThisWeek = 0,
                 RevenueThisMonth = 0,
                 Categories = [.. categoryStatViewModels],
-                RecentOrders = [],
+                RecentOrders = [], /*Must be real orders from the database*/
                 LowStock = []
             };
 

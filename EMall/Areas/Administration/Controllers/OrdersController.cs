@@ -19,7 +19,6 @@ namespace EMall.Areas.Administration.Controllers
                     new()
                     {
                         CustomerName = "Angel Snopf",
-                        OrderId = 1,
                         CreatedOn = DateTime.Now,
                         Status = OrderStatus.Cancelled,
                         TotalPrice = 25.55M
@@ -27,7 +26,6 @@ namespace EMall.Areas.Administration.Controllers
                     new()
                     {
                         CustomerName = "Tsvetelin Marinov",
-                        OrderId = 2,
                         CreatedOn = DateTime.Now,
                         Status = OrderStatus.Processing,
                         TotalPrice = 666M
@@ -35,7 +33,6 @@ namespace EMall.Areas.Administration.Controllers
                     new()
                     {
                         CustomerName = "Martina Pavlova",
-                        OrderId = 3,
                         CreatedOn = DateTime.Now,
                         Status = OrderStatus.Shipped,
                         TotalPrice = 1555.65M
