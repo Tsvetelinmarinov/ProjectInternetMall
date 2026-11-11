@@ -169,6 +169,74 @@ namespace EMall.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("EMall.Data.EntityModels.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("money");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            CreatedOn = new DateTime(2026, 11, 11, 20, 9, 4, 338, DateTimeKind.Local).AddTicks(4249),
+                            CustomerName = "Angel Snopf",
+                            Status = "Cancelled",
+                            TotalPrice = 25.55m
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            CreatedOn = new DateTime(2026, 11, 11, 20, 9, 4, 341, DateTimeKind.Local).AddTicks(7180),
+                            CustomerName = "Tsvetelin Marinov",
+                            Status = "Processing",
+                            TotalPrice = 666m
+                        },
+                        new
+                        {
+                            OrderId = 3,
+                            CreatedOn = new DateTime(2026, 11, 11, 20, 9, 4, 341, DateTimeKind.Local).AddTicks(7236),
+                            CustomerName = "Martina Pavlova",
+                            Status = "Shipped",
+                            TotalPrice = 1555.65m
+                        });
+                });
+
+            modelBuilder.Entity("EMall.Data.EntityModels.OrderProduct", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrderId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProducts");
+                });
+
             modelBuilder.Entity("EMall.Data.EntityModels.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -357,6 +425,27 @@ namespace EMall.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("EMall.Data.EntityModels.OrderProduct", b =>
+                {
+                    b.HasOne("EMall.Data.EntityModels.Order", "Order")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("__FK_OrderProduct_Order__OrderId__");
+
+                    b.HasOne("EMall.Data.EntityModels.Product", "Product")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("__FK_OrderProduct_Product__ProductId__");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("EMall.Data.EntityModels.Product", b =>
                 {
                     b.HasOne("EMall.Data.EntityModels.Category", "Category")
@@ -422,6 +511,16 @@ namespace EMall.Data.Migrations
             modelBuilder.Entity("EMall.Data.EntityModels.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("EMall.Data.EntityModels.Order", b =>
+                {
+                    b.Navigation("OrderProducts");
+                });
+
+            modelBuilder.Entity("EMall.Data.EntityModels.Product", b =>
+                {
+                    b.Navigation("OrderProducts");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EMall.Data.EntityModels
 {
@@ -21,6 +22,7 @@ namespace EMall.Data.EntityModels
 
         [Required]
         [Range(0.0, double.MaxValue)]
+        [Column(TypeName = "money")]
         public decimal TotalPrice { get; set; }
 
         public virtual ICollection<OrderProduct>? OrderProducts { get; set; }
