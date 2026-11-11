@@ -22,5 +22,7 @@ namespace EMall.Data.EntityModels
         [Required]
         [Range(0.0, double.MaxValue)]
         public decimal TotalPrice { get; set; }
+
+        public virtual ICollection<OrderProduct>? OrderProducts { get; set; }
     }
 }
