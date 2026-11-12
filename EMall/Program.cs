@@ -80,14 +80,14 @@ namespace EMall
             #endregion
             #region Configure HTTP Request Pipeline
 
-            if (app.Environment.IsDevelopment())
+            if (app.Environment.IsProduction())
             { 
                 app.UseStatusCodePagesWithReExecute("/Home/Error");
+                app.UseHsts();
             }
             else
             {
-                app.UseStatusCodePagesWithReExecute("/Home/Error");
-                app.UseHsts();
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
