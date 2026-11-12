@@ -199,7 +199,7 @@ namespace EMall.Data.Migrations
                         new
                         {
                             OrderId = 1,
-                            CreatedOn = new DateTime(2026, 11, 11, 20, 9, 4, 338, DateTimeKind.Local).AddTicks(4249),
+                            CreatedOn = new DateTime(2026, 11, 12, 19, 51, 0, 0, DateTimeKind.Unspecified),
                             CustomerName = "Angel Snopf",
                             Status = "Cancelled",
                             TotalPrice = 25.55m
@@ -207,7 +207,7 @@ namespace EMall.Data.Migrations
                         new
                         {
                             OrderId = 2,
-                            CreatedOn = new DateTime(2026, 11, 11, 20, 9, 4, 341, DateTimeKind.Local).AddTicks(7180),
+                            CreatedOn = new DateTime(2026, 11, 12, 19, 51, 0, 0, DateTimeKind.Unspecified),
                             CustomerName = "Tsvetelin Marinov",
                             Status = "Processing",
                             TotalPrice = 666m
@@ -215,7 +215,7 @@ namespace EMall.Data.Migrations
                         new
                         {
                             OrderId = 3,
-                            CreatedOn = new DateTime(2026, 11, 11, 20, 9, 4, 341, DateTimeKind.Local).AddTicks(7236),
+                            CreatedOn = new DateTime(2026, 11, 12, 19, 51, 0, 0, DateTimeKind.Unspecified),
                             CustomerName = "Martina Pavlova",
                             Status = "Shipped",
                             TotalPrice = 1555.65m

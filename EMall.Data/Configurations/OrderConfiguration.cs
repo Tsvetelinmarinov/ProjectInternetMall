@@ -1,5 +1,4 @@
 ﻿using EMall.Data.EntityModels;
-using EMall.Data.EntityModels.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +17,7 @@ namespace EMall.Data.Configurations
                 {
                     OrderId = 1,
                     CustomerName = "Angel Snopf",
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = new DateTime(2026, 11, 12, 19, 51, 00),
                     Status = "Cancelled",
                     TotalPrice = 25.55M
                 },
@@ -26,7 +25,7 @@ namespace EMall.Data.Configurations
                 {
                     OrderId = 2,
                     CustomerName = "Tsvetelin Marinov",
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = new DateTime(2026, 11, 12, 19, 51, 00),
                     Status = "Processing",
                     TotalPrice = 666M
                 },
@@ -34,7 +33,7 @@ namespace EMall.Data.Configurations
                 {
                     OrderId = 3,
                     CustomerName = "Martina Pavlova",
-                    CreatedOn = DateTime.Now,
+                    CreatedOn = new DateTime(2026, 11, 12, 19, 51, 00),
                     Status = "Shipped",
                     TotalPrice = 1555.65M
                 }
