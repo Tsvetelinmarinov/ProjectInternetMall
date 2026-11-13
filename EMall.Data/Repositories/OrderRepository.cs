@@ -1,19 +1,35 @@
-﻿using EMall.Data.Repositories.Interfaces;
+﻿using EMall.Data.DatabaseContext;
+using EMall.Data.EntityModels;
+using EMall.Data.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using static EMall.Data.EntityModels.Common.DbConstants.OrderRelated;
 
 namespace EMall.Data.Repositories
 {
     /// <summary>
     ///  Provides CRUD operations for Order entity.
     /// </summary>
-    public class OrderRepository : IOrderRepository
+    public class OrderRepository(ApplicationDbContext context) : IOrderRepository
     {
+        // DbContext for communicating with the database.
+        private readonly ApplicationDbContext _context = context;
+
+
         /// <summary>
         ///  Retrieves all the records of the <typeparamref name="TEntity"/>.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        public IEnumerable<TEntity> GetAll<TEntity>()
+        public async Task<IEnumerable<Order>> GetAll()
         {
-            throw new NotImplementedException();
+            var orderEntities = await this._context
+                .Orders
+                .AsNoTracking()
+                .OrderBy((order) => order.Status)
+                .ThenByDescending((order) => order.TotalPrice)
+                .ToListAsync()
+                 ?? throw new SystemException(NoOrdersFromDb);
+
+            return orderEntities;
         }
 
         /// <summary>
@@ -79,6 +95,5 @@ namespace EMall.Data.Repositories
         {
             throw new NotImplementedException();
         }
-
     }
 }

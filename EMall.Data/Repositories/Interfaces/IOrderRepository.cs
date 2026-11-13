@@ -1,4 +1,6 @@
-﻿namespace EMall.Data.Repositories.Interfaces
+﻿using EMall.Data.EntityModels;
+
+namespace EMall.Data.Repositories.Interfaces
 {
     /// <summary>
     ///  Provides CRUD operations for Order entity.
@@ -9,6 +11,6 @@
         ///  Retrieves all the records of the <typeparamref name="TEntity"/>.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        IEnumerable<TEntity> GetAll<TEntity>();
+        Task<IEnumerable<Order>> GetAll();
     }
 }
