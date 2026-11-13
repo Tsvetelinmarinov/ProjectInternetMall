@@ -6,12 +6,6 @@
     public interface ICrudOperations
     {
         /// <summary>
-        ///  Retrieves all the records of the <typeparamref name="TEntity"/>.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        IEnumerable<TEntity> GetAll<TEntity>();
-
-        /// <summary>
         ///  Adds an entity/record to the database.
         /// </summary>
         /// <typeparam name="TEntity">
