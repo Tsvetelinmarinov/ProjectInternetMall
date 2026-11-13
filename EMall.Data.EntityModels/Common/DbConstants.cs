@@ -60,5 +60,13 @@
         {
             public const string NoCategoriesFromDb = "Something went wrong while retrieving the categories from the database!";
         }
+
+        /// <summary>
+        /// Provides constants for entity Order related logic.
+        /// </summary>
+        public static class OrderRelated
+        {
+            public const string NoOrdersFromDb = "Something went wrong while retrieving the orders from the database.";
+        }
     }
 }
