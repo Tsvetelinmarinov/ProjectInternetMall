@@ -1,5 +1,6 @@
 ﻿using EMall.Data.DatabaseContext;
 using EMall.Data.EntityModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMall.Data.SeedData;
 
@@ -22,6 +23,7 @@ public static class AdminDashboardDataSeeder
 
         var existingCategoryIds = dbContext
             .Categories
+            .AsNoTracking()
             .Where(category => requiredCategoryIds.Contains(category.CategoryId))
             .Select(category => category.CategoryId)
             .ToList();
