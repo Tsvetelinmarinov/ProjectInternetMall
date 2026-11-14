@@ -8,9 +8,8 @@ namespace EMall.Data.Repositories.Interfaces
     public interface IOrderRepository : ICrudOperations
     {
         /// <summary>
-        ///  Retrieves all the records of the <typeparamref name="TEntity"/>.
+        ///  Retrieves all the orders/>.
         /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
         Task<IEnumerable<Order>> GetAll();
     }
 }
