@@ -18,14 +18,14 @@ namespace EMall.Data.Repositories
         /// <summary>
         ///  Retrieves all the orders.
         /// </summary>
-        public async Task<IAsyncEnumerable<Order>> GetAll()
+        public async Task<IEnumerable<Order>> GetAll()
         {
             var orderEntities = this._context
                 .Orders
                 .AsNoTracking()
                 .OrderBy((order) => order.Status)
                 .ThenByDescending((order) => order.TotalPrice)
-                .ToAsyncEnumerable()
+                .ToList()
                  ?? throw new SystemException(NoOrdersFromDb);
 
             return orderEntities;
