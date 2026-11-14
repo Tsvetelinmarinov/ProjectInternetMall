@@ -66,14 +66,12 @@ namespace EMall
             // Add AutoMapper.
             builder.Services.AddAutoMapper((mappingConfig) =>
             {
-                mappingConfig.AddProfiles([
-                    new CategoryMappingProfile(),
-                    new ProductMappingProfile(),
-                    new ProductClaimMappingProfile(),
-                    new CategoryServiceMappingProfile(),
-                    new ProductServiceMappingProfile(),
-                    new ProductClaimServiceMappingProfile(),
-                ]);
+                mappingConfig.AddMaps(
+                    [
+                        typeof(CategoryMappingProfile).Assembly,
+                        typeof(CategoryServiceMappingProfile).Assembly
+                    ]
+                );
             });
 
             // Build the application host.
