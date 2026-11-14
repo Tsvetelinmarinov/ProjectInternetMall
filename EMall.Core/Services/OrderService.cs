@@ -20,16 +20,10 @@ namespace EMall.Core.Services
         /// <returns>
         ///  <see cref="IEnumerable{OrderOutputServiceModel}"/> with the orders.
         /// </returns>
-        public IEnumerable<OrderOutputServiceModel> GetAllOrders()
+        public async Task<IEnumerable<OrderOutputServiceModel>> GetAllOrders()
         {
-            // Извличане на поръчките от репозиторията им асинхронно, след което
-            // синхронизиране на нишата на репото с тази + кастване на колекцията
-            // към синхронния и еквивалент.
-            IEnumerable<Order> orderEntities = repository
-                .GetAll()
-                .Result
-                 as IEnumerable<Order>
-                 ?? throw new ServiceException(UnableToCastIAsyncEnumerableToIEnumerable);
+            // Извличане на поръчките от репозиторията
+            IEnumerable<Order> orderEntities = await repository.GetAll();
 
             // Кастване към сервизни модели.
             var orderServiceModels

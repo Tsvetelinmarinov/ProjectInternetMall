@@ -14,6 +14,6 @@ namespace EMall.Core.Services.Interfaces
         /// <returns>
         ///  <see cref="IEnumerable{OrderOutputServiceModel}"/> with the orders.
         /// </returns>
-        IEnumerable<OrderOutputServiceModel> GetAllOrders();
+        Task<IEnumerable<OrderOutputServiceModel>> GetAllOrders();
     }
 }
