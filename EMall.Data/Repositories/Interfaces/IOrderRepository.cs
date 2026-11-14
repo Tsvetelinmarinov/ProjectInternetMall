@@ -10,6 +10,6 @@ namespace EMall.Data.Repositories.Interfaces
         /// <summary>
         ///  Retrieves all the orders/>.
         /// </summary>
-        Task<IEnumerable<Order>> GetAll();
+        Task<IAsyncEnumerable<Order>> GetAll();
     }
 }
