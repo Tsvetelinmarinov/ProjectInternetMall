@@ -16,5 +16,14 @@
             public const string UnableToMapCategoryToCategoryServiceOutputModel
                 = $"{AutoMapper}Unable to map Category to CategoryServiceOutputModel.";
         }
+
+        /// <summary>
+        ///  Provides constants for classes related to Order entity.
+        /// </summary>
+        public static class OrderRelated
+        {
+            public const string UnableToCastIAsyncEnumerableToIEnumerable
+                = "Unable to cast IAsyncEnumerable to IEnumerable!";
+        }
     }
 }
