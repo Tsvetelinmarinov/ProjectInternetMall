@@ -1,5 +1,6 @@
 ﻿using EMall.Areas.Administration.ViewModels.Order;
 using EMall.Areas.Administration.ViewModels.Order.Common;
+using EMall.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMall.Areas.Administration.Controllers
@@ -8,37 +9,25 @@ namespace EMall.Areas.Administration.Controllers
     ///  Provides endpoint for the orders menu in the admin panel.
     /// </summary>
     
-    public class OrdersController : AdminCoreController
+    public class OrdersController(IOrderService orderService) : AdminCoreController
     {
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(
-                new List<OrderOutputViewModel>
+            var orderServiceModels = await orderService.GetAllOrders();
+
+            var orderViewModels = orderServiceModels
+                .Select((orderServiceModel) => new OrderOutputViewModel
                 {
-                    new()
-                    {
-                        CustomerName = "Angel Snopf",
-                        CreatedOn = DateTime.Now,
-                        Status = OrderStatus.Cancelled,
-                        TotalPrice = 25.55M
-                    },
-                    new()
-                    {
-                        CustomerName = "Tsvetelin Marinov",
-                        CreatedOn = DateTime.Now,
-                        Status = OrderStatus.Processing,
-                        TotalPrice = 666M
-                    },
-                    new()
-                    {
-                        CustomerName = "Martina Pavlova",
-                        CreatedOn = DateTime.Now,
-                        Status = OrderStatus.Shipped,
-                        TotalPrice = 1555.65M
-                    }
-                }
-            );
+                    OrderId = orderServiceModel.OrderId,
+                    CustomerName = orderServiceModel.CustomerName,
+                    TotalPrice = orderServiceModel.TotalPrice,
+                    CreatedOn = orderServiceModel.CreatedOn,
+                    Status = Enum.Parse<OrderStatus>(orderServiceModel.Status),
+                })
+                .ToList();
+
+            return View(orderViewModels);
         }
     }
 }
