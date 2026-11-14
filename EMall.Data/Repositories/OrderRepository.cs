@@ -16,9 +16,8 @@ namespace EMall.Data.Repositories
 
 
         /// <summary>
-        ///  Retrieves all the records of the <typeparamref name="TEntity"/>.
+        ///  Retrieves all the orders.
         /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
         public async Task<IEnumerable<Order>> GetAll()
         {
             var orderEntities = await this._context
