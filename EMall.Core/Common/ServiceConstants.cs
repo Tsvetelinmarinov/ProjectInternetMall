@@ -24,6 +24,9 @@
         {
             public const string UnableToCastIAsyncEnumerableToIEnumerable
                 = "Unable to cast IAsyncEnumerable to IEnumerable!";
+
+            public const string UnableToMapOrdersToOrderOutputServiceModels
+                = "Unable to map Orders to OrderOutputServiceModels!";
         }
     }
 }
