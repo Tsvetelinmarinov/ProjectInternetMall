@@ -51,23 +51,20 @@
             asp-controller="Orders"
             class="d-flex flex-wrap align-items-center gap-2">
                 <label for="sortBy" class="col-form-label">Сортирай по</label>
-                <select id="sortBy" name="sortBy" class="form-select w-auto" onchange="this.form.submit()">
+                <select id="sortBy" name="sortBy" class="form-select w-auto">
                     @foreach (var column in columns)
                     {
-                        <option value="@column.Key" selected="@(sortBy == column.Key)">@column.Title</option>
+                        <option value="@column.Key">@column.Title</option>
                     }
                 </select>
                 <select id="sortDir" 
                     name="sortDir" 
                     class="form-select w-auto"
-                    aria-label="Посока на сортиране"
-                    onchange="this.form.submit()">
-                        <option value="asc" selected="@(sortDir == "asc")">Възходящо</option>
-                        <option value="desc" selected="@(sortDir == "desc")">Низходящо</option>
+                    aria-label="Посока на сортиране">
+                        <option value="asc">Възходящо</option>
+                        <option value="desc">Низходящо</option>
                 </select>
-                <noscript>
-                    <button type="submit" class="btn btn-primary">Приложи</button>
-                </noscript>
+                <button type="submit" class="btn btn-primary">Приложи</button>
         </form>
     </div>
 

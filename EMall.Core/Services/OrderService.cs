@@ -51,15 +51,8 @@ namespace EMall.Core.Services
                  ?? throw new ServiceException(UnableToMapOrdersToOrderOutputServiceModels);
 
             // Сортиране по указаните параметри.
-            if (string.IsNullOrWhiteSpace(sortBy))
-            {
-                throw new ServiceException(SortingKeyCannotBeNull);
-            }
-
-            if (string.IsNullOrWhiteSpace(sortDir))
-            {
-                throw new ServiceException(SortingDirectionKeyCannotBeNull);
-            }
+            sortBy ??= this._sortingKeys[2];
+            sortDir ??= this._sortDirAsc;
 
             if (this._sortingKeys.Contains(sortBy) is false)
             {
