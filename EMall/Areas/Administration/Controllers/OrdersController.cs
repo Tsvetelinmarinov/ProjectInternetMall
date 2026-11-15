@@ -12,9 +12,10 @@ namespace EMall.Areas.Administration.Controllers
     public class OrdersController(IOrderService orderService) : AdminCoreController
     {
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] string sortBy, [FromQuery] string sortDir)
         {
-            var orderServiceModels = await orderService.GetAllOrders();
+            var orderServiceModels 
+                = await orderService.GetAllOrders(sortBy, sortDir);
 
             var orderViewModels = orderServiceModels
                 .Select((orderServiceModel) => new OrderOutputViewModel
@@ -24,8 +25,7 @@ namespace EMall.Areas.Administration.Controllers
                     TotalPrice = orderServiceModel.TotalPrice,
                     CreatedOn = orderServiceModel.CreatedOn,
                     Status = Enum.Parse<OrderStatus>(orderServiceModel.Status),
-                })
-                .ToList();
+                }).ToList();
 
             return View(orderViewModels);
         }
