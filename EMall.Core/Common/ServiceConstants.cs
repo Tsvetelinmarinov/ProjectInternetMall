@@ -27,6 +27,11 @@
 
             public const string UnableToMapOrdersToOrderOutputServiceModels
                 = "Unable to map Orders to OrderOutputServiceModels!";
+
+            public const string SortingKeyCannotBeNull = "Sorting keyword can not be null!";
+            public const string SortingDirectionKeyCannotBeNull = "Sorting direction keyword can not be null!";
+            public const string InvalidSortingKey = "Unrecognized sorting keyword!";
+            public const string InvalidSortingDirectoryKey = "Unrecognized sorting directory keyword!";
         }
     }
 }
