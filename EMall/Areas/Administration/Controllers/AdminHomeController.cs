@@ -30,7 +30,7 @@ namespace EMall.Areas.Administration.Controllers
                     ProductsCount = (category.Products ??[]).Count()
                 });
 
-            var orderServiceModels = await ordersService.GetAllOrders(); 
+            var orderServiceModels = await ordersService.GetAllOrders("date", "asc"); 
 
             // Понеже тази колекция е за нови поръчки, се взимат само 5 колкото за dashboard-а.
             // Все пак този медот връща всички, защото ще се използва и в OrderController-а.
