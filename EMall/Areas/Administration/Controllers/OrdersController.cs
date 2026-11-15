@@ -12,8 +12,14 @@ namespace EMall.Areas.Administration.Controllers
     public class OrdersController(IOrderService orderService) : AdminCoreController
     {
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] string sortBy, [FromQuery] string sortDir)
+        public async Task<IActionResult> Index([FromQuery] string? sortBy, [FromQuery] string? sortDir)
         {
+            sortBy ??= "date";
+            sortDir ??= "asc";
+
+            ViewBag.SortBy = sortBy;
+            ViewBag.SortDir = sortDir;
+
             var orderServiceModels 
                 = await orderService.GetAllOrders(sortBy, sortDir);
 

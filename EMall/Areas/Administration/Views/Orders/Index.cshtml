@@ -54,15 +54,15 @@
                 <select id="sortBy" name="sortBy" class="form-select w-auto">
                     @foreach (var column in columns)
                     {
-                        <option value="@column.Key">@column.Title</option>
+                        <option value="@column.Key" selected="@(column.Key == sortBy)">@column.Title</option>
                     }
                 </select>
                 <select id="sortDir" 
                     name="sortDir" 
                     class="form-select w-auto"
                     aria-label="Посока на сортиране">
-                        <option value="asc">Възходящо</option>
-                        <option value="desc">Низходящо</option>
+                        <option value="asc" selected="@(sortDir == "asc")">Възходящо</option>
+                        <option value="desc" selected="@(sortDir == "desc")">Низходящо</option>
                 </select>
                 <button type="submit" class="btn btn-primary">Приложи</button>
         </form>

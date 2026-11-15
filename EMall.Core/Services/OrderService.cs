@@ -72,7 +72,7 @@ namespace EMall.Core.Services
                 "number" => this._sortingKeys[0],
                 "customer" => this._sortingKeys[1],
                 "date" => this._sortingKeys[2],
-                "totoal" => this._sortingKeys[3],
+                "total" => this._sortingKeys[3],
                 "status" => this._sortingKeys[4],
                 _ => this._sortingKeys[2] // По подразбиране соритаме по дата, възходящо.
             };
