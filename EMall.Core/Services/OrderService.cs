@@ -4,7 +4,6 @@ using EMall.Core.ServiceModels.Output;
 using EMall.Core.Services.Interfaces;
 using EMall.Data.EntityModels;
 using EMall.Data.Repositories.Interfaces;
-using System.Diagnostics.CodeAnalysis;
 using static EMall.Core.Common.ServiceConstants.OrderRelated;
 
 namespace EMall.Core.Services
