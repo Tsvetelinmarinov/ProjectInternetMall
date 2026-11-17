@@ -35,4 +35,8 @@
     <ProjectReference Include="..\EMall.ViewModels\EMall.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="PipelineFilters\" />
+  </ItemGroup>
+
 </Project>
