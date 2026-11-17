@@ -20,20 +20,16 @@ namespace EMall.PipelineFilters.ResultFilters
         {
             // Adding header X-Developer in the response headers before the
             // response starts returning.
-            bool successHeaderAppending = context
+            context
                 .HttpContext
                 .Response
                 .Headers
-                .TryAdd("X-Developer", new());
+                .Append("X-Developer", new(this._developerName));
 
-            // Render if everything's fine.
-            if (successHeaderAppending is true)
-            {
-                _ = await next.Invoke(); // Next, actually is the action in the controller,
-                                        // beacuse there is no more filters, and we reach the endpoint.
-                                       // After the IActionResult is rendered, the result goes out as
-                                      // clear html file.
-            }
+            _ = await next.Invoke(); // Next, actually is the action in the controller,
+                                    // beacuse there is no more filters, and we reach the endpoint.
+                                   // After the IActionResult is rendered, the result goes out as
+                                  // clear html file.
 
             // No filter after the view rendering.
         }
