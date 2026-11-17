@@ -89,6 +89,7 @@ namespace EMall
                       ?? NoConfiguredDeveloperNameForXDeveloper;
             });
 
+            // Adding the X-Developer header adding filter.
             builder.Services.AddMvc((mvcOptions) =>
             {
                 mvcOptions.Filters.Add<AsyncResultFilterForAddingXDeveloperHeader>();
