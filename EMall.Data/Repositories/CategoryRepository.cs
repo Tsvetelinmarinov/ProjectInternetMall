@@ -29,25 +29,5 @@ namespace EMall.Data.Repositories
                 .AsAsyncEnumerable()
                  ?? throw new DbException(NoCategoriesFromDb);
         }
-
-        public Task Add(Category entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Category> FindById(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
