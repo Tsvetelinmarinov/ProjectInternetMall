@@ -41,6 +41,7 @@
                 = "Unable to create role {0} in table AspNetRoles, because of system error.";
 
             public const string SuccessfullyCreateRole = "Successfully created role {0}!";
+            public const string NoConfiguredDeveloperNameForXDeveloper = "No configured developer name!";
         }
 
         /// <summary>

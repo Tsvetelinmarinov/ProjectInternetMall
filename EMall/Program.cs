@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using EMall.AutoMapper;
 using static EMall.Constants.WebConstants.Common;
+using EMall.PipelineFilters.ResultFilters;
+using EMall.PipelineFilters.ResultFilters.Options;
 
 namespace EMall
 {
@@ -72,6 +74,19 @@ namespace EMall
                         typeof(CategoryServiceMappingProfile).Assembly
                     ]
                 );
+            });
+
+            // Add the XDeveloperHeaderOptions that holds the developer name 
+            // from the configuration for the X-Developer response header.
+            //
+            // Този прост филтър(който добавя хедъра), въобще като цяло използва
+            // конфигурацията за името и опцийте му имплементират шаблона на опцийте,
+            // за да покажа разбиране по темата.
+            builder.Services.Configure<XDeveloperHeaderOptions>((xDevHeaderOptions) =>
+            {
+                xDevHeaderOptions.DeveloperFullName 
+                    = builder.Configuration["DefinedHeaders:X-Developer"] 
+                      ?? NoConfiguredDeveloperNameForXDeveloper;
             });
 
             // Build the application host.
