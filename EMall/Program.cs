@@ -89,6 +89,11 @@ namespace EMall
                       ?? NoConfiguredDeveloperNameForXDeveloper;
             });
 
+            builder.Services.AddMvc((mvcOptions) =>
+            {
+                mvcOptions.Filters.Add<AsyncResultFilterForAddingXDeveloperHeader>();
+            });
+
             // Build the application host.
             var app = builder.Build();
 
