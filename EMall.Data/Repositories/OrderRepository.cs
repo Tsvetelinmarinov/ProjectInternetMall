@@ -40,7 +40,7 @@ namespace EMall.Data.Repositories
         /// <param name="entity">
         ///  The entity to be added.
         /// </param>
-        public void Add<TEntity>(TEntity entity)
+        Task ICrudOperations.Add<TEntity>(TEntity entity)
         {
             throw new NotImplementedException();
         }
@@ -58,7 +58,7 @@ namespace EMall.Data.Repositories
         /// <returns>
         ///  The record/entity with the specified ID.
         /// </returns>
-        public TEntity FindById<TEntity>(int id)
+        Task<TEntity> ICrudOperations.FindById<TEntity>(int id)
         {
             throw new NotImplementedException();
         }
@@ -72,7 +72,7 @@ namespace EMall.Data.Repositories
         /// <param name="id">
         ///  The ID of the entity to be updated.
         /// </param>
-        public void Update<TEntity>(int id)
+        Task ICrudOperations.Update<TEntity>(int id)
         {
             throw new NotImplementedException();
         }
@@ -90,7 +90,7 @@ namespace EMall.Data.Repositories
         /// <returns>
         ///  True if deleted - otherwise False.
         /// </returns>
-        public bool Delete<TEntity>(int id)
+        Task<bool> ICrudOperations.Delete<TEntity>(int id)
         {
             throw new NotImplementedException();
         }
