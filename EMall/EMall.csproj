@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="PipelineFilters\" />
+    <Folder Include="PipelineFilters\ResultFilters\" />
   </ItemGroup>
 
 </Project>
