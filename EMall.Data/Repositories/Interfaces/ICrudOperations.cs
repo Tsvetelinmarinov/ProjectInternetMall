@@ -3,7 +3,7 @@
     /// <summary>
     ///  Provides base CRUD operations for all repositories.
     /// </summary>
-    public interface ICrudOperations<TEntity>
+    public interface ICrudOperations<TEntity> where TEntity : class
     {
         /// <summary>
         ///  Adds an entity/record to the database.
