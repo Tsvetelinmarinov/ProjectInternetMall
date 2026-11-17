@@ -3,7 +3,7 @@
     /// <summary>
     ///  Provides base CRUD operations for all repositories.
     /// </summary>
-    public interface ICrudOperations
+    public interface ICrudOperations<TEntity>
     {
         /// <summary>
         ///  Adds an entity/record to the database.
@@ -14,7 +14,7 @@
         /// <param name="entity">
         ///  The entity to be added.
         /// </param>
-        Task Add<TEntity>(TEntity entity);
+        Task Add(TEntity entity);
 
         /// <summary>
         ///  Retrieves entity of type <typeparamref name="TEntity"/> from the database
@@ -29,7 +29,7 @@
         /// <returns>
         ///  The record/entity with the specified ID.
         /// </returns>
-        Task<TEntity> FindById<TEntity>(int id);
+        Task<TEntity> FindById(int id);
 
         /// <summary>
         ///  Updates existing record/entity in the database.
@@ -40,7 +40,7 @@
         /// <param name="id">
         ///  The ID of the entity to be updated.
         /// </param>
-        Task Update<TEntity>(int id);
+        Task Update(int id);
 
         /// <summary>
         ///  Deletes entity/record of type <typeparamref name="TEntity"/> form the
@@ -55,6 +55,6 @@
         /// <returns>
         ///  True if deleted - otherwise False.
         /// </returns>
-        Task<bool> Delete<TEntity>(int id);
+        Task<bool> Delete(int id);
     }
 }

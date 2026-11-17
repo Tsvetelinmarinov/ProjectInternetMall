@@ -5,7 +5,7 @@ namespace EMall.Data.Repositories.Interfaces
     /// <summary>
     ///  Provides CRUD operations for entity Category.
     /// </summary>
-    public interface ICategoryRepository
+    public interface ICategoryRepository : ICrudOperations<Category>
     {
         /// <summary>
         ///  Retrieves all categories from the database.

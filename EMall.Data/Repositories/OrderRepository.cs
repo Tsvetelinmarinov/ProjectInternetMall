@@ -14,7 +14,6 @@ namespace EMall.Data.Repositories
         // DbContext for communicating with the database.
         private readonly ApplicationDbContext _context = context;
 
-
         /// <summary>
         ///  Retrieves all the orders.
         /// </summary>
@@ -40,39 +39,7 @@ namespace EMall.Data.Repositories
         /// <param name="entity">
         ///  The entity to be added.
         /// </param>
-        Task ICrudOperations.Add<TEntity>(TEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        ///  Retrieves entity of type <typeparamref name="TEntity"/> from the database
-        ///  by its ID.
-        /// </summary>
-        /// <typeparam name="TEntity">
-        ///  The type of the entity.
-        /// </typeparam>
-        /// <param name="id">
-        ///  The ID of the record/entity.
-        /// </param>
-        /// <returns>
-        ///  The record/entity with the specified ID.
-        /// </returns>
-        Task<TEntity> ICrudOperations.FindById<TEntity>(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        ///  Updates existing record/entity in the database.
-        /// </summary>
-        /// <typeparam name="TEntity">
-        ///  The data type of the entity.
-        /// </typeparam>
-        /// <param name="id">
-        ///  The ID of the entity to be updated.
-        /// </param>
-        Task ICrudOperations.Update<TEntity>(int id)
+        public Task Add(Order entity)
         {
             throw new NotImplementedException();
         }
@@ -90,7 +57,39 @@ namespace EMall.Data.Repositories
         /// <returns>
         ///  True if deleted - otherwise False.
         /// </returns>
-        Task<bool> ICrudOperations.Delete<TEntity>(int id)
+        public Task<bool> Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///  Updates existing record/entity in the database.
+        /// </summary>
+        /// <typeparam name="TEntity">
+        ///  The data type of the entity.
+        /// </typeparam>
+        /// <param name="id">
+        ///  The ID of the entity to be updated.
+        /// </param>
+        public Task Update(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///  Retrieves entity of type <typeparamref name="TEntity"/> from the database
+        ///  by its ID.
+        /// </summary>
+        /// <typeparam name="TEntity">
+        ///  The type of the entity.
+        /// </typeparam>
+        /// <param name="id">
+        ///  The ID of the record/entity.
+        /// </param>
+        /// <returns>
+        ///  The record/entity with the specified ID.
+        /// </returns>
+        public Task<Order> FindById(int id)
         {
             throw new NotImplementedException();
         }
