@@ -43,7 +43,7 @@ namespace EMall.Core.Services
         public async Task<IEnumerable<OrderOutputServiceModel>> GetAllOrders(string? sortBy, string? sortDir)
         {
             // Извличане на поръчките от репозиторията.
-            IEnumerable<Order> orderEntities = await repository.GetAll();
+            IEnumerable<Order> orderEntities = await repository.GetAllAsync();
 
             // Кастване към сервизни модели.
             var orderServiceModels
@@ -119,6 +119,28 @@ namespace EMall.Core.Services
             };
 
             return orderServiceModels;
+        }
+
+        /// <summary>
+        ///  Retrieve order from the orders repository
+        ///  by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the order.</param>
+        /// <returns>The order service model with the coresponding ID.</returns>
+        public async Task<OrderOutputServiceModel> FindOrderById(int? id)
+        {
+            if (id is null || id <= 0)
+            {
+                throw new ServiceException(InvalidOrderId);
+            }
+
+            var orderEntity = await repository.GetAllAsync();
+
+            var orderServiceModel
+                = mapper.Map<OrderOutputServiceModel>(orderEntity)
+                 ?? throw new ServiceException(UnableToMapOrderToOrderOutputServiceModel);
+
+            return orderServiceModel;
         }
     }
 }

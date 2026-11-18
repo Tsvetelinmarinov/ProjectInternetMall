@@ -8,7 +8,6 @@ namespace EMall.Areas.Administration.Controllers
     /// <summary>
     ///  Provides endpoint for the orders menu in the admin panel.
     /// </summary>
-    
     public class OrdersController(IOrderService orderService) : AdminCoreController
     {
         [HttpGet]
@@ -34,6 +33,12 @@ namespace EMall.Areas.Administration.Controllers
                 }).ToList();
 
             return View(orderViewModels);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OrderDetails([FromRoute] int? id)
+        {
+            return Ok();
         }
     }
 }

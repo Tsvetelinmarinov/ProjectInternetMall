@@ -32,6 +32,11 @@
             public const string SortingDirectionKeyCannotBeNull = "Sorting direction keyword can not be null!";
             public const string InvalidSortingKey = "Unrecognized sorting keyword!";
             public const string InvalidSortingDirectoryKey = "Unrecognized sorting directory keyword!";
+
+            public const string UnableToMapOrderToOrderOutputServiceModel
+                = "Unable to map Order to OrderOutputServiceModel!";
+
+            public const string InvalidOrderId = "Invalid order ID! Something went wrong!";
         }
     }
 }
