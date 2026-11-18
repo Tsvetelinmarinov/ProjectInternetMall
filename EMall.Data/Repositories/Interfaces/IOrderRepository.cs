@@ -8,9 +8,5 @@ namespace EMall.Data.Repositories.Interfaces
     /// </summary>
     public interface IOrderRepository : IBaseRepository<Order>
     {
-        /// <summary>
-        ///  Retrieves all the orders/>.
-        /// </summary>
-        Task<IEnumerable<Order>> GetAllAsync();
     }
 }

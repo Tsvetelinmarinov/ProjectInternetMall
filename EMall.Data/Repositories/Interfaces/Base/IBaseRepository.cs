@@ -6,6 +6,15 @@
     public interface IBaseRepository<TEntity> where TEntity : class
     {
         /// <summary>
+        ///  Retrieves all the entities from the database
+        ///  whithout tracking it for changes.
+        /// </summary>
+        /// <returns>
+        ///  <see cref="IQueryable{TEntity}"/> with all untracked entites.
+        /// </returns>
+        Task<IQueryable<TEntity>> AllAsNoTracking();
+
+        /// <summary>
         ///  Adds an entity/record to the database.
         /// </summary>
         /// <typeparam name="TEntity">
@@ -32,17 +41,6 @@
         Task<TEntity> FindByIdAsync(int id);
 
         /// <summary>
-        ///  Updates existing record/entity in the database.
-        /// </summary>
-        /// <typeparam name="TEntity">
-        ///  The data type of the entity.
-        /// </typeparam>
-        /// <param name="id">
-        ///  The ID of the entity to be updated.
-        /// </param>
-        Task UpdateAsync(int id);
-
-        /// <summary>
         ///  Deletes entity/record of type <typeparamref name="TEntity"/> form the
         ///  database by its ID.
         /// </summary>
@@ -55,6 +53,6 @@
         /// <returns>
         ///  True if deleted - otherwise False.
         /// </returns>
-        Task<bool> DeleteAsync(int id);
+        Task DeleteAsync(int id);
     }
 }
