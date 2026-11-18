@@ -67,6 +67,7 @@
         public static class OrderRelated
         {
             public const string NoOrdersFromDb = "Something went wrong while retrieving the orders from the database.";
+            public const string NoOrderFromDb = "Something went wrong while retrieving the order from the database.";
         }
     }
 }

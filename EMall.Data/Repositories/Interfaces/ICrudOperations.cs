@@ -14,7 +14,7 @@
         /// <param name="entity">
         ///  The entity to be added.
         /// </param>
-        Task Add(TEntity entity);
+        Task AddAsync(TEntity entity);
 
         /// <summary>
         ///  Retrieves entity of type <typeparamref name="TEntity"/> from the database
@@ -29,7 +29,7 @@
         /// <returns>
         ///  The record/entity with the specified ID.
         /// </returns>
-        Task<TEntity> FindById(int id);
+        Task<TEntity> FindByIdAsync(int id);
 
         /// <summary>
         ///  Updates existing record/entity in the database.
@@ -40,7 +40,7 @@
         /// <param name="id">
         ///  The ID of the entity to be updated.
         /// </param>
-        Task Update(int id);
+        Task UpdateAsync(int id);
 
         /// <summary>
         ///  Deletes entity/record of type <typeparamref name="TEntity"/> form the
@@ -55,6 +55,6 @@
         /// <returns>
         ///  True if deleted - otherwise False.
         /// </returns>
-        Task<bool> Delete(int id);
+        Task<bool> DeleteAsync(int id);
     }
 }
