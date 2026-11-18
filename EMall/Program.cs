@@ -1,15 +1,17 @@
-using EMall.Core.Common;
-using EMall.Core.ServiceModels.AutoMapper;
 using EMall.Core.Services;
 using EMall.Core.Services.Interfaces;
+using EMall.Core.AutoMapper;
 using EMall.Data;
+using EMall.Data.SeedData;
 using EMall.Data.DatabaseContext;
 using EMall.Data.Repositories;
 using EMall.Data.Repositories.Interfaces;
-using EMall.ViewModels.AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
+using EMall.AutoMapper;
+using static EMall.Constants.WebConstants.Common;
+using EMall.PipelineFilters.ResultFilters;
+using EMall.PipelineFilters.ResultFilters.Options;
 
 namespace EMall
 {
@@ -24,7 +26,7 @@ namespace EMall
             var connectionString = builder
                 .Configuration
                 .GetConnectionString("DefaultConnection")
-                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                 ?? throw new InvalidOperationException(NoDbConnectionKey);
 
             // Add services of controllers and views to the container +
             // services for exception page for database errors.
@@ -52,27 +54,45 @@ namespace EMall
             builder.Services
                 .AddDefaultIdentity<ApplicationUser>(
                     options => ConfigureIdentity(options, builder.Configuration)
-                )
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                ).AddRoles<IdentityRole>()
+                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Add Repositories.
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
             // Add Services.
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
 
             // Add AutoMapper.
             builder.Services.AddAutoMapper((mappingConfig) =>
             {
-                mappingConfig.AddProfiles([
-                    new CategoryMappingProfile(),
-                    new ProductMappingProfile(),
-                    new ProductClaimMappingProfile(),
-                    new CategoryServiceMappingProfile(),
-                    new ProductServiceMappingProfile(),
-                    new ProductClaimServiceMappingProfile(),
-                ]);
+                mappingConfig.AddMaps(
+                    [
+                        typeof(CategoryMappingProfile).Assembly,
+                        typeof(CategoryServiceMappingProfile).Assembly
+                    ]
+                );
+            });
+
+            // Add the XDeveloperHeaderOptions that holds the developer name 
+            // from the configuration for the X-Developer response header.
+            //
+            // Този прост филтър(който добавя хедъра), въобще като цяло използва
+            // конфигурацията за името и опцийте му имплементират шаблона на опцийте,
+            // за да покажа разбиране по темата.
+            builder.Services.Configure<XDeveloperHeaderOptions>((xDevHeaderOptions) =>
+            {
+                xDevHeaderOptions.DeveloperFullName 
+                    = builder.Configuration["DefinedHeaders:X-Developer"] 
+                      ?? NoConfiguredDeveloperNameForXDeveloper;
+            });
+
+            // Adding the X-Developer header adding filter.
+            builder.Services.AddMvc((mvcOptions) =>
+            {
+                mvcOptions.Filters.Add<AsyncResultFilterForAddingXDeveloperHeader>();
             });
 
             // Build the application host.
@@ -81,24 +101,37 @@ namespace EMall
             #endregion
             #region Configure HTTP Request Pipeline
 
-            if (app.Environment.IsDevelopment())
+            if (app.Environment.IsProduction())
             { 
                 app.UseStatusCodePagesWithReExecute("/Home/Error");
+                app.UseHsts();
             }
             else
             {
-                app.UseStatusCodePagesWithReExecute("/Home/Error");
-                app.UseHsts();
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
 
-            app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}")
-               .WithStaticAssets();
+            app.MapControllerRoute(
+                "areas", 
+                "{area:exists}/{controller}/{action}/{id?}",
+                new { controller = "Home", action = "Index" },
+                new { id = @"\d*" }
+            ).WithStaticAssets();
+
+            app.MapControllerRoute(
+                "default", 
+                "{controller}/{action}/{id?}",
+                new { controller = "Home", action = "Index" },
+                new { id = @"\d*" }
+            ).WithStaticAssets();
 
             app.MapRazorPages()
                .WithStaticAssets();
@@ -115,42 +148,102 @@ namespace EMall
                 try
                 {
                     dtb.Database.Migrate();
+                    await AdminDashboardDataSeeder.SeedAsync(dtb); //=> If no products -> seed any.
                 }
                 catch (Exception ex)
                 {
                     // If something happen while migrating, atleast write it to the console,
                     // because the application will still attempt to migrate, so we should know from the beginning.
-                    Console.WriteLine($"Unsuccessful startup migration! Error message: {ex.Message}\n At: {ex.StackTrace}\n");
+                    Console.WriteLine(UnableToMigrateOnStartUp, ex.Message, ex.StackTrace);
                     
                     return; //=> Because, if we do not migrate, table AspNetRoles will not exist,
                            //=> so the code bellow will throw some type of Exception.
                 }
             }
 
-            // If database exists, add role Admin in AspNetRoles.
+            // If database exists, add role Administrator and default admin user - me + role User.
             using (IServiceScope scope = app.Services.CreateScope())
             {
+                // Manager of roles.
                 var rolesManager = scope
                     .ServiceProvider
                     .GetRequiredService<RoleManager<IdentityRole>>();
 
+                // Manager of users.
+                var usersManager = scope
+                    .ServiceProvider
+                    .GetRequiredService<UserManager<ApplicationUser>>();
+
                 string adminRole = "Administrator"; //=> System admin.
+                string userRole = "User"; //=> System user.
 
                 try
                 {
+                    // Check if the admin role exist, and if not - create it.
                     if (await rolesManager.RoleExistsAsync(adminRole) is false)
                     {
-                        var roleCreatingResult = await rolesManager.CreateAsync(new IdentityRole(adminRole));
+                        var roleCreatingResult 
+                            = await rolesManager.CreateAsync(new IdentityRole(adminRole));
 
                         if (roleCreatingResult.Succeeded)
                         {
-                            Console.WriteLine("Successfully created role {0}!", adminRole);
+                            Console.WriteLine(SuccessfullyCreateRole, adminRole);
                         }
+                    }
+
+                    // Check if the role User exists, and if not - create it.
+                    if (await rolesManager.RoleExistsAsync(userRole) is false)
+                    {
+                        var userRoleCreatingResult
+                            = await rolesManager.CreateAsync(new IdentityRole(userRole));
+
+                        if (userRoleCreatingResult.Succeeded)
+                        {
+                            Console.WriteLine(SuccessfullyCreateRole, userRole);
+                        }
+                    }
+
+                    // Specify the email of the administrator.
+                    var adminEmail 
+                        = app.Configuration.GetValue<string>("AdminProfile:Email")
+                            ?? throw new InvalidOperationException(NoAdminEmail);
+
+                    // Find the user with that email.
+                    var admin = await usersManager.FindByEmailAsync(adminEmail);
+
+                    // If does not exists - create it.
+                    if (admin is null)
+                    {
+                        admin = new ApplicationUser 
+                        { 
+                            UserName = adminEmail,
+                            Email = adminEmail,
+                            EmailConfirmed = true
+                        };
+
+                        var adminPassword 
+                            = app.Configuration.GetValue<string>("AdminProfile:Password")
+                                ?? throw new InvalidOperationException(NoAdminPassword);
+
+                        var adminCreatingResult 
+                            = await usersManager.CreateAsync(admin, adminPassword);
+
+                        // Check for succeeded creating, and if true - print message for success in the Console.
+                        if (adminCreatingResult.Succeeded is true)
+                        {
+                            Console.WriteLine(SuccessAdminCreate, adminEmail);
+                        }
+                    }
+
+                    // If the new user is not admin yet, make it admin.
+                    if (await usersManager.IsInRoleAsync(admin, adminRole) is false) 
+                    {
+                        await usersManager.AddToRoleAsync(admin, adminRole);
                     }
                 }
                 catch
                 {
-                    Debug.WriteLine($"Unable to create role {adminRole} in table AspNetRoles, because of system error.");
+                    Console.WriteLine(UnableToCreateAdminRole, adminRole);
                 }
             }
 
@@ -161,7 +254,7 @@ namespace EMall
 
         #region Private Functionality
 
-        // Configures the default Identity.
+        // Configures the Identity system.
         private static void ConfigureIdentity(IdentityOptions options, ConfigurationManager configuration)
         {
             // User settings

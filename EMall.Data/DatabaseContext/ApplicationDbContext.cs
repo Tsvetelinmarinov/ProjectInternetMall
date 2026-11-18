@@ -2,7 +2,6 @@
 using EMall.Data.EntityModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace EMall.Data.DatabaseContext
 {
@@ -11,6 +10,8 @@ namespace EMall.Data.DatabaseContext
     {
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderProduct> OrderProducts { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

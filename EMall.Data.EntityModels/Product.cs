@@ -76,5 +76,7 @@ namespace EMall.Data.EntityModels
         /// </summary>
         [Column(TypeName = "VECTOR(768)")] 
         public SqlVector<float>? Vector { get; set; }
+
+        public virtual ICollection<OrderProduct>? OrderProducts { get; set; }
     }
 }

@@ -2,14 +2,14 @@
 using EMall.Core.ServiceModels.Output;
 using EMall.ViewModels.Output;
 
-namespace EMall.ViewModels.AutoMapper
+namespace EMall.AutoMapper
 {
     public class ProductServiceMappingProfile : Profile
     {
         public ProductServiceMappingProfile()
         {
-            // Create mapping for ProductClaimOutputServiceModel -> ProductCalimOutputViewModel.
-            this.CreateMap<ProductClaimOutputServiceModel, ProductOutputViewModel>()
+            // Create mapping for ProductOutputServiceModel -> ProductOutputViewModel.
+            this.CreateMap<ProductOutputServiceModel, ProductOutputViewModel>()
                 .ReverseMap();
         }
     }

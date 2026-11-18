@@ -1,0 +1,124 @@
+﻿@using EMall.Areas.Administration.ViewModels.Order.Common @*This using directive is only here , so she will stay here.*@
+@model IEnumerable<OrderOutputViewModel> 
+
+@{
+    ViewData["Title"] = "Поръчки";
+
+    string sortBy = ViewBag.SortBy ?? "date";
+    string sortDir = ViewBag.SortDir ?? "desc";
+
+    // Колоните по ред на показване. Използват се и за падащото меню, и за заглавията на таблицата.
+    var columns = new (string Key, string Title)[]
+    {
+        ("number", "Номер"),
+        ("customer", "Клиент"),
+        ("date", "Дата"),
+        ("total", "Сума"),
+        ("status", "Статус")
+    };
+
+    // Първо кликване върху колона сортира възходящо, второ – низходящо.
+    string ChangeSortingDirectory(string key) 
+        => sortBy == key && sortDir == "asc" ? "desc" : "asc";
+
+    string AriaSort(string key) 
+        => sortBy != key ? "none" : (sortDir == "asc" ? "ascending" : "descending");
+
+    string Arrow(string key) 
+        => sortBy != key ? "" : (sortDir == "asc" ? "▲" : "▼");
+
+    (string Label, string Css) StatusInfo(OrderStatus status) => status switch 
+    {
+        OrderStatus.Pending => ("Чакаща", "bg-warning text-dark"),
+        OrderStatus.Processing => ("Обработва се", "bg-info text-dark"),
+        OrderStatus.Shipped => ("Изпратена", "bg-primary"),
+        OrderStatus.Delivered => ("Доставена", "bg-success"),
+        OrderStatus.Cancelled => ("Отказана", "bg-secondary"),
+        _ => ("Неизвестен", "bg-secondary")
+    };
+}
+
+<div class="container py-4">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+        <div>
+            <h1 class="h3 mb-1">Поръчки</h1>
+            <p class="text-muted mb-0">Общо поръчки: @Model.Count()</p>
+        </div>
+
+        <form method="get" 
+            asp-area="Administration" 
+            asp-controller="Orders"
+            class="d-flex flex-wrap align-items-center gap-2">
+                <label for="sortBy" class="col-form-label">Сортирай по</label>
+                <select id="sortBy" name="sortBy" class="form-select w-auto">
+                    @foreach (var column in columns)
+                    {
+                        <option value="@column.Key" selected="@(column.Key == sortBy)">@column.Title</option>
+                    }
+                </select>
+                <select id="sortDir" 
+                    name="sortDir" 
+                    class="form-select w-auto"
+                    aria-label="Посока на сортиране">
+                        <option value="asc" selected="@(sortDir == "asc")">Възходящо</option>
+                        <option value="desc" selected="@(sortDir == "desc")">Низходящо</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Приложи</button>
+        </form>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        @foreach (var column in columns)
+                        {
+                            <th scope="col" 
+                                aria-sort="@AriaSort(column.Key)"
+                                class="@(column.Key == "total" ? "text-end" : "")">
+                                    <a href="@Url.Action("Index", "Orders", new { area = "Administration", sortBy = column.Key, sortDir = ChangeSortingDirectory(column.Key) })"
+                                       class="link-dark text-decoration-none @(sortBy == column.Key ? "fw-semibold" : "")">
+                                           @column.Title <span class="text-primary">@Arrow(column.Key)</span>
+                                    </a>
+                            </th>
+                        }
+                        <th scope="col"><span class="visually-hidden">Действия</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any() is false)
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-5">
+                                Все още няма поръчки. Когато клиентите направят поръчка, тя ще се покаже тук.
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var order in Model)
+                    {
+                        var status = StatusInfo(order.Status);
+
+                        <tr>
+                            <td class="fw-semibold">#@order.OrderId</td>
+                            <td>@order.CustomerName</td>
+                            <td>@order.CreatedOn.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td class="text-end">@order.TotalPrice.ToString("N2") €</td>
+                            <td><span class="badge @status.Css">@status.Label</span></td>
+                            <td class="text-end">
+                                <a asp-area="Administration" 
+                                   asp-controller="Orders" 
+                                   asp-action="OrderDetails"
+                                   asp-route-id="@order.OrderId" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    Преглед
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

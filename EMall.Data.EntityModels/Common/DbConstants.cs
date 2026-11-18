@@ -60,5 +60,22 @@
         {
             public const string NoCategoriesFromDb = "Something went wrong while retrieving the categories from the database!";
         }
+
+        /// <summary>
+        /// Provides constants for entity Order related logic.
+        /// </summary>
+        public static class OrderRelated
+        {
+            public const string NoOrdersFromDb = "Something went wrong while retrieving the orders from the database.";
+            public const string NoOrderFromDb = "Something went wrong while retrieving the order from the database.";
+        }
+
+        /// <summary>
+        /// Provides constants for BaseRepository.cs logic.
+        /// </summary>
+        public static class BaseRepositoryRelated
+        {
+            public const string NoSuchEntity = "No such entity with that ID in the database.";
+        }
     }
 }
