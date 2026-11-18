@@ -38,7 +38,18 @@ namespace EMall.Areas.Administration.Controllers
         [HttpGet]
         public async Task<IActionResult> OrderDetails([FromRoute] int? id)
         {
-            return Ok();
+            var orderServiceModel = await orderService.FindOrderById(id);
+
+            var orderViewModel = new OrderOutputViewModel
+            {
+                OrderId = orderServiceModel.OrderId,
+                CustomerName = orderServiceModel.CustomerName,
+                Status = Enum.Parse<OrderStatus>(orderServiceModel.Status),
+                CreatedOn = orderServiceModel.CreatedOn,
+                TotalPrice = orderServiceModel.TotalPrice
+            };
+
+            return View(orderViewModel);
         }
     }
 }
