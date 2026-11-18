@@ -193,7 +193,13 @@
                                     <td class="adm-num">@Money(o.TotalPrice)</td>
                                     <td><span class="adm-chip @(StatusClass(o.Status.ToString()))">@o.Status.ToString()</span></td>
                                     <td class="adm-num">
-                                        <a class="adm-more" asp-area="" asp-controller="" asp-action="">Отвори</a>
+                                        <a class="adm-more"
+                                           asp-area="Administration" 
+                                           asp-controller="Orders" 
+                                           asp-action="OrderDetails"
+                                           asp-route-id="@o.OrderId">
+                                              Отвори
+                                        </a>
                                     </td>
                                 </tr>
                             }
