@@ -235,6 +235,68 @@ namespace EMall.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderProducts");
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            OrderId = 1,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            OrderId = 1,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            OrderId = 1,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            ProductId = 8
+                        },
+                        new
+                        {
+                            OrderId = 3,
+                            ProductId = 9
+                        },
+                        new
+                        {
+                            OrderId = 3,
+                            ProductId = 10
+                        },
+                        new
+                        {
+                            OrderId = 3,
+                            ProductId = 11
+                        },
+                        new
+                        {
+                            OrderId = 3,
+                            ProductId = 12
+                        });
                 });
 
             modelBuilder.Entity("EMall.Data.EntityModels.Product", b =>
