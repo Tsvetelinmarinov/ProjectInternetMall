@@ -116,7 +116,7 @@ namespace EMall.Data.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -177,8 +177,16 @@ namespace EMall.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
+                    b.Property<string>("AddressForShipping")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
@@ -193,13 +201,15 @@ namespace EMall.Data.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
 
                     b.HasData(
                         new
                         {
                             OrderId = 1,
+                            AddressForShipping = "бул. Витоша 100, София",
                             CreatedOn = new DateTime(2026, 11, 12, 19, 51, 0, 0, DateTimeKind.Unspecified),
+                            CustomerEmail = "angel.snopf@example.com",
                             CustomerName = "Angel Snopf",
                             Status = "Cancelled",
                             TotalPrice = 6299.96m
@@ -207,7 +217,9 @@ namespace EMall.Data.Migrations
                         new
                         {
                             OrderId = 2,
+                            AddressForShipping = "ул. Иван Вазов 25, Пловдив",
                             CreatedOn = new DateTime(2026, 11, 12, 19, 51, 0, 0, DateTimeKind.Unspecified),
+                            CustomerEmail = "tsvetelin.marinov@example.com",
                             CustomerName = "Tsvetelin Marinov",
                             Status = "Processing",
                             TotalPrice = 1269.96m
@@ -215,7 +227,9 @@ namespace EMall.Data.Migrations
                         new
                         {
                             OrderId = 3,
+                            AddressForShipping = "ул. Александровска 40, Бургас",
                             CreatedOn = new DateTime(2026, 11, 12, 19, 51, 0, 0, DateTimeKind.Unspecified),
+                            CustomerEmail = "martina.pavlova@example.com",
                             CustomerName = "Martina Pavlova",
                             Status = "Shipped",
                             TotalPrice = 199.96m
@@ -234,7 +248,7 @@ namespace EMall.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProducts", (string)null);
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("EMall.Data.EntityModels.Product", b =>
@@ -285,7 +299,7 @@ namespace EMall.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

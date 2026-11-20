@@ -14,8 +14,8 @@ namespace EMall.Data.EntityModels
 
         [Required]
         [StringLength(
-           OrderCustomerNameMinLen , 
-           MinimumLength = OrderCustomerNameMaxLen,
+           OrderCustomerNameMaxLen,
+           MinimumLength = OrderCustomerNameMinLen,
            ErrorMessage = InvalidOrderCustomerNameLength
         )]
         public string CustomerName { get; set; } = null!;
