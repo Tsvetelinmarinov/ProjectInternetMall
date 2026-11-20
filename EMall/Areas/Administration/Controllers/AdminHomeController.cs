@@ -57,7 +57,7 @@ namespace EMall.Areas.Administration.Controllers
 
             var boardModel = new AdminDashboardViewModel
             {
-                PendingOrders = 0,
+                PendingOrders = orderViewModels.Count,
                 ProductsCount = categoryStatViewModels.Sum((categoryStat) => categoryStat.ProductsCount),
                 OrdersCount = 0,
                 UsersCount = 1,

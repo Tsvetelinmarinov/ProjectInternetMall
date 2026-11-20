@@ -75,7 +75,15 @@
         /// </summary>
         public static class BaseRepositoryRelated
         {
-            public const string NoSuchEntity = "No such entity with that ID in the database.";
+            public const string NoSuchEntity = "No such entity with that ID in the database.";    
+        }
+
+        /// <summary>
+        /// Provides constants for OrderProduct entity related types.
+        /// </summary>
+        public static class OrderProductRelated
+        {
+            public const string NoSuchOrderOrProducts = "No such order, or no such products!";
         }
     }
 }

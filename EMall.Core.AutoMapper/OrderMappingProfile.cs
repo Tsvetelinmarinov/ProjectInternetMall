@@ -11,7 +11,11 @@ namespace EMall.Core.AutoMapper
     {
         public OrderMappingProfile()
         {
-            this.CreateMap<Order, OrderOutputServiceModel>()
+            _ = this.CreateMap<Order, OrderOutputServiceModel>()
+                .ForMember(
+                    destination => destination.Products,
+                    options => options.MapFrom(source => source.OrderProducts)
+                )
                 .ReverseMap();
         }
     }

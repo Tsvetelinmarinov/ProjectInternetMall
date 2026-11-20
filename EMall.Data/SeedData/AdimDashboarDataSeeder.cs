@@ -5,20 +5,13 @@ using Microsoft.EntityFrameworkCore;
 namespace EMall.Data.SeedData;
 
 /// <summary>
-///  This static class and his static asynchronous method
-///  SeedAsync() seeds data(products) for the admin dashboard, if not
-///  any products and orders.
+/// Seeds demo products when the product table is empty and ensures that
+/// the demo orders are linked to those products.
 /// </summary>
 public static class AdminDashboardDataSeeder
 {
     public static async Task SeedAsync(ApplicationDbContext dbContext)
     {
-        // If any products -> use them, do not seed nothing.
-        if (dbContext.Products.Any())
-        {
-            return;
-        }
-
         int[] requiredCategoryIds = [1, 2, 3, 4, 5, 6];
 
         var existingCategoryIds = dbContext
@@ -34,7 +27,7 @@ public static class AdminDashboardDataSeeder
                 "Първо трябва да бъдат създадени категориите с ID от 1 до 6.");
         }
 
-        Product[] products =
+        Product[] seededProducts =
         [
             new()
             {
@@ -170,7 +163,75 @@ public static class AdminDashboardDataSeeder
             }
         ];
 
-        await dbContext.Products.AddRangeAsync(products);
-        await dbContext.SaveChangesAsync();
+        string[] seededProductNames = seededProducts
+            .Select(product => product.ProductName)
+            .ToArray();
+
+        if (await dbContext.Products.AnyAsync())
+        {
+            var existingSeededProducts = await dbContext.Products
+                .Where(product => seededProductNames.Contains(product.ProductName))
+                .ToListAsync();
+
+            if (existingSeededProducts.Count != seededProducts.Length)
+            {
+                return;
+            }
+
+            seededProducts = existingSeededProducts
+                .OrderBy(product => Array.IndexOf(seededProductNames, product.ProductName))
+                .ToArray();
+        }
+        else
+        {
+            await dbContext.Products.AddRangeAsync(seededProducts);
+            await dbContext.SaveChangesAsync();
+        }
+
+        int[] seededOrderIds = [1, 2, 3];
+        const int ProductsPerSeededOrder = 4;
+
+        if (seededProducts.Length != seededOrderIds.Length * ProductsPerSeededOrder)
+        {
+            throw new InvalidOperationException("Seed products must be grouped evenly across the demo orders.");
+        }
+
+        var existingOrderIds = await dbContext.Orders
+            .Where(order => seededOrderIds.Contains(order.OrderId))
+            .Select(order => order.OrderId)
+            .ToListAsync();
+
+        if (existingOrderIds.Count != seededOrderIds.Length)
+        {
+            throw new InvalidOperationException(
+                "Първо трябва да бъдат създадени seed поръчките с ID от 1 до 3.");
+        }
+
+        var expectedOrderProducts = seededProducts
+            .Select((product, index) => new OrderProduct
+            {
+                OrderId = seededOrderIds[index / ProductsPerSeededOrder],
+                ProductId = product.ProductId
+            })
+            .ToArray();
+
+        var existingOrderProducts = await dbContext.OrderProducts
+            .Where(orderProduct => seededOrderIds.Contains(orderProduct.OrderId))
+            .Select(orderProduct => new { orderProduct.OrderId, orderProduct.ProductId })
+            .ToListAsync();
+
+        var existingOrderProductKeys = existingOrderProducts
+            .Select(orderProduct => (orderProduct.OrderId, orderProduct.ProductId))
+            .ToHashSet();
+
+        var missingOrderProducts = expectedOrderProducts
+            .Where(orderProduct => !existingOrderProductKeys.Contains((orderProduct.OrderId, orderProduct.ProductId)))
+            .ToArray();
+
+        if (missingOrderProducts.Length > 0)
+        {
+            await dbContext.OrderProducts.AddRangeAsync(missingOrderProducts);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

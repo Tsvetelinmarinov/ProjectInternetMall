@@ -36,6 +36,71 @@
                         </div>
                     }
 
+                    <section class="mb-4" aria-labelledby="products-heading">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 id="products-heading" class="h5 mb-0">Продукти в поръчката</h4>
+                            <span class="badge bg-light text-dark">@(Model.Products?.Count ?? 0)</span>
+                        </div>
+
+                        @if (Model.Products is { Count: > 0 })
+                        {
+                            <div class="d-grid gap-3">
+                                @foreach (var orderProduct in Model.Products)
+                                {
+                                    <article class="card border rounded-3">
+                                        <div class="card-body">
+                                            @if (orderProduct.Product is { } product)
+                                            {
+                                                <div class="d-flex flex-wrap justify-content-between gap-2 mb-2">
+                                                    <h5 class="card-title mb-0">@product.ProductName</h5>
+                                                    <span class="fw-semibold text-success">@product.Price.ToString("N2") евро.</span>
+                                                </div>
+
+                                                <p class="text-muted small mb-2">Продукт № @orderProduct.ProductId</p>
+
+                                                @if (!string.IsNullOrWhiteSpace(product.Description))
+                                                {
+                                                    <p class="card-text mb-3">@product.Description</p>
+                                                }
+
+                                                @if (product.Category is not null)
+                                                {
+                                                    <p class="small mb-3">
+                                                        <i class="bi @product.Category.Icon me-1" style="color: @product.Category.Color"></i>
+                                                        <strong>Категория:</strong> @product.Category.CategoryName
+                                                        <span class="text-muted">— @product.Category.CategoryDescription</span>
+                                                    </p>
+                                                }
+
+                                                @if (product.Claims.Any())
+                                                {
+                                                    <div>
+                                                        <h6 class="small fw-semibold">Характеристики</h6>
+                                                        <dl class="row small mb-0">
+                                                            @foreach (var claim in product.Claims)
+                                                            {
+                                                                <dt class="col-sm-4">@claim.ClaimName</dt>
+                                                                <dd class="col-sm-8">@claim.ClaimValue</dd>
+                                                            }
+                                                        </dl>
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <p class="text-muted mb-0">Продукт № @orderProduct.ProductId — информацията за продукта не е налична.</p>
+                                            }
+                                        </div>
+                                    </article>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">В тази поръчка няма свързани продукти.</p>
+                        }
+                    </section>
+
                     <form asp-action="EditOrder" method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
                         

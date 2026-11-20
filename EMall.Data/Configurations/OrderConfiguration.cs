@@ -19,7 +19,7 @@ namespace EMall.Data.Configurations
                     CustomerName = "Angel Snopf",
                     CreatedOn = new DateTime(2026, 11, 12, 19, 51, 00),
                     Status = "Cancelled",
-                    TotalPrice = 25.55M
+                    TotalPrice = 6299.96M
                 },
                 new()
                 {
@@ -27,7 +27,7 @@ namespace EMall.Data.Configurations
                     CustomerName = "Tsvetelin Marinov",
                     CreatedOn = new DateTime(2026, 11, 12, 19, 51, 00),
                     Status = "Processing",
-                    TotalPrice = 666M
+                    TotalPrice = 1269.96M
                 },
                 new()
                 {
@@ -35,7 +35,7 @@ namespace EMall.Data.Configurations
                     CustomerName = "Martina Pavlova",
                     CreatedOn = new DateTime(2026, 11, 12, 19, 51, 00),
                     Status = "Shipped",
-                    TotalPrice = 1555.65M
+                    TotalPrice = 199.96M
                 }
             ];
         

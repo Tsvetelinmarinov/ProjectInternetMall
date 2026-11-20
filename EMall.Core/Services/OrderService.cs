@@ -134,7 +134,7 @@ namespace EMall.Core.Services
                 throw new ServiceException(InvalidOrderId);
             }
 
-            var orderEntity = await repository.FindByIdAsync((int)id);
+            var orderEntity = await repository.FindOrderWithProductsByIdAsync((int)id);
 
             var orderServiceModel
                 = mapper.Map<OrderOutputServiceModel>(orderEntity)

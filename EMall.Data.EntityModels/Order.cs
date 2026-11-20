@@ -25,6 +25,7 @@ namespace EMall.Data.EntityModels
         [Column(TypeName = "money")]
         public decimal TotalPrice { get; set; }
 
+        [InverseProperty("Order")]
         public virtual ICollection<OrderProduct>? OrderProducts { get; set; }
     }
 }

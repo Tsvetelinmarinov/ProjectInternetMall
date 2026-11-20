@@ -8,5 +8,6 @@ namespace EMall.Data.Repositories.Interfaces
     /// </summary>
     public interface IOrderRepository : IBaseRepository<Order>
     {
+        Task<Order> FindOrderWithProductsByIdAsync(int id);
     }
 }

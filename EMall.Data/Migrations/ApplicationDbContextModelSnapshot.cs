@@ -116,7 +116,7 @@ namespace EMall.Data.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -193,7 +193,7 @@ namespace EMall.Data.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
 
                     b.HasData(
                         new
@@ -202,7 +202,7 @@ namespace EMall.Data.Migrations
                             CreatedOn = new DateTime(2026, 11, 12, 19, 51, 0, 0, DateTimeKind.Unspecified),
                             CustomerName = "Angel Snopf",
                             Status = "Cancelled",
-                            TotalPrice = 25.55m
+                            TotalPrice = 6299.96m
                         },
                         new
                         {
@@ -210,7 +210,7 @@ namespace EMall.Data.Migrations
                             CreatedOn = new DateTime(2026, 11, 12, 19, 51, 0, 0, DateTimeKind.Unspecified),
                             CustomerName = "Tsvetelin Marinov",
                             Status = "Processing",
-                            TotalPrice = 666m
+                            TotalPrice = 1269.96m
                         },
                         new
                         {
@@ -218,7 +218,7 @@ namespace EMall.Data.Migrations
                             CreatedOn = new DateTime(2026, 11, 12, 19, 51, 0, 0, DateTimeKind.Unspecified),
                             CustomerName = "Martina Pavlova",
                             Status = "Shipped",
-                            TotalPrice = 1555.65m
+                            TotalPrice = 199.96m
                         });
                 });
 
@@ -234,69 +234,7 @@ namespace EMall.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProducts");
-
-                    b.HasData(
-                        new
-                        {
-                            OrderId = 1,
-                            ProductId = 1
-                        },
-                        new
-                        {
-                            OrderId = 1,
-                            ProductId = 2
-                        },
-                        new
-                        {
-                            OrderId = 1,
-                            ProductId = 3
-                        },
-                        new
-                        {
-                            OrderId = 1,
-                            ProductId = 4
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            ProductId = 5
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            ProductId = 6
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            ProductId = 7
-                        },
-                        new
-                        {
-                            OrderId = 2,
-                            ProductId = 8
-                        },
-                        new
-                        {
-                            OrderId = 3,
-                            ProductId = 9
-                        },
-                        new
-                        {
-                            OrderId = 3,
-                            ProductId = 10
-                        },
-                        new
-                        {
-                            OrderId = 3,
-                            ProductId = 11
-                        },
-                        new
-                        {
-                            OrderId = 3,
-                            ProductId = 12
-                        });
+                    b.ToTable("OrderProducts", (string)null);
                 });
 
             modelBuilder.Entity("EMall.Data.EntityModels.Product", b =>
@@ -347,7 +285,7 @@ namespace EMall.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

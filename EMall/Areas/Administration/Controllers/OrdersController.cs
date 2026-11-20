@@ -1,6 +1,8 @@
 ﻿using EMall.Areas.Administration.ViewModels.Order;
 using EMall.Areas.Administration.ViewModels.Order.Common;
+using EMall.Areas.Administration.ViewModels.OrderProduct;
 using EMall.Core.Services.Interfaces;
+using EMall.ViewModels.Output;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMall.Areas.Administration.Controllers
@@ -46,7 +48,36 @@ namespace EMall.Areas.Administration.Controllers
                 CustomerName = orderServiceModel.CustomerName,
                 Status = Enum.Parse<OrderStatus>(orderServiceModel.Status),
                 CreatedOn = orderServiceModel.CreatedOn,
-                TotalPrice = orderServiceModel.TotalPrice
+                TotalPrice = orderServiceModel.TotalPrice,
+                Products = orderServiceModel.Products?.Select(orderProduct => new OrderProductOutputViewModel
+                {
+                    OrderId = orderProduct.OrderId,
+                    ProductId = orderProduct.ProductId,
+                    Product = orderProduct.Product is null ? 
+                        null 
+                        : 
+                        new ProductOutputViewModel
+                        {
+                            ProductName = orderProduct.Product.ProductName,
+                            Description = orderProduct.Product.Description,
+                            Claims = orderProduct.Product.Claims.Select(claim => new ProductClaimOutputViewModel
+                            {
+                                ClaimName = claim.ClaimName,
+                                ClaimValue = claim.ClaimValue
+                            }),
+                            Price = orderProduct.Product.Price,
+                            Category = orderProduct.Product.Category is null ? 
+                                null 
+                                : 
+                                new CategoryOutputViewModel
+                                {
+                                    CategoryName = orderProduct.Product.Category.CategoryName,
+                                    CategoryDescription = orderProduct.Product.Category.CategoryDescription,
+                                    Icon = orderProduct.Product.Category.Icon,
+                                    Color = orderProduct.Product.Category.Color
+                                }
+                        }
+                }).ToList()
             };
 
             return View(orderViewModel);
