@@ -9,5 +9,6 @@
         public string Status { get; set; } = null!;
         public DateTime CreatedOn { get; set; }
         public decimal TotalPrice { get; set; }
+        public List<OrderProductOutputServiceModel>? Products { get; set; }
     }
 }
