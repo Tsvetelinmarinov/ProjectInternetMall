@@ -85,8 +85,7 @@
             </div>
             <div class="adm-stat">
                 <span class="adm-stat-label">Поръчки</span>
-                <strong class="adm-stat-value">@Model.OrdersCount.ToString("N0", bg)</strong>
-                <span class="adm-stat-hint">За обработка: @Model.PendingOrders</span>
+                <strong class="adm-stat-value">@Model.PendingOrders.ToString("N0", bg)</strong>
             </div>
             <div class="adm-stat">
                 <span class="adm-stat-label">Потребители</span>
@@ -140,25 +139,7 @@
                 <div class="adm-panel-head">
                     <h2 class="adm-panel-title" id="todo-title">Изисква внимание</h2>
                 </div>
-
-                @if (hasTodo)
-                {
-                    <ul class="adm-todo">
-                        @if (Model.PendingOrders > 0)
-                        {
-                            <li>
-                                <a class="adm-todo-item" asp-area="" asp-controller="" asp-action="" asp-route-status="Нова">
-                                    <span>Поръчки за обработка</span>
-                                    <span class="adm-chip is-new">@Model.PendingOrders</span>
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                }
-                else
-                {
-                    <p class="adm-empty">Всичко е наред. Няма чакащи поръчки.</p>
-                }
+                <p class="adm-empty">Всичко е наред. Няма чакащи поръчки.</p> 
             </section>
         </div>
 

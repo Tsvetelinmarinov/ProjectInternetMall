@@ -2,15 +2,21 @@
 using EMall.Areas.Administration.ViewModels.Order;
 using EMall.Areas.Administration.ViewModels.Order.Common;
 using EMall.Core.Services.Interfaces;
+using EMall.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMall.Areas.Administration.Controllers
 {
     /// <summary>
     ///  Provides endpoint for the administrator page.
     /// </summary>
-    public class AdminHomeController(ICategoryService categoryService, IOrderService ordersService) 
-        : AdminCoreController
+    public class AdminHomeController(
+        ICategoryService categoryService,
+        IOrderService ordersService,
+        UserManager<ApplicationUser> userManager
+    ) : AdminCoreController
     {
         /// <summary>
         ///  Endpoint of the Administrator dashboard page.
@@ -59,10 +65,10 @@ namespace EMall.Areas.Administration.Controllers
             {
                 PendingOrders = orderViewModels.Count,
                 ProductsCount = categoryStatViewModels.Sum((categoryStat) => categoryStat.ProductsCount),
-                OrdersCount = 0,
-                UsersCount = 1,
+                OrdersCount = orderViewModels.Count,
+                UsersCount = await userManager.Users.CountAsync(),
                 NewUsersThisWeek = 0,
-                RevenueThisMonth = 0,
+                RevenueThisMonth = orderViewModels.Sum((orderModel) => orderModel.TotalPrice),
                 Categories = [.. categoryStatViewModels],
                 RecentOrders = orderViewModels,
                 LowStock = []
