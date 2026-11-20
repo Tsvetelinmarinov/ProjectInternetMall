@@ -51,6 +51,18 @@
             public const string InvalidProductClaimValue = "The value of the product claim should be between {2} and {1} characters.";
 
             #endregion
+            #region Entity Order
+
+            public const int OrderCustomerNameMinLen = 2;
+            public const int OrderCustomerNameMaxLen = 100;
+
+            public const double OrderPriceMin = 0.0;
+            public const double OrderPriceMax = double.MaxValue;
+
+            public const string InvalidOrderCustomerNameLength
+                = "The name of the order's customer should be between {2} and {1} characters"; 
+
+            #endregion
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static EMall.Data.EntityModels.Common.DbConstants.Validation;
 
 namespace EMall.Data.EntityModels
 {
@@ -12,7 +13,11 @@ namespace EMall.Data.EntityModels
         public int OrderId { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 2)]
+        [StringLength(
+           OrderCustomerNameMinLen , 
+           MinimumLength = OrderCustomerNameMaxLen,
+           ErrorMessage = InvalidOrderCustomerNameLength
+        )]
         public string CustomerName { get; set; } = string.Empty;
 
         public string? Status { get; set; }
@@ -21,7 +26,7 @@ namespace EMall.Data.EntityModels
         public DateTime CreatedOn { get; set; }
 
         [Required]
-        [Range(0.0, double.MaxValue)]
+        [Range(OrderPriceMin, OrderPriceMax)]
         [Column(TypeName = "money")]
         public decimal TotalPrice { get; set; }
 
