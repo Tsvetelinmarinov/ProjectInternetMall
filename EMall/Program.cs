@@ -101,6 +101,7 @@ namespace EMall
             #endregion
             #region Configure HTTP Request Pipeline
 
+            /* ДА СЕ ПРЕНАРЕДИ ПО СТАНДАРТ ЛИНИЯ ОТ МЕЖДИНЕН СОФТУЕР!!! */
             if (app.Environment.IsProduction())
             { 
                 app.UseStatusCodePagesWithReExecute("/Home/Error");
@@ -112,12 +113,12 @@ namespace EMall
             }
 
             app.UseHttpsRedirection();
+            app.UseAntiforgery();
+            app.UseResponseCompression();
             app.UseRouting();
-
+            app.MapStaticAssets();
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.MapStaticAssets();
 
             app.MapControllerRoute(
                 "areas", 
