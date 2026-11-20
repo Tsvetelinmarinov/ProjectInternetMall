@@ -18,7 +18,11 @@ namespace EMall.Data.EntityModels
            MinimumLength = OrderCustomerNameMaxLen,
            ErrorMessage = InvalidOrderCustomerNameLength
         )]
-        public string CustomerName { get; set; } = string.Empty;
+        public string CustomerName { get; set; } = null!;
+
+        [Required]
+        [EmailAddress]
+        public string CustomerEmail { get; set; } = null!;
 
         public string? Status { get; set; }
 
@@ -29,6 +33,9 @@ namespace EMall.Data.EntityModels
         [Range(OrderPriceMin, OrderPriceMax)]
         [Column(TypeName = "money")]
         public decimal TotalPrice { get; set; }
+
+        [Required]
+        public string AddressForShipping { get; set; } = null!;
 
         [InverseProperty("Order")]
         public virtual ICollection<OrderProduct>? OrderProducts { get; set; }
