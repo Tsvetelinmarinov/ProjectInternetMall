@@ -29,6 +29,8 @@ namespace EMall.Areas.Administration.Controllers
                 {
                     OrderId = orderServiceModel.OrderId,
                     CustomerName = orderServiceModel.CustomerName,
+                    CustomerEmail = orderServiceModel.CustomerEmail,
+                    AddressForShipping = orderServiceModel.AddressForShipping,
                     TotalPrice = orderServiceModel.TotalPrice,
                     CreatedOn = orderServiceModel.CreatedOn,
                     Status = Enum.Parse<OrderStatus>(orderServiceModel.Status),
@@ -46,6 +48,8 @@ namespace EMall.Areas.Administration.Controllers
             {
                 OrderId = orderServiceModel.OrderId,
                 CustomerName = orderServiceModel.CustomerName,
+                CustomerEmail = orderServiceModel.CustomerEmail,
+                AddressForShipping = orderServiceModel.AddressForShipping,
                 Status = Enum.Parse<OrderStatus>(orderServiceModel.Status),
                 CreatedOn = orderServiceModel.CreatedOn,
                 TotalPrice = orderServiceModel.TotalPrice,

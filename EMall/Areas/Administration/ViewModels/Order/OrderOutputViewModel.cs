@@ -7,6 +7,8 @@ namespace EMall.Areas.Administration.ViewModels.Order
     {
         public int OrderId { get; set; }
         public string CustomerName { get; set; } = string.Empty;
+        public string CustomerEmail { get; set; } = string.Empty;
+        public string AddressForShipping { get; set; } = string.Empty;
         public OrderStatus Status { get; set; }
         public DateTime CreatedOn { get; set; }
         public decimal TotalPrice { get; set; }

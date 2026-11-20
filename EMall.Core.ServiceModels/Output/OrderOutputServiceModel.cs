@@ -4,6 +4,8 @@
     {
         public int OrderId { get; set; }
         public string CustomerName { get; set; } = string.Empty;
+        public string CustomerEmail { get; set; } = string.Empty;
+        public string AddressForShipping { get; set; } = string.Empty;
 
         // The status here will be string from that moment.
         public string Status { get; set; } = null!;

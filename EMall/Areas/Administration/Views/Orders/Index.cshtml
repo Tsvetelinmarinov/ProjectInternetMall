@@ -102,7 +102,10 @@
 
                         <tr>
                             <td class="fw-semibold">#@order.OrderId</td>
-                            <td>@order.CustomerName</td>
+                            <td>
+                                <div>@order.CustomerName</div>
+                                <div class="small text-muted">@order.CustomerEmail</div>
+                            </td>
                             <td>@order.CreatedOn.ToString("dd.MM.yyyy HH:mm")</td>
                             <td class="text-end">@order.TotalPrice.ToString("N2") €</td>
                             <td><span class="badge @status.Css">@status.Label</span></td>

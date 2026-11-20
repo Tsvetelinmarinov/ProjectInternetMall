@@ -121,6 +121,16 @@
                                 }
                             </div>
 
+                            <div class="col-md-6">
+                                <label asp-for="CustomerEmail" class="form-label fw-semibold text-muted">Имейл</label>
+                                <div class="form-control-plaintext fs-6 border-bottom pb-2">@Model.CustomerEmail</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="AddressForShipping" class="form-label fw-semibold text-muted">Адрес за доставка</label>
+                                <div class="form-control-plaintext fs-6 border-bottom pb-2">@Model.AddressForShipping</div>
+                            </div>
+
                             <!-- Статус -->
                             <div class="col-md-6">
                                 <label asp-for="Status" class="form-label fw-semibold text-muted">Статус</label>
