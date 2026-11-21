@@ -37,7 +37,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 1,
                 Claims = [
                     new() { ClaimName = "Памет", ClaimValue = "16 GB RAM" },
-                    new() { ClaimName = "Диск", ClaimValue = "512 GB SSD" }
+                    new() { ClaimName = "Диск", ClaimValue = "512 GB SSD" },
+                    new() { ClaimName = "Процесор", ClaimValue = "AMD Ryzen 5 7530U" },
+                    new() { ClaimName = "Екран", ClaimValue = "14 инча WUXGA IPS" },
+                    new() { ClaimName = "Графика", ClaimValue = "AMD Radeon Graphics" },
+                    new() { ClaimName = "Операционна система", ClaimValue = "Windows 11 Home" },
+                    new() { ClaimName = "Камера", ClaimValue = "Full HD с капаче за поверителност" },
+                    new() { ClaimName = "Безжична връзка", ClaimValue = "Wi-Fi 6 и Bluetooth 5.2" }
                 ]
             },
             new()
@@ -48,7 +54,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 1,
                 Claims = [
                     new() { ClaimName = "Памет", ClaimValue = "16 GB RAM" },
-                    new() { ClaimName = "Диск", ClaimValue = "1 TB SSD" }
+                    new() { ClaimName = "Диск", ClaimValue = "1 TB SSD" },
+                    new() { ClaimName = "Процесор", ClaimValue = "AMD Ryzen 7 7735HS" },
+                    new() { ClaimName = "Видеокарта", ClaimValue = "NVIDIA GeForce RTX 4060 8 GB" },
+                    new() { ClaimName = "Екран", ClaimValue = "15,6 инча Full HD, 144 Hz" },
+                    new() { ClaimName = "Операционна система", ClaimValue = "Windows 11 Home" },
+                    new() { ClaimName = "Безжична връзка", ClaimValue = "Wi-Fi 6 и Bluetooth 5.2" },
+                    new() { ClaimName = "Клавиатура", ClaimValue = "Подсветка с RGB осветление" }
                 ]
             },
             new()
@@ -59,7 +71,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 2,
                 Claims = [
                     new() { ClaimName = "Памет", ClaimValue = "256 GB" },
-                    new() { ClaimName = "Дисплей", ClaimValue = "AMOLED" }
+                    new() { ClaimName = "Дисплей", ClaimValue = "6,2 инча Dynamic AMOLED 2X, 120 Hz" },
+                    new() { ClaimName = "Процесор", ClaimValue = "Snapdragon 8 Elite for Galaxy" },
+                    new() { ClaimName = "Основна камера", ClaimValue = "50 MP с оптична стабилизация" },
+                    new() { ClaimName = "Предна камера", ClaimValue = "12 MP" },
+                    new() { ClaimName = "Операционна система", ClaimValue = "Android 15 с One UI 7" },
+                    new() { ClaimName = "Защита", ClaimValue = "IP68 срещу прах и вода" },
+                    new() { ClaimName = "Свързване", ClaimValue = "5G, NFC и USB-C" }
                 ]
             },
             new()
@@ -70,7 +88,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 2,
                 Claims = [
                     new() { ClaimName = "Памет", ClaimValue = "128 GB" },
-                    new() { ClaimName = "Батерия", ClaimValue = "5110 mAh" }
+                    new() { ClaimName = "Батерия", ClaimValue = "5110 mAh" },
+                    new() { ClaimName = "Дисплей", ClaimValue = "6,67 инча AMOLED, 120 Hz" },
+                    new() { ClaimName = "Процесор", ClaimValue = "MediaTek Helio G99-Ultra" },
+                    new() { ClaimName = "Основна камера", ClaimValue = "108 MP" },
+                    new() { ClaimName = "Зареждане", ClaimValue = "Бързо зареждане до 33 W" },
+                    new() { ClaimName = "Операционна система", ClaimValue = "Android с Xiaomi HyperOS" },
+                    new() { ClaimName = "Защита", ClaimValue = "IP54 срещу прах и пръски" }
                 ]
             },
             new()
@@ -81,7 +105,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 3,
                 Claims = [
                     new() { ClaimName = "Свързване", ClaimValue = "USB" },
-                    new() { ClaimName = "Бутони", ClaimValue = "11 програмируеми" }
+                    new() { ClaimName = "Бутони", ClaimValue = "11 програмируеми" },
+                    new() { ClaimName = "Сензор", ClaimValue = "Оптичен HERO 25K" },
+                    new() { ClaimName = "Чувствителност", ClaimValue = "До 25 600 DPI" },
+                    new() { ClaimName = "Подсветка", ClaimValue = "LIGHTSYNC RGB" },
+                    new() { ClaimName = "Тегло", ClaimValue = "121 g без допълнителни тежести" },
+                    new() { ClaimName = "Кабел", ClaimValue = "USB кабел с дължина 2,1 m" },
+                    new() { ClaimName = "Профили", ClaimValue = "Вградена памет за профили" }
                 ]
             },
             new()
@@ -92,7 +122,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 3,
                 Claims = [
                     new() { ClaimName = "Свързване", ClaimValue = "USB-C" },
-                    new() { ClaimName = "Подсветка", ClaimValue = "RGB" }
+                    new() { ClaimName = "Подсветка", ClaimValue = "RGB с индивидуално осветяване на клавишите" },
+                    new() { ClaimName = "Корпус", ClaimValue = "Алуминиева горна плоча" },
+                    new() { ClaimName = "Превключватели", ClaimValue = "Механични HyperX" },
+                    new() { ClaimName = "Anti-ghosting", ClaimValue = "Пълно разпознаване на едновременни натискания" },
+                    new() { ClaimName = "N-key rollover", ClaimValue = "Поддържа едновременно регистриране на клавишите" },
+                    new() { ClaimName = "Съвместимост", ClaimValue = "Windows и macOS" },
+                    new() { ClaimName = "Профили", ClaimValue = "Вградена памет за профили и макроси" }
                 ]
             },
             new()
@@ -103,7 +139,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 4,
                 Claims = [
                     new() { ClaimName = "Свързване", ClaimValue = "Bluetooth" },
-                    new() { ClaimName = "Шумопотискане", ClaimValue = "Активно" }
+                    new() { ClaimName = "Шумопотискане", ClaimValue = "Активно с адаптивно управление" },
+                    new() { ClaimName = "Батерия", ClaimValue = "До 30 часа с включено шумопотискане" },
+                    new() { ClaimName = "Бързо зареждане", ClaimValue = "3 минути зареждане за до 3 часа слушане" },
+                    new() { ClaimName = "Микрофони", ClaimValue = "Вградени микрофони за разговори и ANC" },
+                    new() { ClaimName = "Многоточково свързване", ClaimValue = "Едновременна връзка с две устройства" },
+                    new() { ClaimName = "Тегло", ClaimValue = "Около 250 g" },
+                    new() { ClaimName = "Зареждане", ClaimValue = "USB-C" }
                 ]
             },
             new()
@@ -114,7 +156,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 4,
                 Claims = [
                     new() { ClaimName = "Свързване", ClaimValue = "Bluetooth" },
-                    new() { ClaimName = "Защита", ClaimValue = "IP67" }
+                    new() { ClaimName = "Защита", ClaimValue = "IP67 срещу прах и вода" },
+                    new() { ClaimName = "Мощност", ClaimValue = "30 W RMS" },
+                    new() { ClaimName = "Батерия", ClaimValue = "До 12 часа възпроизвеждане" },
+                    new() { ClaimName = "Зареждане", ClaimValue = "USB-C" },
+                    new() { ClaimName = "Звукова система", ClaimValue = "Двупосочни високоговорители" },
+                    new() { ClaimName = "PartyBoost", ClaimValue = "Свързване с други съвместими JBL тонколони" },
+                    new() { ClaimName = "Микрофон", ClaimValue = "Вграден за разговори със свободни ръце" }
                 ]
             },
             new()
@@ -125,7 +173,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 5,
                 Claims = [
                     new() { ClaimName = "Резолюция", ClaimValue = "2K" },
-                    new() { ClaimName = "Свързване", ClaimValue = "Wi-Fi" }
+                    new() { ClaimName = "Свързване", ClaimValue = "Wi-Fi 2,4 GHz" },
+                    new() { ClaimName = "Зрителен ъгъл", ClaimValue = "Панорамиране 360° и накланяне 114°" },
+                    new() { ClaimName = "Нощен режим", ClaimValue = "Инфрачервено нощно виждане" },
+                    new() { ClaimName = "Аудио", ClaimValue = "Двупосочно аудио с вграден микрофон и говорител" },
+                    new() { ClaimName = "Проследяване", ClaimValue = "Откриване и проследяване на движение" },
+                    new() { ClaimName = "Съхранение", ClaimValue = "MicroSD карта до 512 GB" },
+                    new() { ClaimName = "Управление", ClaimValue = "Мобилно приложение Tapo" }
                 ]
             },
             new()
@@ -136,7 +190,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 5,
                 Claims = [
                     new() { ClaimName = "Цокъл", ClaimValue = "E27" },
-                    new() { ClaimName = "Свързване", ClaimValue = "Bluetooth" }
+                    new() { ClaimName = "Свързване", ClaimValue = "Bluetooth и Zigbee" },
+                    new() { ClaimName = "Светлинен поток", ClaimValue = "806 lm" },
+                    new() { ClaimName = "Цветна температура", ClaimValue = "Топла бяла светлина, 2700 K" },
+                    new() { ClaimName = "Мощност", ClaimValue = "9,5 W" },
+                    new() { ClaimName = "Димиране", ClaimValue = "Регулиране на яркостта през приложение" },
+                    new() { ClaimName = "Живот", ClaimValue = "До 25 000 часа" },
+                    new() { ClaimName = "Управление", ClaimValue = "Philips Hue и съвместими приложения" }
                 ]
             },
             new()
@@ -147,7 +207,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 6,
                 Claims = [
                     new() { ClaimName = "Мощност", ClaimValue = "30 W" },
-                    new() { ClaimName = "Порт", ClaimValue = "USB-C" }
+                    new() { ClaimName = "Порт", ClaimValue = "USB-C" },
+                    new() { ClaimName = "Технология", ClaimValue = "GaN за компактно и ефективно зареждане" },
+                    new() { ClaimName = "Стандарт", ClaimValue = "USB Power Delivery" },
+                    new() { ClaimName = "Съвместимост", ClaimValue = "Телефони, таблети и USB-C аксесоари" },
+                    new() { ClaimName = "Защита", ClaimValue = "Защита от прегряване и претоварване" },
+                    new() { ClaimName = "Дизайн", ClaimValue = "Компактен корпус за пътуване" },
+                    new() { ClaimName = "Захранване", ClaimValue = "100–240 V AC" }
                 ]
             },
             new()
@@ -158,7 +224,13 @@ public static class AdminDashboardDataSeeder
                 CategoryId = 6,
                 Claims = [
                     new() { ClaimName = "Дължина", ClaimValue = "1 m" },
-                    new() { ClaimName = "Конектор", ClaimValue = "USB-C" }
+                    new() { ClaimName = "Конектор", ClaimValue = "USB-C към USB-C" },
+                    new() { ClaimName = "Зареждане", ClaimValue = "Поддържа до 60 W Power Delivery" },
+                    new() { ClaimName = "Пренос на данни", ClaimValue = "USB 2.0, до 480 Mbps" },
+                    new() { ClaimName = "Ток", ClaimValue = "До 3 A" },
+                    new() { ClaimName = "Оплетка", ClaimValue = "Усилена оплетка за ежедневна употреба" },
+                    new() { ClaimName = "Съвместимост", ClaimValue = "Телефони, таблети и лаптопи с USB-C" },
+                    new() { ClaimName = "Цвят", ClaimValue = "Черен" }
                 ]
             }
         ];
@@ -177,6 +249,15 @@ public static class AdminDashboardDataSeeder
             {
                 return;
             }
+
+            var seededProductsByName = seededProducts.ToDictionary(product => product.ProductName);
+
+            foreach (var existingProduct in existingSeededProducts)
+            {
+                existingProduct.Claims = seededProductsByName[existingProduct.ProductName].Claims;
+            }
+
+            await dbContext.SaveChangesAsync();
 
             seededProducts = existingSeededProducts
                 .OrderBy(product => Array.IndexOf(seededProductNames, product.ProductName))
