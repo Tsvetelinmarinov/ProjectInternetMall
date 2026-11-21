@@ -13,8 +13,10 @@ namespace EMall.Areas.Administration.Controllers
     public class OrdersController(IOrderService orderService) : AdminCoreController
     {
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] string? sortBy, [FromQuery] string? sortDir)
-        {
+        public async Task<IActionResult> Index(
+            [FromQuery] string? sortBy, 
+            [FromQuery] string? sortDir
+        ){
             sortBy ??= "date";
             sortDir ??= "asc";
 
@@ -88,8 +90,10 @@ namespace EMall.Areas.Administration.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditOrder([FromForm] OrderInputViewModel orderModel)
-        {
+        public async Task<IActionResult> EditOrder(
+            [FromForm] OrderInputViewModel orderModel,
+            [FromRoute] int? id
+        ){
             return View();
         }
     }
