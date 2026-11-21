@@ -86,5 +86,11 @@ namespace EMall.Areas.Administration.Controllers
 
             return View(orderViewModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditOrder([FromForm] OrderInputViewModel orderModel)
+        {
+            return View();
+        }
     }
 }
