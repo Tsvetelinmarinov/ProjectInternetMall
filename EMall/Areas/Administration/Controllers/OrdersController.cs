@@ -1,6 +1,7 @@
 ﻿using EMall.Areas.Administration.ViewModels.Order;
 using EMall.Areas.Administration.ViewModels.Order.Common;
 using EMall.Areas.Administration.ViewModels.OrderProduct;
+using EMall.Core.ServiceModels.Output;
 using EMall.Core.Services.Interfaces;
 using EMall.ViewModels.Output;
 using Microsoft.AspNetCore.Mvc;
@@ -55,35 +56,27 @@ namespace EMall.Areas.Administration.Controllers
                 Status = Enum.Parse<OrderStatus>(orderServiceModel.Status),
                 CreatedOn = orderServiceModel.CreatedOn,
                 TotalPrice = orderServiceModel.TotalPrice,
-                Products = orderServiceModel.Products?.Select(orderProduct => new OrderProductOutputViewModel
-                {
-                    OrderId = orderProduct.OrderId,
-                    ProductId = orderProduct.ProductId,
-                    Product = orderProduct.Product is null ? 
-                        null 
-                        : 
-                        new ProductOutputViewModel
-                        {
-                            ProductName = orderProduct.Product.ProductName,
-                            Description = orderProduct.Product.Description,
-                            Claims = orderProduct.Product.Claims.Select(claim => new ProductClaimOutputViewModel
-                            {
-                                ClaimName = claim.ClaimName,
-                                ClaimValue = claim.ClaimValue
-                            }),
-                            Price = orderProduct.Product.Price,
-                            Category = orderProduct.Product.Category is null ? 
-                                null 
-                                : 
-                                new CategoryOutputViewModel
-                                {
-                                    CategoryName = orderProduct.Product.Category.CategoryName,
-                                    CategoryDescription = orderProduct.Product.Category.CategoryDescription,
-                                    Icon = orderProduct.Product.Category.Icon,
-                                    Color = orderProduct.Product.Category.Color
-                                }
-                        }
-                }).ToList()
+                Products = MapProducts(orderServiceModel.Products)
+            };
+
+            return View(orderViewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditOrder([FromRoute] int? id)
+        {
+            var orderServiceModel = await orderService.FindOrderById(id);
+
+            var orderViewModel = new OrderOutputViewModel
+            {
+                OrderId = orderServiceModel.OrderId,
+                CustomerName = orderServiceModel.CustomerName,
+                CustomerEmail = orderServiceModel.CustomerEmail,
+                AddressForShipping = orderServiceModel.AddressForShipping,
+                Status = Enum.Parse<OrderStatus>(orderServiceModel.Status),
+                CreatedOn = orderServiceModel.CreatedOn,
+                TotalPrice = orderServiceModel.TotalPrice,
+                Products = MapProducts(orderServiceModel.Products)
             };
 
             return View(orderViewModel);
@@ -91,10 +84,42 @@ namespace EMall.Areas.Administration.Controllers
 
         [HttpPost]
         public async Task<IActionResult> EditOrder(
-            [FromForm] OrderInputViewModel orderModel,
-            [FromRoute] int? id
+            [FromRoute] int id,
+            [FromForm] OrderOutputViewModel orderModel
         ){
-            return View();
+            var persistedOrder = await orderService.FindOrderById(id);
+            orderModel.Products = MapProducts(persistedOrder.Products);
+
+            return Ok();
         }
+
+        private static List<OrderProductOutputViewModel>? MapProducts(IEnumerable<OrderProductOutputServiceModel>? products)
+            => products?.Select(orderProduct => new OrderProductOutputViewModel
+            {
+                OrderId = orderProduct.OrderId,
+                ProductId = orderProduct.ProductId,
+                Product = orderProduct.Product is null
+                    ? null
+                    : new ProductOutputViewModel
+                    {
+                        ProductName = orderProduct.Product.ProductName,
+                        Description = orderProduct.Product.Description,
+                        Claims = orderProduct.Product.Claims.Select(claim => new ProductClaimOutputViewModel
+                        {
+                            ClaimName = claim.ClaimName,
+                            ClaimValue = claim.ClaimValue
+                        }),
+                        Price = orderProduct.Product.Price,
+                        Category = orderProduct.Product.Category is null
+                            ? null
+                            : new CategoryOutputViewModel
+                            {
+                                CategoryName = orderProduct.Product.Category.CategoryName,
+                                CategoryDescription = orderProduct.Product.Category.CategoryDescription,
+                                Icon = orderProduct.Product.Category.Icon,
+                                Color = orderProduct.Product.Category.Color
+                            }
+                    }
+            }).ToList();
     }
 }
