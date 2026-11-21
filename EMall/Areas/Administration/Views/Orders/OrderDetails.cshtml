@@ -12,13 +12,13 @@
         <div class="col-lg-8">
             <div class="card shadow border-0 rounded-4">
                 <!-- Картов хедър с динамичен цвят спрямо статуса -->
-                <div class="card-header @(isProcessing ? "bg-primary" : "bg-secondary") text-white p-4 rounded-top-4 d-flex justify-content-between align-items-center">
+                <div class="card-header bg-secondary text-white p-4 rounded-top-4 d-flex justify-content-between align-items-center">
                     <div>
                         <h3 class="mb-0 fw-bold">Поръчка № @Model.OrderId</h3>
                         <p class="mb-0 text-white-50 small">Управление и детайли за поръчката</p>
                     </div>
                     <div>
-                        <span class="badge @(isProcessing ? "bg-warning text-dark" : "bg-light text-dark") fs-6 px-3 py-2 shadow-sm">
+                        <span class="badge bg-light text-dark fs-6 px-3 py-2 shadow-sm">
                             @Model.Status
                         </span>
                     </div>
@@ -26,15 +26,12 @@
 
                 <div class="card-body p-4 p-md-5">
                     <!-- Известие, ако поръчката не подлежи на редакция -->
-                    @if (!isProcessing)
-                    {
-                        <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center mb-4" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2 fs-5"></i>
-                            <div>
-                                Тази поръчка е със статус <strong>@Model.Status</strong> и не може да бъде редактирана. Редакция е възможна само при статус <strong>Processing</strong>.
-                            </div>
+                    <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center mb-4" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2 fs-5"></i>
+                        <div>
+                            Тази поръчка е със статус <strong>@Model.Status</strong> и не може да бъде редактирана. Редакция е възможна само при статус <strong>Processing</strong>.
                         </div>
-                    }
+                    </div>
 
                     <section class="mb-4" aria-labelledby="products-heading">
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -110,15 +107,7 @@
                             <!-- Име на клиент -->
                             <div class="col-md-12">
                                 <label asp-for="CustomerName" class="form-label fw-semibold text-muted">Име на клиент</label>
-                                @if (isProcessing)
-                                {
-                                    <input asp-for="CustomerName" class="form-control form-control-lg" placeholder="Въведете име..." />
-                                    <span asp-validation-for="CustomerName" class="text-danger small"></span>
-                                }
-                                else
-                                {
-                                    <div class="form-control-plaintext fs-5 border-bottom pb-2">@Model.CustomerName</div>
-                                }
+                                <div class="form-control-plaintext fs-5 border-bottom pb-2">@Model.CustomerName</div>
                             </div>
 
                             <div class="col-md-6">
@@ -134,32 +123,13 @@
                             <!-- Статус -->
                             <div class="col-md-6">
                                 <label asp-for="Status" class="form-label fw-semibold text-muted">Статус</label>
-                                @if (isProcessing)
-                                {
-                                    <select asp-for="Status" class="form-select form-select-lg" asp-items="Html.GetEnumSelectList<OrderStatus>()"></select>
-                                    <span asp-validation-for="Status" class="text-danger small"></span>
-                                }
-                                else
-                                {
-                                    <div class="form-control-plaintext fs-5 border-bottom pb-2">@Model.Status</div>
-                                }
+                                <div class="form-control-plaintext fs-5 border-bottom pb-2">@Model.Status</div>
                             </div>
 
                             <!-- Обща сума -->
                             <div class="col-md-6">
                                 <label asp-for="TotalPrice" class="form-label fw-semibold text-muted">Обща сума</label>
-                                @if (isProcessing)
-                                {
-                                    <div class="input-group input-group-lg">
-                                        <input asp-for="TotalPrice" class="form-control" type="number" step="0.01" />
-                                        <span class="input-group-text">€.</span>
-                                    </div>
-                                    <span asp-validation-for="TotalPrice" class="text-danger small"></span>
-                                }
-                                else
-                                {
-                                    <div class="form-control-plaintext fs-5 border-bottom pb-2 text-success fw-bold">@Model.TotalPrice.ToString("F2") лв.</div>
-                                }
+                                <div class="form-control-plaintext fs-5 border-bottom pb-2 text-success fw-bold">@Model.TotalPrice.ToString("F2") лв.</div>
                             </div>
 
                             <!-- Дата на създаване (винаги само за четене) -->
@@ -176,13 +146,6 @@
                             <a asp-action="Index" class="btn btn-outline-secondary px-4">
                                 <i class="bi bi-arrow-left me-1"></i> Назад към списъка
                             </a>
-                            
-                            @if (isProcessing)
-                            {
-                                <button type="submit" class="btn btn-primary px-5 py-2 shadow-sm">
-                                    <i class="bi bi-save me-1"></i> Запази промените
-                                </button>
-                            }
                         </div>
                     </form>
                 </div>
