@@ -21,8 +21,10 @@ namespace EMall
         {
             #region Application Construction and IoC Container Configuration
 
+            // Create the application builder.
             var builder = WebApplication.CreateBuilder();
 
+            // Get the connection string for the database(SQL Server 2025).
             var connectionString = builder
                 .Configuration
                 .GetConnectionString("DefaultConnection")
@@ -30,17 +32,18 @@ namespace EMall
 
             // Add services of controllers and views to the container +
             // services for exception page for database errors.
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             // Add DbContext.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(
+                options.UseSqlServer( //=> We using SQL Server.
                     connectionString,
                     (sqlServerDbContextOptionsBuilder) =>
                     {
-                        // For Vector search
+                        // For Vector search that will not be implemented, because i cannot
+                        // make the lectors/teachers to install locally Ollama model for that.
                         sqlServerDbContextOptionsBuilder.UseCompatibilityLevel(170);
 
                         // For preventing sql injection.
@@ -95,37 +98,67 @@ namespace EMall
                 mvcOptions.Filters.Add<AsyncResultFilterForAddingXDeveloperHeader>();
             });
 
+            // Registers IDistributedCache + ISessionStore
+            // for caching user data in session cookie.
+            builder.Services.AddDistributedMemoryCache();
+
+            // Add sessions cache configuration.
+            builder.Services.AddSession((sessionOptions) =>
+            {
+                sessionOptions.IdleTimeout = TimeSpan.FromHours(1);
+                sessionOptions.Cookie.HttpOnly = true;
+                sessionOptions.Cookie.IsEssential = true;
+            });
+
             // Build the application host.
             var app = builder.Build();
 
             #endregion
             #region Configure HTTP Request Pipeline
 
+            // If we are in production - show the production error page for every error/status code.
             if (app.Environment.IsProduction())
             { 
                 app.UseStatusCodePagesWithReExecute("/Home/Error");
-                app.UseHsts();
+                app.UseHsts(); // Always HTTPS!
             }
-            else
+            else //=> If we are in development mode, we need information for the errors,
+                // and we need it in the browser, so ..
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            // If HTTP -> HTTPS, but with HSTS this is not needed.
             app.UseHttpsRedirection();
+
+            // Validate anty-forgery token to preven from CSRF(Cross-Site Request Forgery).
             app.UseAntiforgery();
+
+            // Compress the response body stream with GZip - up to 70% smaller response.
             app.UseResponseCompression();
+
+            // Maps endpoint for files in wwwroot.
             app.MapStaticAssets();
+
+            // Add Microsoft routing system/middleware.
             app.UseRouting();
 
+            // Add default coltures for Bulgaria and England.
             app.UseRequestLocalization((requestOptions) =>
             {
                 requestOptions.AddSupportedCultures(["bg-BG", "en-EN"]);
             });
 
+            // Use authentication cookie.
             app.UseAuthentication();
+
+            // Use authorization.
             app.UseAuthorization();
+
+            // Make session/session cookie.
             app.UseSession();
 
+            // Map route with areas.
             app.MapControllerRoute(
                 "areas", 
                 "{area:exists}/{controller}/{action}/{id?}",
@@ -133,6 +166,7 @@ namespace EMall
                 new { id = @"\d*" }
             ).WithStaticAssets();
 
+            // Map route without areas.
             app.MapControllerRoute(
                 "default", 
                 "{controller}/{action}/{id?}",
@@ -140,6 +174,7 @@ namespace EMall
                 new { id = @"\d*" }
             ).WithStaticAssets();
 
+            // Map Razor pages, because of Identity system.
             app.MapRazorPages()
                .WithStaticAssets();
 
