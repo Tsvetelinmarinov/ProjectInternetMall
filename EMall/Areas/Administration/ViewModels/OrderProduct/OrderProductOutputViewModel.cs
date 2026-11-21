@@ -1,4 +1,4 @@
-﻿using EMall.ViewModels.Output;
+﻿using EMall.ViewModels;
 
 namespace EMall.Areas.Administration.ViewModels.OrderProduct
 {
@@ -6,6 +6,6 @@ namespace EMall.Areas.Administration.ViewModels.OrderProduct
     {
         public int OrderId { get; set; }
         public int ProductId { get; set; }
-        public ProductOutputViewModel? Product { get; set; }
+        public ProductViewModel? Product { get; set; }
     }
 }

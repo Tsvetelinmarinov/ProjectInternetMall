@@ -1,9 +1,9 @@
 ﻿using EMall.Areas.Administration.ViewModels.Order;
 using EMall.Areas.Administration.ViewModels.Order.Common;
 using EMall.Areas.Administration.ViewModels.OrderProduct;
-using EMall.Core.ServiceModels.Output;
+using EMall.Core.ServiceModels;
 using EMall.Core.Services.Interfaces;
-using EMall.ViewModels.Output;
+using EMall.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMall.Areas.Administration.Controllers
@@ -100,11 +100,11 @@ namespace EMall.Areas.Administration.Controllers
                 ProductId = orderProduct.ProductId,
                 Product = orderProduct.Product is null
                     ? null
-                    : new ProductOutputViewModel
+                    : new ProductViewModel
                     {
                         ProductName = orderProduct.Product.ProductName,
                         Description = orderProduct.Product.Description,
-                        Claims = orderProduct.Product.Claims.Select(claim => new ProductClaimOutputViewModel
+                        Claims = orderProduct.Product.Claims.Select(claim => new ProductClaimViewModel
                         {
                             ClaimName = claim.ClaimName,
                             ClaimValue = claim.ClaimValue
@@ -112,7 +112,7 @@ namespace EMall.Areas.Administration.Controllers
                         Price = orderProduct.Product.Price,
                         Category = orderProduct.Product.Category is null
                             ? null
-                            : new CategoryOutputViewModel
+                            : new CategoryViewModel
                             {
                                 CategoryName = orderProduct.Product.Category.CategoryName,
                                 CategoryDescription = orderProduct.Product.Category.CategoryDescription,

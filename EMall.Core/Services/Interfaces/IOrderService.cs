@@ -1,4 +1,4 @@
-﻿using EMall.Core.ServiceModels.Output;
+﻿using EMall.Core.ServiceModels;
 
 namespace EMall.Core.Services.Interfaces
 {
@@ -14,7 +14,7 @@ namespace EMall.Core.Services.Interfaces
         /// <returns>
         ///  <see cref="IEnumerable{OrderOutputServiceModel}"/> with the orders.
         /// </returns>
-        Task<IEnumerable<OrderOutputServiceModel>> GetAllOrders(string? sortBy, string? sortDir);
+        Task<IEnumerable<OrderServiceModel>> GetAllOrders(string? sortBy, string? sortDir);
 
         /// <summary>
         ///  Retrieve order from the orders repository
@@ -22,6 +22,6 @@ namespace EMall.Core.Services.Interfaces
         /// </summary>
         /// <param name="id">The ID of the order.</param>
         /// <returns>The order service model with the coresponding ID.</returns>
-        Task<OrderOutputServiceModel> FindOrderById(int? id);
+        Task<OrderServiceModel> FindOrderById(int? id);
     }
 }

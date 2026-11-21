@@ -1,4 +1,4 @@
-﻿using EMall.Core.ServiceModels.Output;
+﻿using EMall.Core.ServiceModels;
 
 namespace EMall.Core.Services.Interfaces
 {
@@ -15,6 +15,6 @@ namespace EMall.Core.Services.Interfaces
         ///  <see cref="IEnumerable{CategoryServiceOutputModel}"/> with the categories
         ///  mapped to service output models.
         /// </returns>
-        Task<IEnumerable<CategoryOutputServiceModel>> GetAllCategoriesAsync();
+        Task<IEnumerable<CategoryServiceModel>> GetAllCategoriesAsync();
     }
 }

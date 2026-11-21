@@ -1,6 +1,6 @@
-﻿namespace EMall.Core.ServiceModels.Output
+﻿namespace EMall.Core.ServiceModels
 {
-    public class OrderOutputServiceModel
+    public class OrderServiceModel
     {
         public int OrderId { get; set; }
         public string CustomerName { get; set; } = string.Empty;

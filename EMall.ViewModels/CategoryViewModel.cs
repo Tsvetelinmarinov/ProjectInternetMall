@@ -1,14 +1,14 @@
-﻿namespace EMall.Core.ServiceModels.Output
+﻿namespace EMall.ViewModels
 {
     /// <summary>
-    ///  Output service model Category.
+    ///  Defines Category view model.
     /// </summary>
-    public class CategoryOutputServiceModel
+    public class CategoryViewModel
     {
         public required string CategoryName { get; set; }
         public required string CategoryDescription { get; set; }
         public required string Icon { get; set; }
         public required string Color { get; set; }
-        public IEnumerable<ProductOutputServiceModel>? Products { get; set; }
+        public IEnumerable<ProductViewModel>? Products { get; set; }
     }
 }

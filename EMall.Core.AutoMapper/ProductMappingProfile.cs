@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EMall.Core.ServiceModels.Output;
+using EMall.Core.ServiceModels;
 using EMall.Data.EntityModels;
 
 namespace EMall.Core.AutoMapper
@@ -10,7 +10,7 @@ namespace EMall.Core.AutoMapper
         public ProductMappingProfile()
         {
             // Map Product -> ProductOutputServiceModel.
-            this.CreateMap<Product, ProductOutputServiceModel>()
+            this.CreateMap<Product, ProductServiceModel>()
                 .ReverseMap();
         }
     }

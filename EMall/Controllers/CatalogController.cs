@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EMall.Core.Services.Interfaces;
 using EMall.Exceptions;
-using EMall.ViewModels.Output;
+using EMall.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static EMall.Constants.WebConstants.CatalogController;
@@ -20,7 +20,7 @@ namespace EMall.Controllers
             var categoryServiceModels = await categoryService.GetAllCategoriesAsync();
 
             var categoryViewModels
-                = mapper.Map<IEnumerable<CategoryOutputViewModel>>(categoryServiceModels)
+                = mapper.Map<IEnumerable<CategoryViewModel>>(categoryServiceModels)
                 ?? throw new WebException(UnableToMapCategoryOutputServiceModelsToCategoryOutputViewModels);
 
             return View(categoryViewModels);

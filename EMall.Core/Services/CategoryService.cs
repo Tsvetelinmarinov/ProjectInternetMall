@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EMall.Core.Exceptions;
-using EMall.Core.ServiceModels.Output;
+using EMall.Core.ServiceModels;
 using EMall.Core.Services.Interfaces;
 using EMall.Data.EntityModels;
 using EMall.Data.Repositories.Interfaces;
@@ -21,12 +21,12 @@ namespace EMall.Core.Services
         ///  <see cref="IEnumerable{CategoryServiceOutputModel}"/> with the categories
         ///  mapped to service output models.
         /// </returns>
-        public async Task<IEnumerable<CategoryOutputServiceModel>> GetAllCategoriesAsync()
+        public async Task<IEnumerable<CategoryServiceModel>> GetAllCategoriesAsync()
         {
             IEnumerable<Category> categoryEntities = (IEnumerable<Category>)await repository.GetAllCategoriesAsync();
 
-            IEnumerable<CategoryOutputServiceModel> categoryServiceModels
-                = autoMapper.Map<IEnumerable<CategoryOutputServiceModel>>(categoryEntities)
+            IEnumerable<CategoryServiceModel> categoryServiceModels
+                = autoMapper.Map<IEnumerable<CategoryServiceModel>>(categoryEntities)
                   ?? throw new ServiceException(UnableToMapCategoryToCategoryServiceOutputModel);
 
             return categoryServiceModels;

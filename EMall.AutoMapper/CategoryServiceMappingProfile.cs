@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EMall.Core.ServiceModels.Output;
-using EMall.ViewModels.Output;
+using EMall.Core.ServiceModels;
+using EMall.ViewModels;
 
 namespace EMall.AutoMapper
 {
@@ -9,7 +9,7 @@ namespace EMall.AutoMapper
         public CategoryServiceMappingProfile()
         {
             // Create mapping for CategoryServiceOutputModel -> CategoryOutputViewModel.
-            this.CreateMap<CategoryOutputServiceModel, CategoryOutputViewModel>()
+            this.CreateMap<CategoryServiceModel, CategoryViewModel>()
                 .ReverseMap();
         }
     }

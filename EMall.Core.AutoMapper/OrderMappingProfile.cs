@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EMall.Core.ServiceModels.Output;
+using EMall.Core.ServiceModels;
 using EMall.Data.EntityModels;
 
 namespace EMall.Core.AutoMapper
@@ -11,7 +11,7 @@ namespace EMall.Core.AutoMapper
     {
         public OrderMappingProfile()
         {
-            _ = this.CreateMap<Order, OrderOutputServiceModel>()
+            _ = this.CreateMap<Order, OrderServiceModel>()
                 .ForMember(
                     destination => destination.Products,
                     options => options.MapFrom(source => source.OrderProducts)

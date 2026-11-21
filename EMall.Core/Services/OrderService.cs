@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EMall.Core.Exceptions;
-using EMall.Core.ServiceModels.Output;
+using EMall.Core.ServiceModels;
 using EMall.Core.Services.Interfaces;
 using EMall.Data.EntityModels;
 using EMall.Data.Repositories.Interfaces;
@@ -40,14 +40,14 @@ namespace EMall.Core.Services
         /// <returns>
         ///  <see cref="IEnumerable{OrderOutputServiceModel}"/> with the orders.
         /// </returns>
-        public async Task<IEnumerable<OrderOutputServiceModel>> GetAllOrders(string? sortBy, string? sortDir)
+        public async Task<IEnumerable<OrderServiceModel>> GetAllOrders(string? sortBy, string? sortDir)
         {
             // Извличане на поръчките от репозиторията.
             IEnumerable<Order> orderEntities = await repository.AllAsNoTracking();
 
             // Кастване към сервизни модели.
             var orderServiceModels
-                = mapper.Map<IEnumerable<OrderOutputServiceModel>>(orderEntities)
+                = mapper.Map<IEnumerable<OrderServiceModel>>(orderEntities)
                  ?? throw new ServiceException(UnableToMapOrdersToOrderOutputServiceModels);
 
             // Сортиране по указаните параметри.
@@ -127,7 +127,7 @@ namespace EMall.Core.Services
         /// </summary>
         /// <param name="id">The ID of the order.</param>
         /// <returns>The order service model with the coresponding ID.</returns>
-        public async Task<OrderOutputServiceModel> FindOrderById(int? id)
+        public async Task<OrderServiceModel> FindOrderById(int? id)
         {
             if (id is null || id <= 0)
             {
@@ -137,7 +137,7 @@ namespace EMall.Core.Services
             var orderEntity = await repository.FindOrderWithProductsByIdAsync((int)id);
 
             var orderServiceModel
-                = mapper.Map<OrderOutputServiceModel>(orderEntity)
+                = mapper.Map<OrderServiceModel>(orderEntity)
                  ?? throw new ServiceException(UnableToMapOrderToOrderOutputServiceModel);
 
             return orderServiceModel;

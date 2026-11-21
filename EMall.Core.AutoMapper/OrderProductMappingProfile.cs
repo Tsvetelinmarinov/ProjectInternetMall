@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EMall.Core.ServiceModels.Output;
+using EMall.Core.ServiceModels;
 using EMall.Data.EntityModels;
 
 namespace EMall.Core.AutoMapper

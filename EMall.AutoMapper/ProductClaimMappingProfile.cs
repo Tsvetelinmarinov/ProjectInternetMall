@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EMall.Core.ServiceModels.Output;
-using EMall.ViewModels.Output;
+using EMall.Core.ServiceModels;
+using EMall.ViewModels;
 
 namespace EMall.AutoMapper
 {
@@ -9,7 +9,7 @@ namespace EMall.AutoMapper
         public ProductClaimServiceMappingProfile()
         {
             // Create mapping for ProductClaimOutputServiceModel -> ProductClaimOutputViewModel.
-            this.CreateMap<ProductClaimOutputServiceModel, ProductClaimOutputViewModel>()
+            this.CreateMap<ProductClaimServiceModel, ProductClaimViewModel>()
                 .ReverseMap();
         }
     }
