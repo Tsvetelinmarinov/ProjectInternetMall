@@ -40,6 +40,15 @@
 
 <div class="container py-4">
 
+    @if (this.TempData.ContainsKey("UpdateOprFailed"))
+    {
+        <p class="text-danger">@this.TempData["UpdateOprFailed"]</p>
+    }
+    else if (this.TempData.ContainsKey("UpdateOprOk"))
+    {
+        <p class="text-success">@this.TempData["UpdateOprOk"]</p>
+    }
+
     <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
         <div>
             <h1 class="h3 mb-1">Поръчки</h1>
