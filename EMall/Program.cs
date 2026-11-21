@@ -134,9 +134,6 @@ namespace EMall
             // Validate anty-forgery token to preven from CSRF(Cross-Site Request Forgery).
             app.UseAntiforgery();
 
-            // Compress the response body stream with GZip - up to 70% smaller response.
-            app.UseResponseCompression();
-
             // Maps endpoint for files in wwwroot.
             app.MapStaticAssets();
 
