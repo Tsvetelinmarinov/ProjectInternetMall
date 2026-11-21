@@ -11,6 +11,9 @@ namespace EMall.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
+            builder.HasIndex(category => category.CategoryName)
+                .IsUnique();
+
             builder.HasData([
                 new Category 
                 { 

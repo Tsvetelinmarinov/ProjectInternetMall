@@ -12,6 +12,21 @@ public static class AdminDashboardDataSeeder
 {
     public static async Task SeedAsync(ApplicationDbContext dbContext)
     {
+        await using var transaction = await dbContext.Database.BeginTransactionAsync();
+
+        // Maded by Github Copilot to enable unique names on products.
+        await dbContext.Database.ExecuteSqlRawAsync("""
+            DECLARE @lockResult int;
+            EXEC @lockResult = sp_getapplock
+                @Resource = N'EMall.AdminDashboardDataSeeder',
+                @LockMode = 'Exclusive',
+                @LockOwner = 'Transaction',
+                @LockTimeout = 30000;
+
+            IF @lockResult < 0
+                THROW 51000, 'Could not acquire the dashboard seeder lock.', 1;
+            """);
+
         int[] requiredCategoryIds = [1, 2, 3, 4, 5, 6];
 
         var existingCategoryIds = dbContext
@@ -314,5 +329,7 @@ public static class AdminDashboardDataSeeder
             await dbContext.OrderProducts.AddRangeAsync(missingOrderProducts);
             await dbContext.SaveChangesAsync();
         }
+
+        await transaction.CommitAsync();
     }
 }

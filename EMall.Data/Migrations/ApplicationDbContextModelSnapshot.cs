@@ -116,6 +116,9 @@ namespace EMall.Data.Migrations
 
                     b.HasKey("CategoryId");
 
+                    b.HasIndex("CategoryName")
+                        .IsUnique();
+
                     b.ToTable("Categories");
 
                     b.HasData(
@@ -298,6 +301,9 @@ namespace EMall.Data.Migrations
                     b.HasKey("ProductId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductName")
+                        .IsUnique();
 
                     b.ToTable("Products");
                 });

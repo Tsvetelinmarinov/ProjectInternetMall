@@ -23,6 +23,10 @@ namespace EMall.Data.DatabaseContext
                    );
 
             builder.Entity<Product>()
+                   .HasIndex(product => product.ProductName)
+                   .IsUnique();
+
+            builder.Entity<Product>()
                    .HasQueryFilter("SoftDelete", (product) => product.IsDeleted == false);
 
             // Apply all the Category entity configuration.
