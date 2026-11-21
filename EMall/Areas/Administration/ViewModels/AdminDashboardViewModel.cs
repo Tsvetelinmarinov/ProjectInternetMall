@@ -45,7 +45,7 @@ public class AdminDashboardViewModel
     /// <summary>
     ///  Recent orders.
     /// </summary>
-    public List<OrderOutputViewModel> RecentOrders { get; set; } = [];
+    public List<OrderViewModel> RecentOrders { get; set; } = [];
 
     /// <summary>
     ///  Low stock products.

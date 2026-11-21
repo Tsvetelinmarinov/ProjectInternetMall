@@ -5,7 +5,7 @@ using static EMall.Constants.WebConstants.Validation.OrderInputViewModel;
 
 namespace EMall.Areas.Administration.ViewModels.Order
 {
-    public class OrderOutputViewModel
+    public class OrderViewModel
     {
         public int OrderId { get; set; }
 
@@ -40,6 +40,6 @@ namespace EMall.Areas.Administration.ViewModels.Order
         )]
         public decimal TotalPrice { get; set; }
 
-        public List<OrderProductOutputViewModel>? Products { get; set; }
+        public List<OrderProductViewModel>? Products { get; set; }
     }
 }

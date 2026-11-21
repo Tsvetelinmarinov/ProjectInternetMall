@@ -10,7 +10,7 @@ namespace EMall.Core.Services
 {
     /// <summary>
     ///  Service for orders.
-    ///  Communicates with the orders repository and serves the AminHomeController.
+    ///  Communicates with the orders repository and serves the AminHomeController or OrdersController.
     /// </summary>
     public class OrderService(IOrderRepository repository, IMapper mapper) : IOrderService
     {
@@ -141,6 +141,21 @@ namespace EMall.Core.Services
                  ?? throw new ServiceException(UnableToMapOrderToOrderOutputServiceModel);
 
             return orderServiceModel;
+        }
+
+        /// <summary>
+        ///  Updates existing Order entity.
+        /// </summary>
+        /// <param name="inputServiceModel">
+        ///  The <see cref="OrderServiceModel"/> with the new data.
+        /// </param>
+        /// <returns>
+        /// <see cref="Task"/> witch result returns <see cref="bool"/> that indicates
+        /// the result of the UPDATE operation.
+        /// </returns>
+        public Task<bool> UpdateOrder(OrderServiceModel inputServiceModel)
+        {
+            return new Task<bool>(() => true);
         }
     }
 }

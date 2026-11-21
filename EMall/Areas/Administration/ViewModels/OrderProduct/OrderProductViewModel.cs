@@ -2,7 +2,7 @@
 
 namespace EMall.Areas.Administration.ViewModels.OrderProduct
 {
-    public class OrderProductOutputViewModel
+    public class OrderProductViewModel
     {
         public int OrderId { get; set; }
         public int ProductId { get; set; }

@@ -46,7 +46,7 @@ namespace EMall.Areas.Administration.Controllers
             }
 
             var orderViewModels = orderServiceModels
-                .Select((orderServiceModel) => new OrderOutputViewModel
+                .Select((orderServiceModel) => new OrderViewModel
                 {
                     OrderId = orderServiceModel.OrderId,
                     CustomerName = orderServiceModel.CustomerName,

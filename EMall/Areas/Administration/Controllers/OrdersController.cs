@@ -28,7 +28,7 @@ namespace EMall.Areas.Administration.Controllers
                 = await orderService.GetAllOrders(sortBy, sortDir);
 
             var orderViewModels = orderServiceModels
-                .Select((orderServiceModel) => new OrderOutputViewModel
+                .Select((orderServiceModel) => new OrderViewModel
                 {
                     OrderId = orderServiceModel.OrderId,
                     CustomerName = orderServiceModel.CustomerName,
@@ -47,7 +47,7 @@ namespace EMall.Areas.Administration.Controllers
         {
             var orderServiceModel = await orderService.FindOrderById(id);
 
-            var orderViewModel = new OrderOutputViewModel
+            var orderViewModel = new OrderViewModel
             {
                 OrderId = orderServiceModel.OrderId,
                 CustomerName = orderServiceModel.CustomerName,
@@ -67,7 +67,7 @@ namespace EMall.Areas.Administration.Controllers
         {
             var orderServiceModel = await orderService.FindOrderById(id);
 
-            var orderViewModel = new OrderOutputViewModel
+            var orderViewModel = new OrderViewModel
             {
                 OrderId = orderServiceModel.OrderId,
                 CustomerName = orderServiceModel.CustomerName,
@@ -85,16 +85,61 @@ namespace EMall.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> EditOrder(
             [FromRoute] int id,
-            [FromForm] OrderOutputViewModel orderModel
+            [FromForm] OrderViewModel orderModel
         ){
             var persistedOrder = await orderService.FindOrderById(id);
             orderModel.Products = MapProducts(persistedOrder.Products);
 
-            return Ok();
+            OrderServiceModel orderServiceModel = new()
+            {
+                OrderId = orderModel.OrderId,
+                AddressForShipping = orderModel.AddressForShipping,
+                CreatedOn = orderModel.CreatedOn,
+                CustomerEmail = orderModel.CustomerEmail,
+                CustomerName = orderModel.CustomerName,
+                Products = [.. orderModel
+                    .Products!
+                    .Select((productViewModel) => new OrderProductServiceModel()
+                    {
+                        ProductId = productViewModel.ProductId,
+                        OrderId = productViewModel.OrderId,
+                        Product = new()
+                        {
+                            ProductName = productViewModel.Product!.ProductName,
+                            Price = productViewModel.Product!.Price,
+                            Category = new CategoryServiceModel()
+                            {
+                                CategoryName = productViewModel.Product.Category!.CategoryName,
+                                CategoryDescription = productViewModel.Product.Category!.CategoryDescription,
+                                Color = productViewModel.Product.Category!.Color,
+                                Icon = productViewModel.Product.Category!.Icon
+                            },
+                            Description = productViewModel.Product.Description,
+                            Claims = productViewModel
+                                .Product
+                                .Claims
+                                .Select((claims) => new ProductClaimServiceModel
+                                    {
+                                        ClaimName = claims.ClaimName,
+                                        ClaimValue = claims.ClaimValue
+                                    }
+                                )
+                        }
+                    })]
+            };
+
+            bool successUpdating = await orderService.UpdateOrder(orderServiceModel);
+            if (successUpdating is false)
+            {
+                this.TempData["UpdateOprFailed"] = $"Unsuccessfully updating of order with ID {orderServiceModel.OrderId}!";
+            }
+
+            this.TempData["UpdateOprOk"] = $"Successfully updated order with ID {orderServiceModel.OrderId}!";
+            return this.RedirectToAction("Index", "Orders");
         }
 
-        private static List<OrderProductOutputViewModel>? MapProducts(IEnumerable<OrderProductOutputServiceModel>? products)
-            => products?.Select(orderProduct => new OrderProductOutputViewModel
+        private static List<OrderProductViewModel>? MapProducts(IEnumerable<OrderProductServiceModel>? products)
+            => products?.Select(orderProduct => new OrderProductViewModel
             {
                 OrderId = orderProduct.OrderId,
                 ProductId = orderProduct.ProductId,

@@ -4,7 +4,7 @@ namespace EMall.Core.Services.Interfaces
 {
     /// <summary>
     ///  Service for orders.
-    ///  Communicates with the orders repository and serves the AminHomeController.
+    ///  Communicates with the orders repository and serves the AminHomeController or OrdersController.
     /// </summary>
     public interface IOrderService
     {
@@ -23,5 +23,17 @@ namespace EMall.Core.Services.Interfaces
         /// <param name="id">The ID of the order.</param>
         /// <returns>The order service model with the coresponding ID.</returns>
         Task<OrderServiceModel> FindOrderById(int? id);
+
+        /// <summary>
+        ///  Updates existing Order entity.
+        /// </summary>
+        /// <param name="inputServiceModel">
+        ///  The <see cref="OrderServiceModel"/> with the new data.
+        /// </param>
+        /// <returns>
+        /// <see cref="Task"/> witch result returns <see cref="bool"/> that indicates
+        /// the result of the UPDATE operation.
+        /// </returns>
+        Task<bool> UpdateOrder(OrderServiceModel inputServiceModel);
     }
 }

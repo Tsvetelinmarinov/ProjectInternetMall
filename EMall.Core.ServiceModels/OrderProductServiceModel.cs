@@ -1,6 +1,6 @@
 ﻿namespace EMall.Core.ServiceModels
 {
-    public class OrderProductOutputServiceModel
+    public class OrderProductServiceModel
     {
         public int OrderId { get; set; }
         public int ProductId { get; set; }
