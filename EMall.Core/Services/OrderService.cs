@@ -153,9 +153,18 @@ namespace EMall.Core.Services
         /// <see cref="Task"/> witch result returns <see cref="bool"/> that indicates
         /// the result of the UPDATE operation.
         /// </returns>
-        public Task<bool> UpdateOrder(OrderServiceModel inputServiceModel)
+        public async Task<bool> UpdateOrder(OrderServiceModel inputServiceModel)
         {
-            return new Task<bool>(() => true);
+            if (inputServiceModel is null)
+            {
+                throw new ServiceException(OrderServiceModelWithNewDataIsNull);
+            }
+
+            var inputEntity = mapper.Map<Order>(inputServiceModel)
+                ?? throw new ServiceException(UnableToMapOrderServiceModelToOrder);
+
+            var result = await repository.UpdateOrderAsync(inputEntity);
+            return result;
         }
     }
 }

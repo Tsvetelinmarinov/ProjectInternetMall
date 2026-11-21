@@ -37,6 +37,11 @@
                 = "Unable to map Order to OrderOutputServiceModel!";
 
             public const string InvalidOrderId = "Invalid order ID! Something went wrong!";
+            public const string OrderServiceModelWithNewDataIsNull
+                = "The OrderServiceModel with the new data is null!";
+
+            public const string UnableToMapOrderServiceModelToOrder
+                = "Unable to map OrderServiceModel to Order entity!";
         }
     }
 }

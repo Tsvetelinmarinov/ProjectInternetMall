@@ -119,13 +119,15 @@ namespace EMall.Areas.Administration.Controllers
                                 .Product
                                 .Claims
                                 .Select((claims) => new ProductClaimServiceModel
-                                    {
-                                        ClaimName = claims.ClaimName,
-                                        ClaimValue = claims.ClaimValue
-                                    }
-                                )
+                                {
+                                    ClaimName = claims.ClaimName,
+                                    ClaimValue = claims.ClaimValue
+                                })
                         }
-                    })]
+                    })
+                ],
+                TotalPrice = orderModel.TotalPrice,
+                Status = orderModel.Status.ToString()
             };
 
             bool successUpdating = await orderService.UpdateOrder(orderServiceModel);
@@ -138,6 +140,16 @@ namespace EMall.Areas.Administration.Controllers
             return this.RedirectToAction("Index", "Orders");
         }
 
+        /// <summary>
+        ///  Helpers functions that map collection of 
+        ///  OrderProductServiceModels to OrderProductViewModels.
+        /// </summary>
+        /// <param name="products">
+        ///  The OrderProduct service models.
+        /// </param>
+        /// <returns>
+        ///  Collection of <see cref="OrderProductViewModel"/> mapped from the service models.
+        /// </returns>
         private static List<OrderProductViewModel>? MapProducts(IEnumerable<OrderProductServiceModel>? products)
             => products?.Select(orderProduct => new OrderProductViewModel
             {

@@ -80,6 +80,8 @@
         {
             public const string NoOrdersFromDb = "Something went wrong while retrieving the orders from the database.";
             public const string NoOrderFromDb = "Something went wrong while retrieving the order from the database.";
+            public const string UpdatingOrderDTOIsNull 
+                = "The Order entity that contains the new data for UPDATE operation is null!"; 
         }
 
         /// <summary>
