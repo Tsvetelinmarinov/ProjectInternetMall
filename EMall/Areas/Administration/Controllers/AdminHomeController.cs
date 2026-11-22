@@ -36,16 +36,10 @@ namespace EMall.Areas.Administration.Controllers
                     ProductsCount = (category.Products ??[]).Count()
                 });
 
-            var orderServiceModels = await ordersService.GetAllOrders("date", "asc"); 
+            var allOrders = (await ordersService.GetAllOrders("date", "asc")).ToList();
 
-            // Понеже тази колекция е за нови поръчки, се взимат само 5 колкото за dashboard-а.
-            // Все пак този медот връща всички, защото ще се използва и в OrderController-а.
-            if (orderServiceModels.Count() > 5)
-            {
-                orderServiceModels = orderServiceModels.Take(5);
-            }
-
-            var orderViewModels = orderServiceModels
+            var recentOrders = allOrders
+                .Take(5)
                 .Select((orderServiceModel) => new OrderViewModel
                 {
                     OrderId = orderServiceModel.OrderId,
@@ -58,6 +52,10 @@ namespace EMall.Areas.Administration.Controllers
                 })
                 .ToList();
 
+            var pendingOrdersCount = allOrders.Count(order =>
+                order.Status == OrderStatus.Pending.ToString()
+            );
+
             if (categoryStatViewModels is null)
             {
                 throw new ArgumentNullException(nameof(categoryStatViewModels));
@@ -65,14 +63,14 @@ namespace EMall.Areas.Administration.Controllers
 
             var boardModel = new AdminDashboardViewModel
             {
-                PendingOrders = orderViewModels.Count,
+                PendingOrders = pendingOrdersCount,
                 ProductsCount = categoryStatViewModels.Sum((categoryStat) => categoryStat.ProductsCount),
-                OrdersCount = orderViewModels.Count,
+                OrdersCount = allOrders.Count,
                 UsersCount = await userManager.Users.CountAsync(),
                 NewUsersThisWeek = 0,
-                RevenueThisMonth = orderViewModels.Sum((orderModel) => orderModel.TotalPrice),
+                RevenueThisMonth = recentOrders.Sum((orderModel) => orderModel.TotalPrice),
                 Categories = [.. categoryStatViewModels],
-                RecentOrders = orderViewModels,
+                RecentOrders = recentOrders,
                 LowStock = []
             };
 

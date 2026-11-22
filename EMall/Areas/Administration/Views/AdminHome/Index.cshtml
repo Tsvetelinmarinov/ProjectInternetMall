@@ -50,9 +50,9 @@
             <a class="adm-link @(ActiveController("Home"))" asp-area="Administration">Табло</a>
             <a class="adm-link @(ActiveController("Orders"))" asp-area="Administration" asp-controller="Orders">
                 Поръчки
-                @if (Model.PendingOrders > 0)
+                @if (Model.OrdersCount > 0)
                 {
-                    <span class="adm-chip is-new">@Model.PendingOrders</span>
+                    <span class="adm-chip is-new">@Model.OrdersCount</span>
                 }
             </a>
         </nav>
@@ -85,7 +85,7 @@
             </div>
             <div class="adm-stat">
                 <span class="adm-stat-label">Поръчки</span>
-                <strong class="adm-stat-value">@Model.PendingOrders.ToString("N0", bg)</strong>
+                <strong class="adm-stat-value">@Model.OrdersCount.ToString("N0", bg)</strong>
             </div>
             <div class="adm-stat">
                 <span class="adm-stat-label">Потребители</span>
