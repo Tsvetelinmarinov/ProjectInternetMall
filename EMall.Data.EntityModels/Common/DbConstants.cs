@@ -66,6 +66,17 @@
         }
 
         /// <summary>
+        ///  Provides constant for Database layer types that are not
+        ///  related to any entity.
+        /// </summary>
+        public static class AdminDashboardDataSeederRelated
+        {
+            public const string CategoriesDoesNotExist = "First we should create the first 6 categories!";
+            public const string InvalidSeedProductsGrouping = "Seed products must be grouped evenly across the demo orders.";
+            public const string NoMockOrdersAvailableInDb = "First we should create orders with IDs 1, 3 and 3.";
+        }
+
+        /// <summary>
         ///  Provides constants for entity Category related logic.
         /// </summary>
         public static class CategoryRelated

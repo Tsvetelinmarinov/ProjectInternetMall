@@ -1,6 +1,7 @@
 ﻿using EMall.Data.DatabaseContext;
 using EMall.Data.EntityModels;
 using Microsoft.EntityFrameworkCore;
+using static EMall.Data.EntityModels.Common.DbConstants.AdminDashboardDataSeederRelated;
 
 namespace EMall.Data.SeedData;
 
@@ -15,20 +16,24 @@ public static class AdminDashboardDataSeeder
         await using var transaction = await dbContext.Database.BeginTransactionAsync();
 
         // Maded by Github Copilot to enable unique names on products.
-        await dbContext.Database.ExecuteSqlRawAsync("""
-            DECLARE @lockResult int;
-            EXEC @lockResult = sp_getapplock
-                @Resource = N'EMall.AdminDashboardDataSeeder',
-                @LockMode = 'Exclusive',
-                @LockOwner = 'Transaction',
-                @LockTimeout = 30000;
+        await dbContext.Database.ExecuteSqlRawAsync(
+            """
+                DECLARE @lockResult int;
+                EXEC @lockResult = sp_getapplock
+                    @Resource = N'EMall.AdminDashboardDataSeeder',
+                    @LockMode = 'Exclusive',
+                    @LockOwner = 'Transaction',
+                    @LockTimeout = 30000;
 
-            IF @lockResult < 0
-                THROW 51000, 'Could not acquire the dashboard seeder lock.', 1;
-            """);
+                IF @lockResult < 0
+                    THROW 51000, 'Could not acquire the dashboard seeder lock.', 1;
+            """
+        );
 
+        // Needed categories IDs.
         int[] requiredCategoryIds = [1, 2, 3, 4, 5, 6];
 
+        // Take the categories with the needed IDs from the database.
         var existingCategoryIds = dbContext
             .Categories
             .AsNoTracking()
@@ -36,13 +41,17 @@ public static class AdminDashboardDataSeeder
             .Select(category => category.CategoryId)
             .ToList();
 
+        // If the count of existing categories is not equals to the count of
+        // categories that we require - that's mean some(or all)
+        // category does not exist yet.
         if (existingCategoryIds.Count != requiredCategoryIds.Length)
         {
-            throw new InvalidOperationException(
-                "Първо трябва да бъдат създадени категориите с ID от 1 до 6.");
+            throw new InvalidOperationException(CategoriesDoesNotExist);
         }
 
-        Product[] seededProducts =
+        // Mock product for first database initialization.
+        // That products will be seeded first, and will left in the database.
+        Product[] seedProducts =
         [
             new()
             {
@@ -250,76 +259,110 @@ public static class AdminDashboardDataSeeder
             }
         ];
 
-        string[] seededProductNames = seededProducts
-            .Select(product => product.ProductName)
-            .ToArray();
+        // Get the names of the products in an array.
+        string[] seededProductNames = [.. seedProducts.Select(product => product.ProductName)];
 
+        // Check if there are products in the database?
+        // If the database already has products
         if (await dbContext.Products.AnyAsync())
         {
-            var existingSeededProducts = await dbContext.Products
+            // If we has products in the database - take that one with the same names
+            // as the seeded one.
+            var existingSeededProducts = await dbContext
+                .Products
                 .Where(product => seededProductNames.Contains(product.ProductName))
                 .ToListAsync();
 
-            if (existingSeededProducts.Count != seededProducts.Length)
+            // If the count of the existing seeded products is not equalst to the
+            // count of seedProducts array with mock data, thats mean on startup
+            // something went wrong and not all the mock data has been seeded.
+            if (existingSeededProducts.Count != seedProducts.Length)
             {
                 return;
             }
 
-            var seededProductsByName = seededProducts.ToDictionary(product => product.ProductName);
+            // Convert the array with mock data(seedProducts) to a dictionary.
+            // Each product will be key-value pair - product name and product object.
+            var seedProductsDictionary = seedProducts.ToDictionary(product => product.ProductName);
 
-            foreach (var existingProduct in existingSeededProducts)
+            // Set each seeded products claims to the new ones after the update, because i add
+            // more claims to each product. First i seed the products with 2 claims for each and
+            // after that i add more 6 to each. So if we seed the first products with the original
+            // 2 claims, the new claims will not be added, so we need to check and to add them
+            // in this case.
+            foreach (var existingSeededProduct in existingSeededProducts)
             {
-                existingProduct.Claims = seededProductsByName[existingProduct.ProductName].Claims;
+                existingSeededProduct.Claims = seedProductsDictionary[existingSeededProduct.ProductName].Claims;
             }
 
+            // Update database after the new claism INSERT operation.
             await dbContext.SaveChangesAsync();
 
-            seededProducts = existingSeededProducts
-                .OrderBy(product => Array.IndexOf(seededProductNames, product.ProductName))
-                .ToArray();
+            // Update the value of the mock data Product array(seedProcucts),
+            // to reflect the new changes, if we make any at all.
+            seedProducts = [.. 
+                existingSeededProducts
+                    .OrderBy(product => Array.IndexOf(seededProductNames, product.ProductName))
+            ];
         }
-        else
+        else // If the database has not products(is on startup) - seed our seedProducts here.
         {
-            await dbContext.Products.AddRangeAsync(seededProducts);
+            await dbContext.Products.AddRangeAsync(seedProducts);
             await dbContext.SaveChangesAsync();
         }
 
-        int[] seededOrderIds = [1, 2, 3];
+        int[] seedOrderIds = [1, 2, 3]; //=> We need orders with IDs 1, 2 and 3.
+
+        // 4 product in one order in out test case:
+        // 3 order with 4 products per order.
         const int ProductsPerSeededOrder = 4;
 
-        if (seededProducts.Length != seededOrderIds.Length * ProductsPerSeededOrder)
+        // If we have less or more than  12 products, throw an error.
+        // They need to be exatly 12 - 3 orders with 4 products per order.
+        if (seedProducts.Length != seedOrderIds.Length * ProductsPerSeededOrder)
         {
-            throw new InvalidOperationException("Seed products must be grouped evenly across the demo orders.");
+            throw new InvalidOperationException(InvalidSeedProductsGrouping);
         }
 
-        var existingOrderIds = await dbContext.Orders
-            .Where(order => seededOrderIds.Contains(order.OrderId))
+        // Retrieve the orders with IDs 1, 2 and 3 from the database.
+        var existingOrderIds = await dbContext
+            .Orders
+            .Where(order => seedOrderIds.Contains(order.OrderId))
             .Select(order => order.OrderId)
             .ToListAsync();
 
-        if (existingOrderIds.Count != seededOrderIds.Length)
+        // If orders with IDs 1, 2 or 3 does not exist, we 
+        // should create them first.
+        if (existingOrderIds.Count != seedOrderIds.Length)
         {
-            throw new InvalidOperationException(
-                "Първо трябва да бъдат създадени seed поръчките с ID от 1 до 3.");
+            throw new InvalidOperationException(NoMockOrdersAvailableInDb);
         }
 
-        var expectedOrderProducts = seededProducts
+        // Create the products for each order(OrderProduct) from the seeded products.
+        var expectedOrderProducts = seedProducts
             .Select((product, index) => new OrderProduct
             {
-                OrderId = seededOrderIds[index / ProductsPerSeededOrder],
+                OrderId = seedOrderIds[index / ProductsPerSeededOrder],
                 ProductId = product.ProductId
             })
             .ToArray();
 
-        var existingOrderProducts = await dbContext.OrderProducts
-            .Where(orderProduct => seededOrderIds.Contains(orderProduct.OrderId))
+        // Get a list with anonymous objects(the order products) from the database.
+        // Extract the products for orders with IDs 1, 2 and 3. They shoul be
+        // total 12 order products - each order has 4 products.
+        var existingOrderProducts = await dbContext
+            .OrderProducts
+            .Where(orderProduct => seedOrderIds.Contains(orderProduct.OrderId))
             .Select(orderProduct => new { orderProduct.OrderId, orderProduct.ProductId })
             .ToListAsync();
 
+        // Make a HashSet with tupes of order IDs and product IDs.
         var existingOrderProductKeys = existingOrderProducts
             .Select(orderProduct => (orderProduct.OrderId, orderProduct.ProductId))
             .ToHashSet();
 
+        // If any order missing some of her 4 seed products for some reason,
+        // seed them again.
         var missingOrderProducts = expectedOrderProducts
             .Where(orderProduct => !existingOrderProductKeys.Contains((orderProduct.OrderId, orderProduct.ProductId)))
             .ToArray();
@@ -330,6 +373,7 @@ public static class AdminDashboardDataSeeder
             await dbContext.SaveChangesAsync();
         }
 
+        // Commin all changes.
         await transaction.CommitAsync();
     }
 }
