@@ -30,10 +30,8 @@ namespace EMall
                 .GetConnectionString("DefaultConnection")
                  ?? throw new InvalidOperationException(NoDbConnectionKey);
 
-            // Add services of controllers and views to the container +
-            // services for exception page for database errors.
+            // Add services of controllers and views to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             // Add DbContext.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
