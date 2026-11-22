@@ -262,53 +262,42 @@ public static class AdminDashboardDataSeeder
         // Get the names of the products in an array.
         string[] seededProductNames = [.. seedProducts.Select(product => product.ProductName)];
 
-        // Check if there are products in the database?
-        // If the database already has products
-        if (await dbContext.Products.AnyAsync())
+        // Find existing baseline products so missing seed data can be added safely.
+        var existingSeededProducts = await dbContext
+            .Products
+            .Where(product => seededProductNames.Contains(product.ProductName))
+            .ToListAsync();
+
+        var seedProductsDictionary = seedProducts.ToDictionary(product => product.ProductName);
+
+        foreach (var existingSeededProduct in existingSeededProducts)
         {
-            // If we has products in the database - take that one with the same names
-            // as the seeded one.
-            var existingSeededProducts = await dbContext
-                .Products
-                .Where(product => seededProductNames.Contains(product.ProductName))
-                .ToListAsync();
-
-            // If the count of the existing seeded products is not equalst to the
-            // count of seedProducts array with mock data, thats mean on startup
-            // something went wrong and not all the mock data has been seeded.
-            if (existingSeededProducts.Count != seedProducts.Length)
-            {
-                return;
-            }
-
-            // Convert the array with mock data(seedProducts) to a dictionary.
-            // Each product will be key-value pair - product name and product object.
-            var seedProductsDictionary = seedProducts.ToDictionary(product => product.ProductName);
-
-            // Set each seeded products claims to the new ones after the update, because i add
-            // more claims to each product. First i seed the products with 2 claims for each and
-            // after that i add more 6 to each. So if we seed the first products with the original
-            // 2 claims, the new claims will not be added, so we need to check and to add them
-            // in this case.
-            foreach (var existingSeededProduct in existingSeededProducts)
-            {
-                existingSeededProduct.Claims = seedProductsDictionary[existingSeededProduct.ProductName].Claims;
-            }
-
-            // Update database after the new claism INSERT operation.
-            await dbContext.SaveChangesAsync();
-
-            // Update the value of the mock data Product array(seedProcucts),
-            // to reflect the new changes, if we make any at all.
-            seedProducts = [.. 
-                existingSeededProducts
-                    .OrderBy(product => Array.IndexOf(seededProductNames, product.ProductName))
-            ];
+            existingSeededProduct.Claims = seedProductsDictionary[existingSeededProduct.ProductName].Claims;
         }
-        else // If the database has not products(is on startup) - seed our seedProducts here.
+
+        var existingSeededProductNames = existingSeededProducts
+            .Select(product => product.ProductName)
+            .ToHashSet();
+
+        var missingSeededProducts = seedProducts
+            .Where(product => !existingSeededProductNames.Contains(product.ProductName))
+            .ToArray();
+
+        if (missingSeededProducts.Length > 0)
         {
-            await dbContext.Products.AddRangeAsync(seedProducts);
-            await dbContext.SaveChangesAsync();
+            await dbContext.Products.AddRangeAsync(missingSeededProducts);
+        }
+
+        await dbContext.SaveChangesAsync();
+
+        seedProducts = await dbContext
+            .Products
+            .Where(product => seededProductNames.Contains(product.ProductName))
+            .ToArrayAsync();
+
+        if (seedProducts.Length != seededProductNames.Length)
+        {
+            throw new InvalidOperationException(InvalidSeedProductsGrouping);
         }
 
         int[] seedOrderIds = [1, 2, 3]; //=> We need orders with IDs 1, 2 and 3.
@@ -373,7 +362,192 @@ public static class AdminDashboardDataSeeder
             await dbContext.SaveChangesAsync();
         }
 
+        await SeedAdditionalProductsAndOrdersAsync(dbContext);
+
         // Commin all changes.
         await transaction.CommitAsync();
     }
+
+    private static async Task SeedAdditionalProductsAndOrdersAsync(ApplicationDbContext dbContext)
+    {
+        var productSeeds = GetAdditionalProductSeeds();
+        var productNames = productSeeds.Select(seed => seed.Name).ToArray();
+
+        var productsByName = await dbContext
+            .Products
+            .Where(product => productNames.Contains(product.ProductName))
+            .ToDictionaryAsync(product => product.ProductName);
+
+        foreach (var seed in productSeeds)
+        {
+            if (!productsByName.TryGetValue(seed.Name, out var existingProduct))
+            {
+                var newProduct = CreateProduct(seed);
+                await dbContext.Products.AddAsync(newProduct);
+                productsByName.Add(seed.Name, newProduct);
+                continue;
+            }
+
+            existingProduct.Description = seed.Description;
+            existingProduct.Price = seed.Price;
+            existingProduct.CategoryId = seed.CategoryId;
+            existingProduct.Claims = CreateClaims(seed);
+        }
+
+        await dbContext.SaveChangesAsync();
+
+        var customerSeeds = DemoCustomerSeeds.All;
+        var statuses = new[] { "Pending", "Processing", "Shipped", "Delivered", "Cancelled" };
+        var additionalProducts = productSeeds
+            .Select(seed => productsByName[seed.Name])
+            .ToArray();
+
+        var orderSeeds = Enumerable.Range(0, customerSeeds.Count)
+            .Select(index =>
+            {
+                var orderProducts = Enumerable.Range(0, 6)
+                    .Select(offset => additionalProducts[(index * 3 + offset) % additionalProducts.Length])
+                    .ToArray();
+
+                return new Order
+                {
+                    CustomerName = customerSeeds[index].Name,
+                    CustomerEmail = customerSeeds[index].Email,
+                    AddressForShipping = $"ул. Примерна {index + 1}, София",
+                    CreatedOn = new DateTime(2026, 11, 1, 10, 0, 0).AddDays(index),
+                    Status = statuses[index % statuses.Length],
+                    TotalPrice = orderProducts.Sum(product => (decimal)product.Price)
+                };
+            })
+            .ToArray();
+
+        var orderEmails = orderSeeds.Select(order => order.CustomerEmail).ToArray();
+        var existingOrdersByEmail = await dbContext
+            .Orders
+            .Where(order => orderEmails.Contains(order.CustomerEmail))
+            .ToDictionaryAsync(order => order.CustomerEmail);
+
+        foreach (var orderSeed in orderSeeds)
+        {
+            if (!existingOrdersByEmail.ContainsKey(orderSeed.CustomerEmail))
+            {
+                await dbContext.Orders.AddAsync(orderSeed);
+                existingOrdersByEmail.Add(orderSeed.CustomerEmail, orderSeed);
+            }
+        }
+
+        await dbContext.SaveChangesAsync();
+
+        var orderIdsByEmail = existingOrdersByEmail
+            .ToDictionary(pair => pair.Key, pair => pair.Value.OrderId);
+
+        var expectedOrderProducts = orderSeeds
+            .SelectMany((orderSeed, index) => Enumerable.Range(0, 6)
+                .Select(offset => new OrderProduct
+                {
+                    OrderId = orderIdsByEmail[orderSeed.CustomerEmail],
+                    ProductId = additionalProducts[(index * 3 + offset) % additionalProducts.Length].ProductId
+                }))
+            .ToArray();
+
+        var orderIds = orderIdsByEmail.Values.ToArray();
+
+        var existingOrderProductKeys = await dbContext
+            .OrderProducts
+            .Where(orderProduct => orderIds.Contains(orderProduct.OrderId))
+            .Select(orderProduct => new { orderProduct.OrderId, orderProduct.ProductId })
+            .ToListAsync();
+
+        var existingKeys = existingOrderProductKeys
+            .Select(orderProduct => (orderProduct.OrderId, orderProduct.ProductId))
+            .ToHashSet();
+
+        var missingOrderProducts = expectedOrderProducts
+            .Where(orderProduct => !existingKeys.Contains((orderProduct.OrderId, orderProduct.ProductId)))
+            .ToArray();
+
+        if (missingOrderProducts.Length > 0)
+        {
+            await dbContext.OrderProducts.AddRangeAsync(missingOrderProducts);
+            await dbContext.SaveChangesAsync();
+        }
+    }
+
+    private static Product CreateProduct(ProductSeed seed)
+        => new()
+        {
+            ProductName = seed.Name,
+            Description = seed.Description,
+            Price = seed.Price,
+            CategoryId = seed.CategoryId,
+            Claims = CreateClaims(seed)
+        };
+
+    private static IList<ProductClaim> CreateClaims(ProductSeed seed)
+    {
+        var claimNames = seed.CategoryId switch
+        {
+            1 => new[] { "Памет", "Диск", "Процесор", "Екран", "Графика", "Батерия", "Свързване", "Операционна система" },
+            2 => new[] { "Памет", "Дисплей", "Процесор", "Основна камера", "Батерия", "Зареждане", "Операционна система", "Защита" },
+            3 => new[] { "Тип", "Свързване", "Сензор", "Изпълнение", "Захранване", "Материал", "Съвместимост", "Допълнително" },
+            4 => new[] { "Тип", "Свързване", "Звук", "Батерия", "Микрофон", "Материал", "Съвместимост", "Допълнително" },
+            5 => new[] { "Тип", "Свързване", "Резолюция", "Захранване", "Управление", "Съвместимост", "Размер", "Допълнително" },
+            6 => new[] { "Тип", "Интерфейс", "Мощност", "Размер", "Материал", "Съвместимост", "Захранване", "Допълнително" },
+            _ => throw new InvalidOperationException($"Unsupported seed product category: {seed.CategoryId}.")
+        };
+
+        if (seed.ClaimValues.Length != claimNames.Length)
+        {
+            throw new InvalidOperationException($"Seed product '{seed.Name}' must have exactly eight claims.");
+        }
+
+        return [.. claimNames.Select((claimName, index) => new ProductClaim
+        {
+            ClaimName = claimName,
+            ClaimValue = seed.ClaimValues[index]
+        })];
+    }
+
+    private static ProductSeed[] GetAdditionalProductSeeds()
+        =>
+        [
+            new("Acer Aspire 5 A515", "Универсален лаптоп за обучение, офис задачи и ежедневна употреба.", 1199.99, 1, ["16 GB RAM", "512 GB SSD", "Intel Core i5-1335U", "15,6 инча Full HD IPS", "Intel Iris Xe", "До 8 часа", "Wi-Fi 6 и Bluetooth 5.1", "Windows 11 Home"]),
+            new("HP Pavilion Plus 14", "Компактен лаптоп с детайлен дисплей за работа и пътуване.", 1849.99, 1, ["16 GB RAM", "1 TB SSD", "Intel Core i7-1355U", "14 инча 2.8K OLED", "Intel Iris Xe", "До 9 часа", "Wi-Fi 6E и Bluetooth 5.3", "Windows 11 Home"]),
+            new("Dell Inspiron 16 5640", "Голям лаптоп за продуктивност, видео и домашен офис.", 1699.99, 1, ["16 GB RAM", "1 TB SSD", "Intel Core 7 150U", "16 инча Full HD+", "Intel Graphics", "До 8 часа", "Wi-Fi 6 и Bluetooth 5.2", "Windows 11 Home"]),
+            new("ASUS Zenbook 14 OLED", "Тънък ултрабук с OLED екран и алуминиев корпус.", 2299.99, 1, ["16 GB RAM", "1 TB SSD", "Intel Core Ultra 7", "14 инча 2.8K OLED", "Intel Arc Graphics", "До 12 часа", "Wi-Fi 6E и Bluetooth 5.3", "Windows 11 Home"]),
+            new("Lenovo LOQ 15 Gaming", "Гейминг лаптоп с бърз дисплей и отделна видеокарта.", 2599.99, 1, ["16 GB RAM", "1 TB SSD", "AMD Ryzen 7 7840HS", "15,6 инча Full HD, 144 Hz", "GeForce RTX 4060 8 GB", "До 6 часа", "Wi-Fi 6 и Bluetooth 5.2", "Windows 11 Home"]),
+            new("Google Pixel 9", "Смартфон с интелигентни функции и ярък OLED дисплей.", 1599.99, 2, ["128 GB", "6,3 инча OLED, 120 Hz", "Google Tensor G4", "50 MP с оптична стабилизация", "4700 mAh", "Бързо USB-C зареждане", "Android 15", "IP68"]),
+            new("Apple iPhone 16", "Смартфон с бърз процесор и усъвършенствана двойна камера.", 1899.99, 2, ["128 GB", "6,1 инча Super Retina XDR", "Apple A18", "48 MP Fusion камера", "До 22 часа видео", "MagSafe и USB-C", "iOS 18", "IP68"]),
+            new("OnePlus 13R", "Бърз смартфон с голяма батерия и плавен AMOLED екран.", 1199.99, 2, ["256 GB", "6,78 инча AMOLED, 120 Hz", "Snapdragon 8 Gen 3", "50 MP основна камера", "6000 mAh", "Бързо зареждане 80 W", "OxygenOS 15", "Защита от пръски"]),
+            new("Motorola Edge 50 Neo", "Лек смартфон с ярък дисплей и телефото камера.", 799.99, 2, ["256 GB", "6,4 инча pOLED, 120 Hz", "MediaTek Dimensity 7300", "50 MP с оптична стабилизация", "4310 mAh", "Зареждане 68 W", "Android 14", "IP68"]),
+            new("Nothing Phone (2a)", "Смартфон с отличителен дизайн и изчистен интерфейс.", 649.99, 2, ["256 GB", "6,7 инча AMOLED, 120 Hz", "MediaTek Dimensity 7200 Pro", "50 MP двойна камера", "5000 mAh", "Зареждане до 45 W", "Nothing OS 2.5", "Защита IP54"]),
+            new("Razer DeathAdder V3", "Ергономична гейминг мишка с лек корпус и прецизен сензор.", 149.99, 3, ["Жична гейминг мишка", "USB-A кабел", "Оптичен сензор Focus Pro", "До 30 000 DPI", "Захранване през USB", "Лек корпус 59 g", "Windows и macOS", "Шест програмируеми бутона"]),
+            new("SteelSeries Apex 7", "Механична клавиатура с OLED дисплей и RGB подсветка.", 389.99, 3, ["Механична клавиатура", "USB-A, кабел 1,8 m", "Превключватели Red", "Честота 1000 Hz", "USB захранване", "Алуминиева рамка", "Windows и macOS", "OLED дисплей и RGB"]),
+            new("Corsair HS80 RGB", "Безжични гейминг слушалки с пространствен звук.", 299.99, 3, ["Безжични слушалки", "2,4 GHz и Bluetooth", "Dolby Atmos звук", "До 24 часа работа", "Подвижен микрофон", "Меки наушници от плат", "PC, PS5 и Mac", "RGB осветление"]),
+            new("Logitech G923 Racing Wheel", "Волан с обратна връзка за реалистични състезателни игри.", 749.99, 3, ["Волан и педали", "USB връзка", "TrueForce обратна връзка", "900 градуса завъртане", "Захранващ адаптер", "Кожена облицовка", "PC, PlayStation 4 и 5", "Двойно съединителен педал"]),
+            new("Xbox Wireless Controller", "Безжичен контролер с текстурирани повърхности и споделяне.", 139.99, 3, ["Безжичен контролер", "Bluetooth и Xbox Wireless", "Хибриден D-pad", "Ниска латентност", "2 батерии AA или USB-C", "Текстурирани ръкохватки", "Xbox и Windows PC", "Бутон за споделяне"]),
+            new("Bose QuietComfort Ultra", "Премиум слушалки с активно шумопотискане и пространствен звук.", 899.99, 4, ["Безжични слушалки", "Bluetooth 5.3", "Immersive Audio", "До 24 часа слушане", "Вградени микрофони", "Меки наушници", "iOS и Android", "USB-C и аудио кабел"]),
+            new("JBL Tune 770NC", "Сгъваеми безжични слушалки с адаптивно шумопотискане.", 199.99, 4, ["Над ушите, безжични", "Bluetooth 5.3", "JBL Pure Bass", "До 70 часа слушане", "Вграден микрофон", "Сгъваем пластмасов корпус", "Телефони и таблети", "Адаптивно шумопотискане"]),
+            new("Sennheiser Momentum 4", "Слушалки с детайлно звучене и продължителна автономност.", 699.99, 4, ["Безжични слушалки", "Bluetooth 5.2", "Sennheiser Signature Sound", "До 60 часа слушане", "Четири микрофона", "Сгъваем комфортен дизайн", "iOS, Android и PC", "Адаптивно шумопотискане"]),
+            new("Marshall Emberton II", "Компактна преносима тонколона със стерео звук и здрав корпус.", 299.99, 4, ["Преносима тонколона", "Bluetooth 5.1", "360-градусов стерео звук", "Над 30 часа работа", "Без микрофон", "Силиконов корпус", "Телефони и таблети", "Водоустойчивост IP67"]),
+            new("Sonos Era 100", "Домашна Wi-Fi тонколона с богат звук и гласово управление.", 499.99, 4, ["Домашна смарт тонколона", "Wi-Fi и Bluetooth", "Стерео звук с два туитъра", "Захранване от електрическата мрежа", "Вградени микрофони", "Компактен матов корпус", "AirPlay 2 и Sonos app", "Автоматична настройка Trueplay"]),
+            new("Google Nest Hub 2", "Интелигентен дисплей за управление на дома и ежедневни задачи.", 249.99, 5, ["Смарт дисплей", "Wi-Fi и Bluetooth", "7-инчов сензорен екран", "Захранващ адаптер", "Google Home приложение", "Съвместим с Matter", "Компактен настолен дизайн", "Гласов асистент Google"]),
+            new("Eufy Indoor Cam C120", "Вътрешна камера с висока резолюция и автоматично проследяване.", 99.99, 5, ["Вътрешна охранителна камера", "Wi-Fi 2,4 GHz", "2K резолюция", "USB захранване", "Приложение Eufy Security", "Alexa и Google Assistant", "Настолна или стенна стойка", "Откриване на движение"]),
+            new("Xiaomi Smart Air Purifier 4", "Пречиствател за въздух с автоматичен режим и сензор за качество.", 499.99, 5, ["Пречиствател за въздух", "Wi-Fi и Bluetooth", "CADR до 400 m³/h", "Мощност 30 W", "Приложение Xiaomi Home", "Google Assistant и Alexa", "За помещения до 48 m²", "HEPA филтър и дисплей"]),
+            new("Tapo P110 Smart Plug", "Умен контакт с измерване на консумацията и график.", 39.99, 5, ["Умен електрически контакт", "Wi-Fi 2,4 GHz", "Максимално 16 A", "230 V AC", "Приложение Tapo", "Alexa и Google Assistant", "Компактен корпус", "График и измерване на енергията"]),
+            new("Philips Hue Bridge", "Централен контролер за умно осветление и автоматизации.", 119.99, 5, ["Контролер за осветление", "Ethernet и Zigbee", "До 50 осветителни тела", "Захранване 5 V", "Приложение Philips Hue", "Apple Home и Google Home", "Компактен настолен модул", "Поддръжка на Matter"]),
+            new("Anker 737 Power Bank", "Външна батерия с голям капацитет и бързо USB-C зареждане.", 249.99, 6, ["Външна батерия", "2 USB-C и 1 USB-A", "Капацитет 24 000 mAh", "Размер 156 × 55 × 50 mm", "Алуминиев корпус", "Телефони и лаптопи", "Зареждане през USB-C", "Дисплей за мощността"]),
+            new("Samsung T7 Shield 1TB", "Преносим SSD диск с висока скорост и устойчив корпус.", 279.99, 6, ["Преносим SSD диск", "USB-C 3.2 Gen 2", "До 1050 MB/s четене", "Капацитет 1 TB", "Гумиран удароустойчив корпус", "Windows, Mac и Android", "Захранване през USB", "Защита IP65"]),
+            new("Belkin BoostCharge 3-in-1", "Безжична зарядна станция за телефон, часовник и слушалки.", 229.99, 6, ["Безжична зарядна станция", "Qi2 и магнитно закрепване", "До 15 W за телефон", "Сгъваем настолен дизайн", "Корпус от рециклирани материали", "iPhone, Apple Watch и AirPods", "USB-C адаптер включен", "Едновременно зареждане на три устройства"]),
+            new("Logitech MX Anywhere 3S", "Компактна безжична мишка за работа на различни повърхности.", 189.99, 6, ["Безжична офис мишка", "Bluetooth и USB приемник", "Сензор до 8000 DPI", "Размер 100 × 65 mm", "Рециклирана пластмаса", "Windows, Mac и ChromeOS", "USB-C презареждане", "Тихи бутони и MagSpeed скрол"]),
+            new("UGREEN Revodok 6-in-1", "Компактен USB-C хъб за свързване на периферия и дисплей.", 89.99, 6, ["USB-C мултипорт хъб", "USB-C към HDMI и USB-A", "HDMI до 4K при 60 Hz", "Кабел 15 cm", "Алуминиев корпус", "Лаптопи с USB-C", "До 100 W Power Delivery", "Четец за SD и microSD карти"])
+        ];
+
+    private sealed record ProductSeed(
+        string Name,
+        string Description,
+        double Price,
+        int CategoryId,
+        string[] ClaimValues
+    );
 }

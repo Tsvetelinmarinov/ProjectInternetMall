@@ -282,6 +282,11 @@ namespace EMall
                 {
                     Console.WriteLine(UnableToCreateAdminRole, adminRole);
                 }
+
+                await DemoUserSeeder.SeedAsync(
+                    usersManager,
+                    app.Configuration["DemoUsers:InitialPassword"]
+                );
             }
 
             app.Run();
