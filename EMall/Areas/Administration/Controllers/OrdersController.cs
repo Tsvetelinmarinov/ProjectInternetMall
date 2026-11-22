@@ -13,10 +13,15 @@ namespace EMall.Areas.Administration.Controllers
     /// </summary>
     public class OrdersController(IOrderService orderService) : AdminCoreController
     {
+        // Order per page.
+        private const int OrdersPerPage = 10;
+
+
         [HttpGet]
         public async Task<IActionResult> Index(
             [FromQuery] string? sortBy, 
-            [FromQuery] string? sortDir
+            [FromQuery] string? sortDir,
+            [FromQuery] int page = 1
         ){
             sortBy ??= "date";
             sortDir ??= "asc";
@@ -24,10 +29,17 @@ namespace EMall.Areas.Administration.Controllers
             ViewBag.SortBy = sortBy;
             ViewBag.SortDir = sortDir;
 
-            var orderServiceModels 
-                = await orderService.GetAllOrders(sortBy, sortDir);
+            var allOrders = (await orderService.GetAllOrders(sortBy, sortDir)).ToList();
+            var totalPages = Math.Max(1, (int)Math.Ceiling(allOrders.Count / (double)OrdersPerPage));
+            page = Math.Clamp(page, 1, totalPages);
 
-            var orderViewModels = orderServiceModels
+            ViewBag.PageNumber = page;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.TotalOrders = allOrders.Count;
+
+            var orderViewModels = allOrders
+                .Skip((page - 1) * OrdersPerPage)
+                .Take(OrdersPerPage)
                 .Select((orderServiceModel) => new OrderViewModel
                 {
                     OrderId = orderServiceModel.OrderId,

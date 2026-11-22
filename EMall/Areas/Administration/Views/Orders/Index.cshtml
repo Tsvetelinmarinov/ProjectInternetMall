@@ -6,6 +6,9 @@
 
     string sortBy = ViewBag.SortBy ?? "date";
     string sortDir = ViewBag.SortDir ?? "desc";
+    int pageNumber = ViewBag.PageNumber ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    int totalOrders = ViewBag.TotalOrders ?? 0;
 
     // Колоните по ред на показване. Използват се и за падащото меню, и за заглавията на таблицата.
     var columns = new (string Key, string Title)[]
@@ -52,7 +55,7 @@
     <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
         <div>
             <h1 class="h3 mb-1">Поръчки</h1>
-            <p class="text-muted mb-0">Общо поръчки: @Model.Count()</p>
+            <p class="text-muted mb-0">Общо поръчки: @totalOrders</p>
         </div>
 
         <form method="get" 
@@ -143,4 +146,20 @@
             </table>
         </div>
     </div>
+
+    @if (totalPages > 1)
+    {
+        <nav class="d-flex justify-content-center gap-2 mt-4" aria-label="Страници на поръчките">
+            @for (var pageIndex = 1; pageIndex <= totalPages; pageIndex++)
+            {
+                <a href="@Url.Action("Index", "Orders", new { area = "Administration", sortBy, sortDir, page = pageIndex })"
+                   class="d-inline-flex rounded-circle border border-primary @(pageIndex == pageNumber ? "bg-primary" : "bg-white")"
+                   style="width: 1rem; height: 1rem;"
+                   aria-label="Страница @pageIndex"
+                   aria-current="@(pageIndex == pageNumber ? "page" : null)">
+                    <span class="visually-hidden">Страница @pageIndex</span>
+                </a>
+            }
+        </nav>
+    }
 </div>
