@@ -75,7 +75,6 @@ namespace EMall.Data.Repositories
             existingOrder.CustomerEmail = newOrderData.CustomerEmail;
             existingOrder.CreatedOn = newOrderData.CreatedOn;
             existingOrder.AddressForShipping = newOrderData.AddressForShipping;
-            existingOrder.OrderProducts = newOrderData.OrderProducts;
             existingOrder.Status = newOrderData.Status;
 
             _ = await this.DbContext.SaveChangesAsync(
