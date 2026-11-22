@@ -4,6 +4,8 @@
     ViewData["Title"] = $"Преглед на поръчка #{Model.OrderId}";
     // Проверка дали статусът позволява редакция
     bool isProcessing = Model.Status.ToString() == "Processing";
+    var products = Model.Products ?? new();
+    var productPageCount = (products.Count + 3) / 4;
 }
 
 <div class="container my-5">
@@ -35,15 +37,17 @@
                     <section class="mb-4" aria-labelledby="products-heading">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h4 id="products-heading" class="h5 mb-0">Продукти в поръчката</h4>
-                            <span class="badge bg-light text-dark">@(Model.Products?.Count ?? 0)</span>
+                            <span class="badge bg-light text-dark">@products.Count</span>
                         </div>
 
-                        @if (Model.Products is { Count: > 0 })
+                        @if (products.Count > 0)
                         {
-                            <div class="d-grid gap-3">
-                                @foreach (var orderProduct in Model.Products)
+                            <div id="order-products" class="d-grid gap-3">
+                                @for (var index = 0; index < products.Count; index++)
                                 {
-                                    <article class="card border rounded-3">
+                                    var orderProduct = products[index];
+                                    var pageNumber = (index / 4) + 1;
+                                    <article class="card border rounded-3" data-product-page="@pageNumber">
                                         <div class="card-body">
                                             @if (orderProduct.Product is { } product)
                                             {
@@ -90,6 +94,23 @@
                                     </article>
                                 }
                             </div>
+
+                            @if (productPageCount > 1)
+                            {
+                                <nav class="d-flex justify-content-center gap-2 mt-4" aria-label="Страници на продуктите" data-products-pagination>
+                                    @for (var pageNumber = 1; pageNumber <= productPageCount; pageNumber++)
+                                    {
+                                         <button type="button"
+                                                 class="btn btn-sm rounded-circle p-0 @(pageNumber == 1 ? "btn-primary" : "btn-outline-primary")"
+                                                 style="width: 0.75rem; height: 0.75rem;"
+                                                 data-products-page="@pageNumber"
+                                                 aria-label="Страница @pageNumber"
+                                                 aria-current="@(pageNumber == 1 ? "page" : null)">
+                                             <span class="visually-hidden">Страница @pageNumber</span>
+                                         </button>
+                                    }
+                                </nav>
+                            }
                         }
                         else
                         {
@@ -157,4 +178,37 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        const productCards = document.querySelectorAll("[data-product-page]");
+        const productPageButtons = document.querySelectorAll("[data-products-page]");
+
+        productPageButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const page = button.dataset.productsPage;
+
+                productCards.forEach((card) => {
+                    const isVisible = card.dataset.productPage === page;
+                    card.classList.toggle("d-none", !isVisible);
+                    card.setAttribute("aria-hidden", String(!isVisible));
+                });
+
+                productPageButtons.forEach((pageButton) => {
+                    const isActive = pageButton === button;
+                    pageButton.classList.toggle("btn-primary", isActive);
+                    pageButton.classList.toggle("btn-outline-primary", !isActive);
+
+                    if (isActive) {
+                        pageButton.setAttribute("aria-current", "page");
+                    } else {
+                        pageButton.removeAttribute("aria-current");
+                    }
+                });
+            });
+        });
+
+        if (productPageButtons.length > 0) {
+            productPageButtons[0].click();
+        }
+    </script>
 }
