@@ -32,5 +32,13 @@
             internal const string PriceIsRequired = "Product price is required";
             internal const string CategoryIsRequired = "Product category is required";
         }
+
+        /// <summary>
+        ///  Provides common constants for ProductViewModelModelBinder custom binder.
+        /// </summary>
+        internal static class ProductViewModelModelBinderRelated
+        {
+            internal const string NullBindingContext = "The context of binding is null!";
+        }
     }
 }

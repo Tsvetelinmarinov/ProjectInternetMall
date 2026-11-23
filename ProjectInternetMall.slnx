@@ -10,6 +10,7 @@
   </Folder>
   <Folder Name="/WebMVC/">
     <Project Path="EMall.AutoMapper/EMall.AutoMapper.csproj" Id="7c00e482-8e51-4b75-859d-e2c590a8db75" />
+    <Project Path="EMall.Exceptions/EMall.Exceptions.csproj" Id="5b3ae8aa-b250-43ff-ae62-8fcbed2795b7" />
     <Project Path="EMall.ViewModels/EMall.ViewModels.csproj" Id="24820149-9710-42ad-a17f-e45d6d60000e" />
     <Project Path="EMall/EMall.csproj" />
   </Folder>
