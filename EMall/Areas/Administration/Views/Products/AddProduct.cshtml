@@ -1,0 +1,114 @@
+﻿@using EMall.ViewModels
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Добавяне на продукт";
+    var claims = Model?.Claims?.ToList() ?? [];
+    IEnumerable<SelectListItem> categories = (IEnumerable<SelectListItem>)ViewBag.Categories;
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-header bg-primary text-white p-4 rounded-top-4">
+                    <h1 class="h3 mb-1 fw-bold">Добавяне на продукт</h1>
+                    <p class="mb-0 text-white-50 small">Попълни информацията за новия продукт</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form asp-area="Administration"
+                          asp-controller="Products"
+                          asp-action="AddProduct"
+                          method="post">
+                        <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="ProductName" class="form-label fw-semibold text-muted">Име на продукта</label>
+                                <input asp-for="ProductName" class="form-control form-control-lg" maxlength="100" required placeholder="Например: Lenovo IdeaPad Slim 5" />
+                                <span asp-validation-for="ProductName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="Description" class="form-label fw-semibold text-muted">Описание</label>
+                                <textarea asp-for="Description" class="form-control" rows="4" maxlength="5000" placeholder="Кратко описание на продукта..."></textarea>
+                                <span asp-validation-for="Description" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Price" class="form-label fw-semibold text-muted">Цена (€)</label>
+                                <input asp-for="Price" type="number" class="form-control" min="0" step="0.01" required placeholder="0.00" />
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="Category_CategoryName" class="form-label fw-semibold text-muted">Категория</label>
+                                <select id="Category_CategoryName" name="Category.CategoryName" class="form-select" required>
+                                    <option value="">Избери категория</option>
+                                    @foreach (var category in categories)
+                                    {
+                                        <option value="@category.Value" selected="@(category.Value == Model?.Category?.CategoryName)">@category.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <section class="mt-4" aria-labelledby="claims-heading">
+                            <div class="mb-3">
+                                <h2 id="claims-heading" class="h5 mb-1">Характеристики</h2>
+                                <p class="text-muted small mb-0">Добави осем характеристики за продукта.</p>
+                            </div>
+
+                            <div class="row g-3">
+                                @for (var index = 0; index < 8; index++)
+                                {
+                                    var claim = claims.ElementAtOrDefault(index);
+                                    <div class="col-12">
+                                        <div class="row g-2">
+                                            <div class="col-md-5">
+                                                <label for="claim-name-@index" class="form-label fw-semibold text-muted">Характеристика @(index + 1)</label>
+                                                <input id="claim-name-@index"
+                                                       name="Claims[@index].ClaimName"
+                                                       value="@claim?.ClaimName"
+                                                       class="form-control"
+                                                       maxlength="100"
+                                                       required
+                                                       placeholder="Например: Памет" />
+                                            </div>
+                                            <div class="col-md-7">
+                                                <label for="claim-value-@index" class="form-label fw-semibold text-muted">Стойност</label>
+                                                <input id="claim-value-@index"
+                                                       name="Claims[@index].ClaimValue"
+                                                       value="@claim?.ClaimValue"
+                                                       class="form-control"
+                                                       maxlength="100"
+                                                       required
+                                                       placeholder="Например: 16 GB RAM" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </section>
+
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-5 pt-3 border-top">
+                            <a asp-area="Administration" asp-controller="AdminHome" asp-action="Index" class="btn btn-outline-secondary px-4">
+                                Назад
+                            </a>
+                            <button type="submit" class="btn btn-primary px-5 py-2 shadow-sm">
+                                Добави продукта
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

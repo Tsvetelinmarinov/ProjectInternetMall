@@ -73,7 +73,7 @@
                 <p class="adm-date">@DateTime.Now.ToString("dddd, d MMMM yyyy", bg)</p>
             </div>
             <div class="adm-actions">
-                <a class="adm-btn adm-btn--primary" asp-controller="" asp-action="">Добави продукт</a>
+                <a class="adm-btn adm-btn--primary" asp-area="Administration" asp-controller="Products" asp-action="AddProduct">Добави продукт</a>
             </div>
         </header>
 
