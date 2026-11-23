@@ -50,21 +50,9 @@
         public static class Validation
         {
             /// <summary>
-            ///  Provides validation constants for OrderOutputViewModel.
+            ///  Provides validation constants for OrderViewModel.
             /// </summary>
-            public static class OrderOutputViewModel
-            {
-                public const int CustomerNameMinLen = 2;
-                public const int CustomerNameMaxLen = 100;
-
-                public const string CustomerNameIsRequired = "Customer`s name is required!";
-                public const string InvalidCustomerNameLength = "Customer`s name should be between {2} and {1} characters!";
-            }
-
-            /// <summary>
-            ///  Provides validation constants for OrderInputViewModel.
-            /// </summary>
-            public static class OrderInputViewModel
+            public static class OrderViewModel
             {
                 public const int CustomerNameMinLen = 2;
                 public const int CustomerNameMaxLen = 100;
@@ -79,11 +67,12 @@
                 public const string CustomerEmailIsRequired = "Customer email is required!";
                 public const string InvalidCustomerEmail = "Invalid customer email!";
                 public const string ShippingAddressIsRequired = "The client address for shipping is required!";
-                public const string InvalidShippingAddressLength 
+                public const string InvalidShippingAddressLength
                     = "Shipping address of the client should be between {2} and {1} characters!";
 
                 public const string PriceIsRequired = "The price of the product is required!";
                 public const string InvalidPriceRange = "The price of the product should be between {1} and {2} euro.";
+                public const string StatusIsRequired = "Order status is required!";
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using EMall.Areas.Administration.ViewModels.Order.Common;
 using EMall.Areas.Administration.ViewModels.OrderProduct;
 using System.ComponentModel.DataAnnotations;
-using static EMall.Constants.WebConstants.Validation.OrderInputViewModel;
+using static EMall.Constants.WebConstants.Validation.OrderViewModel;
 
 namespace EMall.Areas.Administration.ViewModels.Order
 {
@@ -29,7 +29,9 @@ namespace EMall.Areas.Administration.ViewModels.Order
         )]
         public string AddressForShipping { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = StatusIsRequired)]
         public OrderStatus Status { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         [Required(ErrorMessage = PriceIsRequired)]
