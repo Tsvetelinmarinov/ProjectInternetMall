@@ -27,6 +27,11 @@ namespace EMall.Areas.Administration.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromForm] ProductViewModel productModel)
         {
+            if (this.ModelState.IsValid is false)
+            {
+                return View(productModel);
+            }
+
             return Ok();
         }
     }
