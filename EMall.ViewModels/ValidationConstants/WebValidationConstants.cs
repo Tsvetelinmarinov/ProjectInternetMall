@@ -39,6 +39,15 @@
         internal static class ProductViewModelModelBinderRelated
         {
             internal const string NullBindingContext = "The context of binding is null!";
+            internal const string InvalidClaim = "The claim cannot be null, empty or consider only from white spaces.";
+            internal const string InvalidProductName 
+                = "The product name cannot be null, empty or consider only from white spaces.";
+            internal const string InvalidProductDescription
+                = "The product description cannot be null, empty or consider only from white spaces.";
+            internal const string InvalidProductPrice 
+                = "The product price cannot be null, empty or consider only from white spaces.";
+
+            internal const string UnsuccessfullParsingOfPrice = "Unsuccessfull parsing of product price from the HTTP request!";
         }
     }
 }
