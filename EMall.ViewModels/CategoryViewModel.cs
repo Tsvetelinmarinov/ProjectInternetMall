@@ -5,10 +5,10 @@
     /// </summary>
     public class CategoryViewModel
     {
-        public required string CategoryName { get; set; }
-        public required string CategoryDescription { get; set; }
-        public required string Icon { get; set; }
-        public required string Color { get; set; }
+        public string? CategoryName { get; set; }
+        public string? CategoryDescription { get; set; }
+        public string? Icon { get; set; }
+        public string? Color { get; set; }
         public IEnumerable<ProductViewModel>? Products { get; set; }
     }
 }

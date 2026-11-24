@@ -46,6 +46,8 @@
                 = "The product description cannot be null, empty or consider only from white spaces.";
             internal const string InvalidProductPrice 
                 = "The product price cannot be null, empty or consider only from white spaces.";
+            internal const string InvalidProductCategory 
+                = "The product category name cannot be null, empty or consider only from white spaces.";
 
             internal const string UnsuccessfullParsingOfPrice = "Unsuccessfull parsing of product price from the HTTP request!";
         }
