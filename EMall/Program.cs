@@ -12,6 +12,7 @@ using EMall.AutoMapper;
 using static EMall.Constants.WebConstants.Common;
 using EMall.PipelineFilters.ResultFilters;
 using EMall.PipelineFilters.ResultFilters.Options;
+using EMall.ViewModels.ModelBinders.Providers;
 
 namespace EMall
 {
@@ -94,6 +95,15 @@ namespace EMall
             builder.Services.AddMvc((mvcOptions) =>
             {
                 mvcOptions.Filters.Add<AsyncResultFilterForAddingXDeveloperHeader>();
+            });
+
+            // Adding model binder for ProductViewModel for correct
+            // binding the model from HTTP request.
+            builder.Services.AddMvc((mvcOptions) =>
+            {
+                mvcOptions
+                    .ModelBinderProviders
+                    .Insert(0, new ProductViewModelModelBinderProvider());
             });
 
             // Registers IDistributedCache + ISessionStore
