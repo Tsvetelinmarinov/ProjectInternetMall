@@ -1,4 +1,4 @@
-﻿ using EMall.Exceptions;
+﻿using EMall.Exceptions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using static EMall.ViewModels.ValidationConstants.WebValidationConstants.ProductViewModelModelBinderRelated;
 
@@ -24,7 +24,7 @@ namespace EMall.ViewModels.ModelBinders
 
             // Get the raw data from the request:
             ProductBasePackage productData 
-                = this.GetProductNameWithDescriptionAndPriceAndCategory(bindingContext);
+                = this.GetProductBaseDataRaw(bindingContext);
 
             var claims = this.CreateClaimModelsFromRawClaimsData(bindingContext);
 
@@ -87,14 +87,19 @@ namespace EMall.ViewModels.ModelBinders
 
         // Get the product name, description and price as raw string values from 
         // the HTTP request body.
-        private (string Name, string Description, string Price, string CategoryName) GetProductNameWithDescriptionAndPriceAndCategory(
-            ModelBindingContext bindingContext
-        ){
+        private  ProductBasePackage GetProductBaseDataRaw(ModelBindingContext bindingContext){
             // Product name + description + price.
-            var productNameRaw = bindingContext.ValueProvider.GetValue("ProductName").FirstValue;
-            var productDescriptionRaw = bindingContext.ValueProvider.GetValue("ProductDescription").FirstValue;
-            var productPriceRaw = bindingContext.ValueProvider.GetValue("ProductPrice").FirstValue;
-            var productCategoryRaw = bindingContext.ValueProvider.GetValue("ProductCategory").FirstValue;
+            var productNameRaw 
+                = bindingContext.ValueProvider.GetValue("ProductName").FirstValue;
+
+            var productDescriptionRaw 
+                = bindingContext.ValueProvider.GetValue("Description").FirstValue;
+
+            var productPriceRaw 
+                = bindingContext.ValueProvider.GetValue("Price").FirstValue;
+
+            var productCategoryRaw 
+                = bindingContext.ValueProvider.GetValue("Category.CategoryName").FirstValue;
 
             // Check the raw product name, desctiption and price for null.
             if (string.IsNullOrWhiteSpace(productNameRaw))
@@ -158,17 +163,17 @@ namespace EMall.ViewModels.ModelBinders
             }
 
             return (
-                Name: productNameRaw,  
-                Description: productDescriptionRaw,
-                Price: productPriceRaw,
-                CategoryName: productCategoryRaw
+                RawName: productNameRaw,  
+                RawDescription: productDescriptionRaw,
+                RawPrice: productPriceRaw,
+                RawCategoryName: productCategoryRaw
             );
         }
 
         // Gpoups the claim keys and values in ProductClaimViewModels.
         private IEnumerable<ProductClaimViewModel> CreateClaimModelsFromRawClaimsData(ModelBindingContext bindingContext)
         {
-            var rawClaims = (string[])this.GetRawClaimsKeysAndValues(bindingContext);
+            var rawClaims = (List<string>)this.GetRawClaimsKeysAndValues(bindingContext);
 
             var claim1 = new ProductClaimViewModel
             {
@@ -225,43 +230,43 @@ namespace EMall.ViewModels.ModelBinders
         private IEnumerable<string> GetRawClaimsKeysAndValues(ModelBindingContext bindingContext)
         {
             // First claim.
-            var claim1Key = bindingContext.ValueProvider.GetValue("claim-name-0").FirstValue;
-            var claim1Value = bindingContext.ValueProvider.GetValue("claim-value-0").FirstValue;
+            var claim1Key = bindingContext.ValueProvider.GetValue("Claims[0].ClaimName").FirstValue;
+            var claim1Value = bindingContext.ValueProvider.GetValue("Claims[0].ClaimValue").FirstValue;
 
             // Second claim.
-            var claim2Key = bindingContext.ValueProvider.GetValue("claim-name-1").FirstValue;
-            var claim2Value = bindingContext.ValueProvider.GetValue("claim-value-1").FirstValue;
+            var claim2Key = bindingContext.ValueProvider.GetValue("Claims[1].ClaimName").FirstValue;
+            var claim2Value = bindingContext.ValueProvider.GetValue("Claims[1].ClaimValue").FirstValue;
 
             // Third claim.
-            var claim3Key = bindingContext.ValueProvider.GetValue("claim-name-2").FirstValue;
-            var claim3Value = bindingContext.ValueProvider.GetValue("claim-value-2").FirstValue;
+            var claim3Key = bindingContext.ValueProvider.GetValue("Claims[2].ClaimName").FirstValue;
+            var claim3Value = bindingContext.ValueProvider.GetValue("Claims[2].ClaimValue").FirstValue;
 
             // Fourth claim.
-            var claim4Key = bindingContext.ValueProvider.GetValue("claim-name-3").FirstValue;
-            var claim4Value = bindingContext.ValueProvider.GetValue("claim-value-3").FirstValue;
+            var claim4Key = bindingContext.ValueProvider.GetValue("Claims[3].ClaimName").FirstValue;
+            var claim4Value = bindingContext.ValueProvider.GetValue("Claims[3].ClaimValue").FirstValue;
 
             // Fifth claim.
-            var claim5Key = bindingContext.ValueProvider.GetValue("claim-name-4").FirstValue;
-            var claim5Value = bindingContext.ValueProvider.GetValue("claim-value-4").FirstValue;
+            var claim5Key = bindingContext.ValueProvider.GetValue("Claims[4].ClaimName").FirstValue;
+            var claim5Value = bindingContext.ValueProvider.GetValue("Claims[4].ClaimValue").FirstValue;
 
             // Sixst claim.
-            var claim6Key = bindingContext.ValueProvider.GetValue("claim-name-5").FirstValue;
-            var claim6Value = bindingContext.ValueProvider.GetValue("claim-value-5").FirstValue;
+            var claim6Key = bindingContext.ValueProvider.GetValue("Claims[5].ClaimName").FirstValue;
+            var claim6Value = bindingContext.ValueProvider.GetValue("Claims[5].ClaimValue").FirstValue;
 
             // Seventh claim.
-            var claim7Key = bindingContext.ValueProvider.GetValue("claim-name-6").FirstValue;
-            var claim7Value = bindingContext.ValueProvider.GetValue("claim-value-6").FirstValue;
+            var claim7Key = bindingContext.ValueProvider.GetValue("Claims[6].ClaimName").FirstValue;
+            var claim7Value = bindingContext.ValueProvider.GetValue("Claims[6].ClaimValue").FirstValue;
 
             // Eight claim.
-            var claim8Key = bindingContext.ValueProvider.GetValue("claim-name-7").FirstValue;
-            var claim8Value = bindingContext.ValueProvider.GetValue("claim-value-7").FirstValue;
+            var claim8Key = bindingContext.ValueProvider.GetValue("Claims[7].ClaimName").FirstValue;
+            var claim8Value = bindingContext.ValueProvider.GetValue("Claims[7].ClaimValue").FirstValue;
 
             // Collect all claims keys and value and check them all for null or white spaces.
             List<string> rawClaimsMixed = [
-                claim1Key, claim2Key, claim3Key, claim4Key,
-                claim5Key, claim6Key, claim7Key, claim8Key,
-                claim1Value, claim2Value, claim3Value, claim4Value,
-                claim5Value, claim6Value, claim7Value, claim8Value
+                claim1Key, claim1Value, claim2Key, claim2Value,
+                claim3Key, claim3Value,  claim4Key, claim4Value,
+                claim5Key, claim5Value, claim6Key, claim6Value,
+                claim7Key, claim7Value, claim8Key, claim8Value
             ];
 
             this.CheckRawClaimsForNullOrWhiteSpace(rawClaimsMixed, bindingContext);
@@ -279,7 +284,7 @@ namespace EMall.ViewModels.ModelBinders
                 if (string.IsNullOrWhiteSpace(claimPart))
                 {
                     bool successErrorAdding = bindingContext.ModelState.TryAddModelError(
-                        claimPart,
+                        "claimPart",
                         InvalidClaim
                     );
 

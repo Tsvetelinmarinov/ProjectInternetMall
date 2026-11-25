@@ -23,7 +23,6 @@ namespace EMall.Areas.Administration.Controllers
             return View();
         }
 
-        // Келмата не се байндват правилно!!!
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromForm] ProductViewModel productModel)
         {
