@@ -1,6 +1,9 @@
-﻿using EMall.Exceptions;
+﻿ using EMall.Exceptions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using static EMall.ViewModels.ValidationConstants.WebValidationConstants.ProductViewModelModelBinderRelated;
+
+// This is tuple of four strings - the product base information, without the claims.
+using ProductBasePackage = (string RawName, string RawDescription, string RawPrice, string RawCategoryName);
 
 namespace EMall.ViewModels.ModelBinders
 {
@@ -8,7 +11,7 @@ namespace EMall.ViewModels.ModelBinders
     ///  Binds ProductViewModel correctly from HTTP request.
     /// </summary>
     /*
-     * Налага се да направя този ModelBinder, защото е невъзможно този на .NET да се справи с 16 полета
+     * Налага се да направя този ModelBinder, защото е невъзможно този на Microsoft да се справи с 16 полета
      * за клейма да ги свърже в ProductClaimViewModel-и по двойки, и да ги сложи и в колекция.
      * Не може също така и да създаде цяла категория(CategoryViewModel) по името, което идва от заявката.
      */
@@ -20,22 +23,22 @@ namespace EMall.ViewModels.ModelBinders
             var valueProvider = this.GetCurrentRawValuesProvider(bindingContext);
 
             // Get the raw data from the request:
-            (string RawName, string RawDescription, string RawPrice, string CategoryName) productTrio
-                = this.GetProductNameWithDescriptionAndPrice(bindingContext);
+            ProductBasePackage productData 
+                = this.GetProductNameWithDescriptionAndPriceAndCategory(bindingContext);
 
             var claims = this.CreateClaimModelsFromRawClaimsData(bindingContext);
 
             // Convert the data types to needed ones.
             // The request data(except claims) now is raw - as string.
-            string name = productTrio.RawName;
-            string description = productTrio.RawDescription;
-            string categoryName = productTrio.CategoryName;
-            bool successfullParsingOfPrice = double.TryParse(productTrio.RawPrice, out double price);
+            string name = productData.RawName;
+            string description = productData.RawDescription;
+            string categoryName = productData.RawCategoryName;
+            bool successfullParsingOfPrice = double.TryParse(productData.RawPrice, out double price);
             
             if (successfullParsingOfPrice is false)
             {
                 bool successErrorAdding = bindingContext.ModelState.TryAddModelError(
-                    productTrio.RawPrice,
+                    productData.RawPrice,
                     UnsuccessfullParsingOfPrice
                 );
 
@@ -84,7 +87,7 @@ namespace EMall.ViewModels.ModelBinders
 
         // Get the product name, description and price as raw string values from 
         // the HTTP request body.
-        private (string Name, string Description, string Price, string CategoryName) GetProductNameWithDescriptionAndPrice(
+        private (string Name, string Description, string Price, string CategoryName) GetProductNameWithDescriptionAndPriceAndCategory(
             ModelBindingContext bindingContext
         ){
             // Product name + description + price.
