@@ -51,5 +51,13 @@
 
             internal const string UnsuccessfullParsingOfPrice = "Unsuccessfull parsing of product price from the HTTP request!";
         }
+
+        /// <summary>
+        ///  Provides common constants for ProductViewModelModelBinderProvider model binder provider.
+        /// </summary>
+        internal static class ProductViewModelModelBinderProviderRelated
+        {
+            internal const string NullProviderContext = "The ModelBinderProviderContext is null!";
+        }
     }
 }
