@@ -62,6 +62,7 @@ namespace EMall
             // Add Repositories.
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
             // Add Services.
             builder.Services.AddScoped<ICategoryService, CategoryService>();
